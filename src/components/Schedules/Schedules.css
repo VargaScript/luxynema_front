@@ -1,0 +1,58 @@
+.background {
+    background-image: url("https://www.themoviedb.org/t/p/original/dqXMSuD3Iq1a4oCIJf4T7csrqjD.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+  }
+
+.moviePicture{
+    height: 500px;
+    width: 300px;
+    margin: 50px;
+}
+.moviePictureCheckOut{
+    height: 160px;
+    width: 120px;
+}
+
+.Contenedor{
+    display: flex;
+
+
+}
+
+#horarios{
+    margin-top: 100px;
+}
+#btn{
+margin: 5px ;
+
+}
+.contenido{
+    display: block;
+}
+.trailer{
+    margin-left: 150px;
+
+}
+.contenidoCheckOut{
+    margin: 50px 50px ;
+
+    padding: 50px;
+    background-color: #DBE4ED ;
+
+
+}
+.innerCheckOut{
+    display:flex;
+
+
+
+
+}
+.box{
+    display: block;
+    margin: 20px;
+
+}

@@ -1,0 +1,39 @@
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loader {
+  width: 150px;
+  height: 150px;
+  position: relative;
+}
+
+.loader img {
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  animation: rotate 1s infinite cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.loader img {
+  content: url('../../assets/Luxynema_1.ico');
+}
+
+@keyframes rotate {
+  0%, 100% {
+    transform: translateX(-50px);
+  }
+  25% {
+    transform: scale(0.3);
+  }
+  50% {
+    transform: translateX(50px);
+  }
+  75% {
+    transform: scale(1);
+  }
+}

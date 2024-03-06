@@ -1,0 +1,24 @@
+ .user-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: rgba(241, 238, 238, 0.985);
+
+  }
+  
+  .user-container2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: rgb(252, 251, 251);
+
+  }
+
+  .user-container button {
+    margin-top: 10px;
+  }
+  

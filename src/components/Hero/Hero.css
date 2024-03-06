@@ -40,3 +40,16 @@ body::-webkit-scrollbar-thumb:hover {
   src: url("../public/fonts/lemon_milk/LEMONMILK-Regular.otf")
     format("truetype");
 }
+
+.lemon-milk {
+  font-family: "lemon-milk";
+}
+
+.galarama {
+  font-family: "galarama";
+}
+
+.text-sm {
+  font-size: 10px;
+}
+

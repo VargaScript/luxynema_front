@@ -1,0 +1,36 @@
+:root {
+  --negro: #112236;
+  --azul-fuerte: #436280;
+  --azul: #a3bad2;
+  --azul-claro: #dbe4ed;
+  --blanco: #ffffff;
+  --garalama: "galarama";
+  --lemon-milk: "lemon-milk";
+}
+
+@font-face {
+  font-family: "galarama";
+  src: url("../public/fonts/garalama/GARALAMA.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "lemon-milk";
+  src: url("../public/fonts/lemon_milk/LEMONMILK-Light.otf") format("truetype");
+}
+
+.lemon {
+  font-family: var(--lemon-milk);
+}
+
+.garalama {
+  font-family: var(--garalama);
+}
+
+.above-all {
+  position: relative;
+  z-index: 999;
+}
+
+.no-scroll {
+  overflow: hidden;
+}

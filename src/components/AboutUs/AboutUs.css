@@ -1,0 +1,25 @@
+.background{
+  background-image: url("../../assets/aboutus.jpg");
+  height: 750px;
+  
+}
+
+
+.textContainer {
+  padding-top: 300px;
+  margin-left: 10%;
+  margin-right: 10%;
+  flex-direction: column;
+
+}
+
+
+
+.descripcion {
+
+
+    text-align: justify;
+
+  }
+  
+
