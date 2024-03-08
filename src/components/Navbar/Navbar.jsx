@@ -1,24 +1,97 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faUser, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-// import "@fortawesome/fontawesome-svg-core/styles.css";
-// import {
-//   Drawer,
-//   Button,
-//   Typography,
-//   IconButton,
-//   List,
-//   ListItem,
-//   ListItemPrefix,
-//   ListItemSuffix,
-//   Chip,
-// } from "@material-tailwind/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import React from "react";
+import {
+  Drawer,
+  Button,
+  Typography,
+  IconButton,
+} from "@material-tailwind/react";
 
-// import { useMediaQuery } from "@material-ui/core";
+export function Navbar() {
+  const [open, setOpen] = React.useState(false);
 
-export const Navbar = () => {
-  const isMdUp = useMediaQuery("(min-width: 768px)"); // md y superior
+  const openDrawer = () => setOpen(true);
+  const closeDrawer = () => setOpen(false);
+
+  return (
+    <>
+      <Button className="bg-[color:var(--azul-fuerte)] transition-all duration-300 hover:bg-[color:var(--negro)]" onClick={openDrawer}><FontAwesomeIcon icon={faBars} /></Button>
+      <Drawer open={open} onClose={closeDrawer} className="p-4">
+        <div className="mb-6 flex items-center justify-between">
+          <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-5 w-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </IconButton>
+        </div>
+        <ul
+          className="lg:flex flex-col lg:flex-row sm:py-1 py-2 px-5 lg:py-10 gap-2 lg:gap-6 justify-end"
+        >
+          <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6000 512"><path d="M543.8 287.6c17 0 32-14 32-32.1c1-9-3-17-11-24L512 185V64c0-17.7-14.3-32-32-32H448c-17.7 0-32 14.3-32 32v36.7L309.5 7c-6-5-14-7-21-7s-15 1-22 8L10 231.5c-7 7-10 15-10 24c0 18 14 32.1 32 32.1h32v69.7c-.1 .9-.1 1.8-.1 2.8V472c0 22.1 17.9 40 40 40h16c1.2 0 2.4-.1 3.6-.2c1.5 .1 3 .2 4.5 .2H160h24c22.1 0 40-17.9 40-40V448 384c0-17.7 14.3-32 32-32h64c17.7 0 32 14.3 32 32v64 24c0 22.1 17.9 40 40 40h24 32.5c1.4 0 2.8 0 4.2-.1c1.1 .1 2.2 .1 3.3 .1h16c22.1 0 40-17.9 40-40V455.8c.3-2.6 .5-5.3 .5-8.1l-.7-160.2h32z" /></svg>
+            <Link
+              to="/home"
+              className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+            >
+              <FontAwesomeIcon icon="fa-solid fa-house" />
+              Home
+            </Link>
+          </li>
+          <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+            <Link
+              to="/about-us"
+              className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+            >
+              About Us
+            </Link>
+          </li>
+          <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+            <Link
+              to="/my-movies"
+              className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+            >
+              My Movies
+            </Link>
+          </li>
+          <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+            <Link
+              to="/movies"
+              className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+            >
+              Membership
+            </Link>
+          </li>
+          <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+            <Link
+              to="/account"
+              className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+            >
+            </Link>
+          </li>
+        </ul>
+      </Drawer>
+    </>
+  );
+}
+
+/* import { useMediaQuery } from "@material-ui/core"; */
+
+export const Navbar2 = () => {
+  // const isMdUp = useMediaQuery("(min-width: 768px)"); // md y superior
   const [isOpen, setIsOpen] = useState(true);
   const [open, setOpen] = useState(false);
 
@@ -38,77 +111,77 @@ export const Navbar = () => {
   return (
     <>
       <div className="above-all">
-        {isMdUp ? (
-          <nav className="-mb-40 flex flex-col lg:flex-row xl:flex-row 2xl:flex-row lg:justify-between xl:justify-between 2xl:justify-between lg:items-center xl:items-center 2xl:items-center">
-            <div className="flex items-center justify-between px-4 lg:px-16 py-4 lg:py-10 lg:mr-32">
-              <div className="text-2xl lg:text-3xl uppercase font-normal text-white galarama flex flex-end">
-                <Link
-                  to="/home"
-                  className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
-                >
-                  LUXYNEMA
-                </Link>
-              </div>
-              <button
-                className="lg:hidden bg-transparent text-white inline"
-                onClick={toggleMenu}
-                aria-label="Toggle Menu"
+        {/* {isMdUp ? ( */}
+        <nav className="-mb-40 flex flex-col lg:flex-row xl:flex-row 2xl:flex-row lg:justify-between xl:justify-between 2xl:justify-between lg:items-center xl:items-center 2xl:items-center">
+          <div className="flex items-center justify-between px-4 lg:px-16 py-4 lg:py-10 lg:mr-32">
+            <div className="text-2xl lg:text-3xl uppercase font-normal text-white galarama flex flex-end">
+              <Link
+                to="/home"
+                className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
               >
-                {isOpen ? (
-                  <FontAwesomeIcon icon={faTimes} />
-                ) : (
-                  <FontAwesomeIcon icon={faBars} />
-                )}
-              </button>
+                LUXYNEMA
+              </Link>
             </div>
-            <ul
-              className={`${isOpen ? "flex flex-col" : "hidden"
-                } lg:flex flex-col lg:flex-row sm:py-1 py-2 px-5 lg:py-10 gap-2 lg:gap-6 justify-end`}
+            <button
+              className="lg:hidden bg-transparent text-white inline"
+              onClick={toggleMenu}
+              aria-label="Toggle Menu"
             >
-              <li className="lg:pl-5 lg:-ml-10 text-xl lg:text-2xl uppercase text-white li-font">
-                <Link
-                  to="/home"
-                  className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
-                >
-                  Home
-                </Link>
-              </li>
+              {isOpen ? (
+                <FontAwesomeIcon icon={faTimes} />
+              ) : (
+                <FontAwesomeIcon icon={faBars} />
+              )}
+            </button>
+          </div>
+          <ul
+            className={`${isOpen ? "flex flex-col" : "hidden"
+              } lg:flex flex-col lg:flex-row sm:py-1 py-2 px-5 lg:py-10 gap-2 lg:gap-6 justify-end`}
+          >
+            <li className="lg:pl-5 lg:-ml-10 text-xl lg:text-2xl uppercase text-white li-font">
+              <Link
+                to="/home"
+                className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+              >
+                Home
+              </Link>
+            </li>
 
-              <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font">
-                <Link
-                  to="/about-us"
-                  className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font">
-                <Link
-                  to="/my-movies"
-                  className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
-                >
-                  My Movies
-                </Link>
-              </li>
-              <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font">
-                <Link
-                  to="/movies"
-                  className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
-                >
-                  Membresia
-                </Link>
-              </li>
-              <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font">
-                <Link
-                  to="/account"
-                  className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
-                >
-                  <FontAwesomeIcon icon={faUser} />
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        ) : (
+            <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font">
+              <Link
+                to="/about-us"
+                className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+              >
+                About Us
+              </Link>
+            </li>
+            <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font">
+              <Link
+                to="/my-movies"
+                className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+              >
+                My Movies
+              </Link>
+            </li>
+            <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font">
+              <Link
+                to="/movies"
+                className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+              >
+                Membresia
+              </Link>
+            </li>
+            <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font">
+              <Link
+                to="/account"
+                className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+              >
+                <FontAwesomeIcon icon={faUser} />
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        {/*         ) : (
           <div className="above-all">
             <a
               className="lg:hidden bg-transparent text-white inline"
@@ -122,9 +195,9 @@ export const Navbar = () => {
               )}
             </a>
           </div>
-        )}
+        )} */}
 
-        <Drawer open={open} onClose={closeDrawer}>
+        {/* <Drawer open={open} onClose={closeDrawer}>
           <div className="mb-2 flex items-center justify-between p-4">
             <Typography variant="h5" color="blue-gray">
               Settings
@@ -218,7 +291,7 @@ export const Navbar = () => {
           <Button size="sm" variant="outlined">
             Sign out
           </Button>
-        </Drawer>
+        </Drawer> */}
       </div>
     </>
   );

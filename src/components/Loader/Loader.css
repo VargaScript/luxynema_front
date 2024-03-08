@@ -20,20 +20,18 @@
 }
 
 .loader img {
-  content: url('../../assets/Luxynema_1.ico');
+  content: url('../../assets/Luxynema_1.svg');
+  color: "white"
 }
 
 @keyframes rotate {
   0%, 100% {
-    transform: translateX(-50px);
+    transform: translateX(-75px);
   }
-  25% {
-    transform: scale(0.3);
+  20% {
+    transform: scale(0.1);
   }
-  50% {
-    transform: translateX(50px);
-  }
-  75% {
-    transform: scale(1);
+  40% {
+    transform: translateX(75px);
   }
 }

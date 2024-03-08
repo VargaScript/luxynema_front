@@ -14,6 +14,7 @@ export const Home = () => {
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
+      navigate("/home")
     } else {
       navigate("/login");
     }
@@ -23,9 +24,9 @@ export const Home = () => {
     <>
       <div>
         <Navbar />
-        <Hero />
+        {/*        <Hero />
         <MostPopular />
-        <Footer />
+        <Footer /> */}
       </div>
     </>
   );

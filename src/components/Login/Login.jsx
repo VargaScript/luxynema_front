@@ -2,24 +2,29 @@ import { useState, useEffect } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Register } from "../Register/Register";
-import chevronRight from "../../assets/Flechas_login.png";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../credentials";
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+} from "@material-tailwind/react";
 
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    const user = auth.currentUser;
+  // useEffect(() => {
+  //   const user = auth.currentUser;
 
-    if (user) {
-      navigate("/home");
-    } else {
-      console.log("Usuario no iniciado");
-    }
-  }, [navigate]);
+  //   if (user) {
+  //     navigate("/home");
+  //   } else {
+  //     console.log("Usuario no iniciado");
+  //   }
+  // }, [navigate]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -29,7 +34,7 @@ export const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleRegister = () => {
+  const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -45,62 +50,62 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center background-image">
-      <div className="flex flex-col">
-        <div className="container flex flex-col-reverse md:flex-row items-center w-full md:w-1/2">
-          <div className="text-container md:w-full md:p-0 text-center mt-4">
-            <h1 className="text-2xl md:text-4xl text-white galarama">
-              LUXYNEMA
-            </h1>
-            <p className="text-lg text-white">THE THEATER FOR YOU</p>
-          </div>
-        </div>
-
-        <main className="w-full md:w-1/2 p-8 login-container">
-          <div className="text-container">
-            <h1 className="text-2xl text-white font-bold mb-2">SING IN!</h1>
-          </div>
-          <div className="w-72 mb-4">
-            <input
-              className="input-field w-full py-4 px-6 text-sm color-white lemon-milk"
+    <div className="text-center background-image">
+      <Card color="transparent" shadow={false} className="flex items-center">
+        <h1 className="text-2xl md:text-4xl text-white galarama">
+          LUXYNEMA
+        </h1>
+        <Typography variant="h4" color="white">
+          Sign In
+        </Typography>
+        <form className="mt-8 mb-2 w-full max-w-screen-sm mx-auto">
+          <div className="mb-1 flex flex-col gap-6">
+            <p color="white" className="-mb-5 galarama text-lg text-white">
+              Email
+            </p>
+            <Input
               id="email"
               type="email"
-              placeholder="Email Address"
-              required
+              size="lg"
+              placeholder="email@email.com"
+              className=" !border-t-white-200 focus:!border-white"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
               value={email}
               onChange={handleEmailChange}
             />
-          </div>
-          <div className="w-72 mb-4">
-            <input
-              className="input-field w-full py-4 px-6 text-sm color-white lemon-milk"
+            <p color="white" className="-mb-5 galarama text-lg text-white ">
+              Password
+            </p>
+            <Input
               id="password"
               type="password"
-              placeholder="Password"
-              required
+              size="lg"
+              placeholder="********"
+              className=" !border-t-white-200 focus:!border-white"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
               value={password}
               onChange={handlePasswordChange}
             />
           </div>
-          <button
-            className="w-full bg-white rounded-xl py-4 px-6 galarama cursor-pointer mb-4"
-            onClick={handleRegister}
+          <Button
+            className="mt-6 bg-[color:var(--azul-fuerte)] transition-all duration-300 hover:bg-[color:var(--negro)]"
+            fullWidth
+            onClick={handleLogin}
           >
-            <span className="button-text text-xl">Sign In</span>
-          </button>
-
-          <div className="flex">
-            <p className="text-xl text-white">Dont have an account?</p>
-            <Link
-              to="/register"
-              element={<Register />}
-              className="text-xl text-white pl-2 underline cursor-pointer hover:text-[color:var(--azul)] transition-all duration-1500"
-            >
-              Register
+            sign in
+          </Button>
+          <Typography color="white" className="mt-4 text-center font-normal">
+            Don't have an account?{" "}
+            <Link to="/register" element={<Register />} className="font-medium text-white transition-all duration-300 hover:text-[color:var(--azul)] underline">
+              Sign Up
             </Link>
-          </div>
-        </main>
-      </div>
+          </Typography>
+        </form>
+      </Card>
     </div>
   );
 };
