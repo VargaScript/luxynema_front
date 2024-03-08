@@ -1,20 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../../credentials";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Home.css";
 import { Hero } from "../Hero/Hero";
 import { MostPopular } from "../MostPopular/MostPopular";
-import { Navbar } from "../Navbar/Navbar";
+import { HomeNavbar } from "../Navbar/HomeNavbar";
 import { Footer } from "../Footer/Footer";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
 
 export const Home = () => {
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    const fakeAsyncLoad = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+      setLoader(false);
+    };
+
+    void fakeAsyncLoad();
+  }, []);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
-      navigate("/home")
+      navigate("/home");
     } else {
       navigate("/login");
     }
@@ -22,12 +34,16 @@ export const Home = () => {
 
   return (
     <>
-      <div>
-        <Navbar />
-        {/*        <Hero />
-        <MostPopular />
-        <Footer /> */}
-      </div>
+      {loader ? (
+        <Loader />
+      ) : (
+        <>
+          <HomeNavbar />
+          <Hero />
+          <MostPopular />
+          <Footer />
+        </>
+      )}
     </>
   );
 };

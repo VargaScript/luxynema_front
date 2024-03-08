@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../credentials";
 import "./Account.css";
-import { Navbar } from "../Navbar/Navbar";
+import { HomeNavbar } from "../Navbar/HomeNavbar";
 
 export const Account = () => {
   const [sesionIniciada, setSesionIniciada] = useState(false);
@@ -56,7 +56,7 @@ export const Account = () => {
 
   return (
     <>
-      <Navbar />
+      <HomeNavbar />
       <div className="background-image flex flex-col md:flex-row">
         <div className="w-full md:w-1/4 p-8 mt-40">
           <div className="user-container rounded-2xl text-center md:text-left">

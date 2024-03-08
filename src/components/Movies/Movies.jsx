@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import "./Movies.css";
-import { Navbar } from "../Navbar/Navbar";
+import { HomeNavbar } from "../Navbar/HomeNavbar";
 import { useSearchParams } from "react-router-dom";
 import { db } from "../../credentials";
 import { collection, getDoc, getDocs } from "firebase/firestore";
@@ -19,7 +19,7 @@ export const Movies = () => {
   const [searchParams] = useSearchParams();
   const [movieDetails, setMovieDetails] = useState(null);
 
-  const getMovieData = async(movie_id)=>{
+  const getMovieData = async (movie_id) => {
     const docRef = doc(db, "peliculas", movie_id);
     const docSnap = await getDoc(docRef);
     console.log(docSnap.data())
@@ -27,23 +27,23 @@ export const Movies = () => {
     setMovieDetails(infoMovie);
   }
 
-    useEffect(()=>{
-      getMovieData(selectedMovieIndex.toString()); //be aware here 
-    },[selectedMovieIndex]);
-  
-   
+  useEffect(() => {
+    getMovieData(selectedMovieIndex.toString()); //be aware here 
+  }, [selectedMovieIndex]);
+
+
   useEffect(() => {
     populateUI();
-    setSelectedMovieIndex(searchParams.get("id")||0);
+    setSelectedMovieIndex(searchParams.get("id") || 0);
 
   }, []);
 
-  
-   const setMovieData = (movieIndex, moviePrice, movieHour) => {
-     localStorage.setItem("selectedMovieIndex", movieIndex);
-     localStorage.setItem("selectedMoviePrice", moviePrice);
-     localStorage.setItem("selectedMovieHour", movieHour);
-   };
+
+  const setMovieData = (movieIndex, moviePrice, movieHour) => {
+    localStorage.setItem("selectedMovieIndex", movieIndex);
+    localStorage.setItem("selectedMoviePrice", moviePrice);
+    localStorage.setItem("selectedMovieHour", movieHour);
+  };
 
   const updateSelectedCount = () => {
     const selectedSeats = document.querySelectorAll(".row .seat.selected");
@@ -96,15 +96,15 @@ export const Movies = () => {
     }
   };
 
-  
- const movies = [
-   { name: "Arrival", price: 70, hour: "12pm" },
 
-    
- ];
+  const movies = [
+    { name: "Arrival", price: 70, hour: "12pm" },
+
+
+  ];
 
   const alertButton = () => {
-    
+
     alert(
       "Nos encontramos en mantenimiento!, esta accion esta disponible PROXIMAMENTE!"
     );
@@ -112,7 +112,7 @@ export const Movies = () => {
 
   return (
     <>
-    <Navbar />
+      <HomeNavbar />
       <div>
         <section className="flex justify-center    md:p-0  bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2  rounded-xl mt-40">
           <div className=" flex   p-0 justify-center flex-wrap">
