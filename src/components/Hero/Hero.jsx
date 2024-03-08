@@ -4,13 +4,14 @@ import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import "./Hero.css";
 import { db } from "../../credentials";
 import { collection, getDocs } from "firebase/firestore";
-import { Carousel } from "@material-tailwind/react";
+import { Carousel, IconButton } from "@material-tailwind/react";
 import YouTube from 'react-youtube';
 
 export function Hero() {
   const [peliculas, setPeliculas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentTrailer, setCurrentTrailer] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const fetchPeliculas = async () => {
@@ -20,6 +21,9 @@ export function Hero() {
         querySnapshot.forEach((doc) => {
           peliculasData.push({ id: doc.id, ...doc.data() });
         });
+
+        peliculasData.sort((a, b) => new Date(b.fecha_creacion) - new Date(a.fecha_creacion));
+
         setPeliculas(peliculasData);
         setLoading(false);
       } catch (error) {
@@ -27,15 +31,25 @@ export function Hero() {
         setLoading(false);
       }
     };
-
     fetchPeliculas();
   }, []);
 
+  useEffect(() => {
+    if (currentTrailer) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [currentTrailer]);
+
   const heroStyle = {
     backgroundImage: `
-    linear-gradient(rgba(17, 34, 54, 0.7), rgba(17, 34, 54 , 0.7)), 
-    url(${!loading && peliculas.length > 0 ? peliculas[0].img_url_hd : ""})
-  `,
+      linear-gradient(rgba(17, 34, 54, 0.7), rgba(17, 34, 54 , 0.7)), 
+      url(${!loading && peliculas.length > 0 ? peliculas[activeIndex].img_url_hd : ""})
+    `,
     backgroundSize: "cover",
     height: "100vh",
     position: "relative",
@@ -47,13 +61,13 @@ export function Hero() {
     left: "0",
     width: "100%",
     height: "20%",
-    background:
-      "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
+    background: "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
     pointerEvents: "none",
   };
 
   return (
     <Carousel
+      activeIndex={activeIndex}
       navigation={({ setActiveIndex, activeIndex, length }) => (
         <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
           {new Array(length).fill("").map((_, i) => (
@@ -61,15 +75,25 @@ export function Hero() {
               key={i}
               className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
                 }`}
-              onClick={() => setActiveIndex(i)}
+              onClick={() => {
+                setActiveIndex(i);
+              }}
             />
           ))}
         </div>
       )}
     >
-      <>
-        <div className="z-50 mt-11">
-          <div style={heroStyle} className="flex relative">
+      {peliculas.map((pelicula, index) => (
+        <div key={pelicula.id} className="z-50">
+          <div style={{
+            backgroundImage: `
+              linear-gradient(rgba(17, 34, 54, 0.7), rgba(17, 34, 54 , 0.7)), 
+              url(${!loading && pelicula.img_url_hd ? pelicula.img_url_hd : ""})
+            `,
+            backgroundSize: "cover",
+            height: "100vh",
+            position: "relative",
+          }} className="flex relative">
             <div className="flex items-center justify-center">
               <section>
                 {loading ? (
@@ -77,20 +101,20 @@ export function Hero() {
                 ) : (
                   <>
                     <h1 className="ml-4 sm:ml-8 md:ml-16 text-center lg:ml-24 text-6xl lg:text-8xl uppercase lemon-milk text-white font-thin">
-                      <a className="">{peliculas[0].titulo}</a>
+                      <a className="">{pelicula.titulo}</a>
                     </h1>
                     <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-12 ml-4 sm:ml-8 md:ml-16 lg:ml-24">
                       <p className="text-lg sm:text-xl lg:text-2xl text-white capitalize">
-                        {peliculas[0].generos}
+                        {pelicula.generos}
                       </p>
                       <div className="mt-4">
                         <div>
                           <a
-                            href={peliculas[0].trailer}
+                            href={pelicula.trailer}
                             className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000"
                             onClick={(e) => {
                               e.preventDefault();
-                              setCurrentTrailer(peliculas[0].trailer);
+                              setCurrentTrailer(peliculas[index].trailer);
                             }}
                           >
                             Watch Trailer
@@ -110,46 +134,53 @@ export function Hero() {
             </div>
             <div style={fadeOverlayStyle}></div>
           </div>
-        </div>{" "}
-        {currentTrailer && (
-          <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
-            <div className="absolute inset-0 bg-black bg-opacity-75"></div>
-            <div className="relative">
-              <button
-                className="text-white cursor-pointer text-[color:var(--azul-fuerte)] hover:text-[color:var(--azul)] duration-300 absolute top-4 right-4"
-                onClick={() => setCurrentTrailer('')}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
+        </div>
+      ))}
+      {currentTrailer && (
+        <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
+          <div className="absolute inset-0 bg-black bg-opacity-75"></div>
+          <div className="relative w-full max-w-screen-lg mx-4">
+            <div className="bg-[color:var(--azul)] p-8 rounded-md h-full">
+              <div className="flex flex-col md:flex-row w-full h-full relative">
+                <div className="w-full md:w-full mt-6 md:mt-6 relative">
+                  <YouTube
+                    videoId={extractVideoIdFromUrl(currentTrailer)}
+                    opts={{
+                      width: '100%',
+                      playerVars: {
+                        autoplay: 1,
+                      },
+                    }}
                   />
-                </svg>
-              </button>
-              <div className="w-full h-full">
-                <YouTube
-                  videoId={extractVideoIdFromUrl(currentTrailer)}
-                  opts={{
-                    width: '560',
-                    height: '315',
-                    playerVars: {
-                      autoplay: 1,
-                    },
-                  }}
-                />
+                </div>
+                <div className="absolute -top-5 right-0">
+                  <IconButton
+                    className="bg-[color:var(--azul-claro)] w-8 h-8"
+                    onClick={() => setCurrentTrailer('')}
+                  >
+                    <div className="text-[color:var(--azul-fuerte)] hover:text-[color:var(--azul)] duration-300">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        className="h-6 w-6"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </div>
+                  </IconButton>
+                </div>
               </div>
             </div>
           </div>
-        )}
-      </>
+        </div>
+      )}
     </Carousel>
   );
 }

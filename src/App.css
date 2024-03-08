@@ -32,11 +32,11 @@ body::-webkit-scrollbar-thumb:hover {
 
 @font-face {
   font-family: "galarama";
-  src: url("../public/fonts/garalama/GARALAMA.ttf") format("truetype");
+  src: url("../fonts/garalama/GARALAMA.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "lemon-milk";
-  src: url("../public/fonts/lemon_milk/LEMONMILK-Regular.otf")
+  src: url("../fonts/lemon_milk/LEMONMILK-Regular.otf")
     format("truetype");
 }

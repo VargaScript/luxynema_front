@@ -1,7 +1,3 @@
-/* import React, { useState, useEffect } from "react";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { Drawer, IconButton } from "@material-tailwind/react"; */
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,14 +24,14 @@ export function HomeNavbar() {
 
   const navList = (
     <ul className="lg:flex flex-col lg:flex-row sm:py-1 px-5 lg:py-3 gap-2 lg:gap-6 justify-end">
-      <li className="lg:pl-5 text-xl lg:text-xl uppercase text-[color:var(--azul-fuerte)] li-font"
+      <li className="lg:pl-5 text-xl lg:text-xl uppercase text-white li-font"
       >
         <Link to="/home"
           className="cursor-pointer hover:text-[color:var(--azul)] duration-300">
           Home
         </Link>
       </li>
-      <li className="text-[color:var(--azul-fuerte)] lg:pl-5 text-xl lg:text-xl uppercase li-font"
+      <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font"
       >
         <Link
           to="/about-us"
@@ -44,7 +40,7 @@ export function HomeNavbar() {
           About Us
         </Link>
       </li>
-      <li className="text-[color:var(--azul-fuerte)] lg:pl-5 text-xl lg:text-xl uppercase li-font">
+      <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
         <Link
           to="/my-movies"
           className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
@@ -52,7 +48,7 @@ export function HomeNavbar() {
           My Movies
         </Link>
       </li>
-      <li className="text-[color:var(--azul-fuerte)] lg:pl-5 text-xl lg:text-xl uppercase li-font">
+      <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
         <Link
           to="/membership"
           className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
@@ -60,7 +56,7 @@ export function HomeNavbar() {
           Membership
         </Link>
       </li>
-      <li className="text-[color:var(--azul-fuerte)] lg:pl-5 text-xl lg:text-2xl uppercase li-font">
+      <li className="text-white lg:pl-5 text-xl lg:text-2xl uppercase li-font">
         <Link
           to="/account"
           className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
@@ -71,8 +67,8 @@ export function HomeNavbar() {
     </ul>
   );
 
-  const mobileNavList = (<ul className="mt-5 lg:flex flex-col lg:flex-row lg:py-10 gap-2 lg:gap-6 justify-end">
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+  const mobileNavList = (<ul className="mt-5 lg:flex flex-col lg:flex-row lg:py-10 gap-2 lg:gap-6 justify-end bg-transparent">
+    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
       <IconButton variant="gradient" color="blue-gray" className="rounded-full">
         <i className="fa-solid fa-house"></i>
       </IconButton>
@@ -83,7 +79,7 @@ export function HomeNavbar() {
         Home
       </Link>
     </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
       <IconButton variant="gradient" color="blue-gray" className="rounded-full">
         <i className="fa-solid fa-credit-card"></i>
       </IconButton>
@@ -94,7 +90,7 @@ export function HomeNavbar() {
         About Us
       </Link>
     </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
       <IconButton variant="gradient" color="blue-gray" className="rounded-full">
         <i className="fa-solid fa-video"></i>
       </IconButton>
@@ -105,7 +101,7 @@ export function HomeNavbar() {
         My Movies
       </Link>
     </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
       <IconButton variant="gradient" color="blue-gray" className="rounded-full">
         <i className="fa-solid fa-credit-card"></i>
       </IconButton>
@@ -116,7 +112,7 @@ export function HomeNavbar() {
         Membership
       </Link>
     </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-[color:var(--azul-fuerte)] li-font mb-2">
+    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
       <IconButton variant="gradient" color="blue-gray" className="rounded-full">
         <i className="fa-solid fa-user"></i>
       </IconButton>
@@ -130,67 +126,68 @@ export function HomeNavbar() {
   </ul>)
 
   return (
-    <div className="max-h-[768px]">
-      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none lg:px-8 lg:py-4">
-        <div className="flex items-center justify-between">
-          <div className="text-2xl lg:text-3xl uppercase font-normal text-[color:var(--azul-fuerte)] galarama flex flex-end">
-            <Link
-              to="/home"
-              className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
-            >
-              LUXYNEMA
-            </Link>
+    <div className="above-all">
+      <div className="max-h-[768px]">
+        <Navbar color="transparent" className="border-none shadow-none fixed top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl lg:text-3xl uppercase font-normal text-white galarama flex flex-end">
+              <Link
+                to="/home"
+                className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
+              >
+                LUXYNEMA
+              </Link>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="mr-4 hidden lg:block">{navList}</div>
+              <IconButton
+                variant="text"
+                className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+                ripple={false}
+                onClick={() => setOpenNav(!openNav)}
+              >
+                {openNav ? (
+                  <div className="text-white hover:text-[color:var(--azul)] duration-300">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      className="h-6 w-6"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </div>
+                ) : (
+                  <div className="text-white hover:text-[color:var(--azul)] duration-300">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4 6h16M4 12h16M4 18h16"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </IconButton>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="mr-4 hidden lg:block">{navList}</div>
-            <IconButton
-              variant="text"
-              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-              ripple={false}
-              onClick={() => setOpenNav(!openNav)}
-            >
-              {openNav ? (
-                <div className="text-[color:var(--azul-fuerte)] hover:text-[color:var(--azul)] duration-300">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    className="h-6 w-6"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </div>
-              ) : (
-                <div className="text-[color:var(--azul-fuerte)] hover:text-[color:var(--azul)] duration-300">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                </div>
-              )}
-            </IconButton>
-          </div>
-        </div>
-        <Collapse open={openNav}>
-          {mobileNavList}
-        </Collapse>
-      </Navbar>
+          <Collapse open={openNav}>
+            {mobileNavList}
+          </Collapse>
+        </Navbar>
+      </div>
     </div>
   );
 }
-
