@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { auth } from "../../credentials";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Home.css";
 import { Hero } from "../Hero/Hero";
 import { MostPopular } from "../MostPopular/MostPopular";
 import { HomeNavbar } from "../Navbar/HomeNavbar";
 import { Footer } from "../Footer/Footer";
 import { useNavigate } from "react-router-dom";
-import Loader from "../../components/Loader/Loader";
+import { Spinner } from "@material-tailwind/react";
 
 export const Home = () => {
   const [loader, setLoader] = useState(true);
@@ -35,7 +34,9 @@ export const Home = () => {
   return (
     <>
       {loader ? (
-        <Loader />
+        <div className="flex items-center justify-center h-screen">
+          <Spinner className="h-12 w-12" color="indigo" />
+        </div>
       ) : (
         <>
           <HomeNavbar />

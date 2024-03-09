@@ -1,10 +1,9 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import {
   Navbar,
-  MobileNav,
   Typography,
   Button,
   IconButton,
@@ -13,9 +12,9 @@ import {
 } from "@material-tailwind/react";
 
 export function HomeNavbar() {
-  const [openNav, setOpenNav] = React.useState(false);
+  const [openNav, setOpenNav] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false),
@@ -128,7 +127,7 @@ export function HomeNavbar() {
   return (
     <div className="above-all">
       <div className="max-h-[768px]">
-        <Navbar color="transparent" className="border-none shadow-none fixed top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+        <Navbar color="transparent" className="border-none shadow-none absolute top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
           <div className="flex items-center justify-between">
             <div className="text-2xl lg:text-3xl uppercase font-normal text-white galarama flex flex-end">
               <Link

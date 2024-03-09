@@ -16,15 +16,15 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // useEffect(() => {
-  //   const user = auth.currentUser;
+  useEffect(() => {
+    const user = auth.currentUser;
 
-  //   if (user) {
-  //     navigate("/home");
-  //   } else {
-  //     console.log("Usuario no iniciado");
-  //   }
-  // }, [navigate]);
+    if (user) {
+      navigate("/home");
+    } else {
+      console.log("Usuario no iniciado");
+    }
+  }, [navigate]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -99,7 +99,7 @@ export const Login = () => {
             sign in
           </Button>
           <Typography color="white" className="mt-4 text-center font-normal">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link to="/register" element={<Register />} className="font-medium text-white transition-all duration-300 hover:text-[color:var(--azul)] underline">
               Sign Up
             </Link>

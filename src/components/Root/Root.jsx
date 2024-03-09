@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./Root.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
 import { Typography, Button } from "@material-tailwind/react";
+import { auth } from "../../credentials";
 
 export const Root = () => {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const user = auth.currentUser;
+  useEffect(() => {
+    const user = auth.currentUser;
 
-  //   if (user) {
-  //     navigate("/home");
-  //   } else {
-  //     console.log("Usuario no iniciado");
-  //   }
-  // }, [navigate]);
+    if (user) {
+      navigate("/home");
+    } else {
+      console.log("Usuario no iniciado");
+    }
+  }, [navigate]);
 
   return (
     <div className="background-image flex items-center justify-center min-h-screen">

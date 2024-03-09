@@ -140,7 +140,7 @@ export function Hero() {
         <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
           <div className="absolute inset-0 bg-black bg-opacity-75"></div>
           <div className="relative w-full max-w-screen-lg mx-4">
-            <div className="bg-[color:var(--azul)] p-8 rounded-md h-full">
+            <div className="bg-white p-8 rounded-md h-full">
               <div className="flex flex-col md:flex-row w-full h-full relative">
                 <div className="w-full md:w-full mt-6 md:mt-6 relative">
                   <YouTube
