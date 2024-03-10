@@ -21,8 +21,6 @@ export const Login = () => {
 
     if (user) {
       navigate("/home");
-    } else {
-      console.log("Usuario no iniciado");
     }
   }, [navigate]);
 

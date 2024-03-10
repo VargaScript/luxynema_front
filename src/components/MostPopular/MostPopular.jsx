@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { db } from "../../credentials";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, limit } from "firebase/firestore";
 // import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import "./MostPopular.css"; // Asegúrate de importar tu hoja de estilos
 import { Link } from "react-router-dom";
@@ -126,7 +126,7 @@ export const MostPopular = () => {
                     </div>
                     <div className="flex flex-end mt-16">
                       <button className="hover:bg-[var(--azul-fuerte)] transition duration-500 mt-4 bg-[var(--azul)] text-white px-4 py-2 text-black rounded-md bg-black transition-colors duration-300">
-                        <Link to={`/movies?id=${selectedMovie.id}`}>
+                        <Link to={`/mymovie?id=${selectedMovie.id}`}>
                           Agendar boletos
                         </Link>{" "}
                       </button>

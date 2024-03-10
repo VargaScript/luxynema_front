@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
-import { Navbar } from "../Navbar/Navbar";
-import "./Movies.css";
+import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
+import "./Schedule.css";
 
 import { useSearchParams } from "react-router-dom";
 import { db } from "../../credentials";
@@ -16,8 +16,8 @@ import {
 
 
 
-export const Movies = () => {
-  
+export const Schedule = () => {
+
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [ticketPrice, setTicketPrice] = useState(70);
   const [count, setCount] = useState(0);
@@ -142,46 +142,46 @@ export const Movies = () => {
       (asiento) => asiento.id === seatId
     );
     const updatedAsientos = [...asientos];
-        // Si el asiento está seleccionado, lo deselecciona; de lo contrario, lo selecciona
-        updatedAsientos[selectedSeatIndex].selected =
-        !updatedAsientos[selectedSeatIndex].selected;
-        setAsientos(updatedAsientos);
-        const selectedSeats = updatedAsientos.filter((asiento) => asiento.selected);
-        const selectedSeatIds = selectedSeats.map((asiento) => asiento.id);
-        console.log("Asientos seleccionados:", selectedSeatIds);
-        updateSelectedCount();
-      };
-      const movies = [{ name: "Arrival", price: 70, hour: "12pm" }];
+    // Si el asiento está seleccionado, lo deselecciona; de lo contrario, lo selecciona
+    updatedAsientos[selectedSeatIndex].selected =
+      !updatedAsientos[selectedSeatIndex].selected;
+    setAsientos(updatedAsientos);
+    const selectedSeats = updatedAsientos.filter((asiento) => asiento.selected);
+    const selectedSeatIds = selectedSeats.map((asiento) => asiento.id);
+    console.log("Asientos seleccionados:", selectedSeatIds);
+    updateSelectedCount();
+  };
+  const movies = [{ name: "Arrival", price: 70, hour: "12pm" }];
 
-      const handleSend = async () => {
-        // Verifica si hay asientos seleccionados
-        const selectedSeats = asientos.filter((seat) => seat.selected);
-    
-        if (selectedSeats.length > 0) {
-          try {
-            const batch = writeBatch(db);
-            const idS = parentDocumentId; // Utilizar el ID superior
-    
-            // Actualiza el estado de los asientos seleccionados en la base de datos
-            selectedSeats.forEach((seat) => {
-              const seatRef = doc(db, "asientos", idS, "Sala1", seat.id);
-              batch.update(seatRef, { estado: "ocupado" });
-            });
-    
-            // Ejecuta la transacción en lote
-            await batch.commit();
-    
-            alert("Asientos agregados correctamente.");
-          } catch (error) {
-            console.error("Error al actualizar los asientos: ", error);
-            alert(
-              "Hubo un error al agregar los asientos. Por favor, inténtalo de nuevo."
-            );
-          }
-        } else {
-          alert("No hay asientos seleccionados para agregar.");
-        }
+  const handleSend = async () => {
+    // Verifica si hay asientos seleccionados
+    const selectedSeats = asientos.filter((seat) => seat.selected);
+
+    if (selectedSeats.length > 0) {
+      try {
+        const batch = writeBatch(db);
+        const idS = parentDocumentId; // Utilizar el ID superior
+
+        // Actualiza el estado de los asientos seleccionados en la base de datos
+        selectedSeats.forEach((seat) => {
+          const seatRef = doc(db, "asientos", idS, "Sala1", seat.id);
+          batch.update(seatRef, { estado: "ocupado" });
+        });
+
+        // Ejecuta la transacción en lote
+        await batch.commit();
+
+        alert("Asientos agregados correctamente.");
+      } catch (error) {
+        console.error("Error al actualizar los asientos: ", error);
+        alert(
+          "Hubo un error al agregar los asientos. Por favor, inténtalo de nuevo."
+        );
       }
+    } else {
+      alert("No hay asientos seleccionados para agregar.");
+    }
+  }
 
 
 
@@ -189,7 +189,7 @@ export const Movies = () => {
 
   return (
     <>
-      <Navbar />
+      <HomeNavbar />
       <div>
         <section className="flex justify-center    md:p-0  bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2  rounded-xl mt-40">
           <div className=" flex   p-0 justify-center flex-wrap">
@@ -200,7 +200,7 @@ export const Movies = () => {
                 alt={movieDetails?.titulo}
 
               />
-                <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center mt-5">
+              <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center mt-5">
                 {movieDetails?.titulo}
               </h2>
             </div>
@@ -222,9 +222,9 @@ export const Movies = () => {
               <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
               <div className="flex flex-wrap">
                 <div className="body p-6">
-                <h1>Select your places</h1>
+                  <h1>Select your places</h1>
                   <div className="movie-container">
-                  <label>Movie </label>
+                    <label>Movie </label>
                     <select
                       id="movie"
                       onChange={handleMovieChange}
@@ -252,19 +252,19 @@ export const Movies = () => {
                       <small>Occupied</small>
                     </li>
                   </ul>
-                  
+
 
                   <div className="container">
                     <div className="screen"></div>
                     <div className="row">
-                    {asientos.map((asiento) => (
+                      {asientos.map((asiento) => (
                         <div
                           className={
                             asiento.estado === "ocupado"
                               ? "seat occupied"
                               : asiento.selected
-                              ? "seat selected"
-                              : "seat"
+                                ? "seat selected"
+                                : "seat"
                           }
                           key={asiento.id}
                           data-seat-id={asiento.id} // Añade el atributo data-seat-id

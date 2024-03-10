@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../credentials";
 import "./Account.css";
-import { HomeNavbar } from "../Navbar/HomeNavbar";
+import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 
 export const Account = () => {
   const [sesionIniciada, setSesionIniciada] = useState(false);

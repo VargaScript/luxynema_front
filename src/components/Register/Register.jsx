@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Login } from "../Login/Login"
@@ -23,6 +23,14 @@ export const Register = () => {
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = auth.currentUser;
+
+    if (user) {
+      navigate("/home");
+    }
+  }, [navigate]);
 
   const isFormValid = isValidEmail && isValidPassword;
 

@@ -4,15 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import {
   Navbar,
-  Typography,
-  Button,
   IconButton,
-  Card,
   Collapse
 } from "@material-tailwind/react";
 
 export function HomeNavbar() {
   const [openNav, setOpenNav] = useState(false);
+  const [navbarBackground, setNavbarBackground] = useState("transparent");
 
   useEffect(() => {
     window.addEventListener(
@@ -22,7 +20,7 @@ export function HomeNavbar() {
   }, []);
 
   const navList = (
-    <ul className="lg:flex flex-col lg:flex-row sm:py-1 px-5 lg:py-3 gap-2 lg:gap-6 justify-end">
+    <ul className="lg:flex flex-col lg:flex-row sm:py-1 lg:py-3 gap-2 lg:gap-6 justify-end">
       <li className="lg:pl-5 text-xl lg:text-xl uppercase text-white li-font"
       >
         <Link to="/home"
@@ -41,7 +39,7 @@ export function HomeNavbar() {
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
         <Link
-          to="/my-movies"
+          to="/movies"
           className="cursor-pointer hover:text-[color:var(--azul)] duration-300"
         >
           My Movies
@@ -68,58 +66,68 @@ export function HomeNavbar() {
 
   const mobileNavList = (<ul className="mt-5 lg:flex flex-col lg:flex-row lg:py-10 gap-2 lg:gap-6 justify-end bg-transparent">
     <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-        <i className="fa-solid fa-house"></i>
-      </IconButton>
       <Link
         to="/home"
-        className="cursor-pointer hover:text-[color:var(--azul)] duration-300 ml-3"
+        className="flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
       >
-        Home
+        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+          <i className="fa-solid fa-house"></i>
+        </IconButton>
+        <p className="ml-3">
+          Home
+        </p>
       </Link>
     </li>
     <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-        <i className="fa-solid fa-credit-card"></i>
-      </IconButton>
       <Link
         to="/about-us"
-        className="cursor-pointer hover:text-[color:var(--azul)] duration-300 ml-3"
+        className="flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
       >
-        About Us
+        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+          <i className="fa-solid fa-building"></i>
+        </IconButton>
+        <p className="ml-3">
+          About Us
+        </p>
       </Link>
     </li>
     <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-        <i className="fa-solid fa-video"></i>
-      </IconButton>
-      <Link
-        to="/my-movies"
-        className="cursor-pointer hover:text-[color:var(--azul)] duration-300 ml-3"
-      >
-        My Movies
-      </Link>
-    </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-        <i className="fa-solid fa-credit-card"></i>
-      </IconButton>
       <Link
         to="/movies"
-        className="cursor-pointer hover:text-[color:var(--azul)] duration-300 ml-3"
+        className="flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
       >
-        Membership
+        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+          <i className="fa-solid fa-video"></i>
+        </IconButton>
+        <p className="ml-3">
+          All Movies
+        </p>
       </Link>
     </li>
     <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-        <i className="fa-solid fa-user"></i>
-      </IconButton>
+      <Link
+        to="/membership"
+        className="flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+      >
+        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+          <i className="fa-solid fa-credit-card"></i>
+        </IconButton>
+        <p className="ml-3">
+          Membership
+        </p>
+      </Link>
+    </li>
+    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
       <Link
         to="/account"
-        className="cursor-pointer hover:text-[color:var(--azul)] duration-300 ml-3"
+        className="flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
       >
-        Account
+        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+          <i className="fa-solid fa-user"></i>
+        </IconButton>
+        <p className="ml-3">
+          Account
+        </p>
       </Link>
     </li>
   </ul>)
@@ -127,7 +135,10 @@ export function HomeNavbar() {
   return (
     <div className="above-all">
       <div className="max-h-[768px]">
-        <Navbar color="transparent" className="border-none shadow-none absolute top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+        <Navbar
+          color={navbarBackground}
+          className="border-none shadow-none absolute top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 transition-all duration-300"
+        >
           <div className="flex items-center justify-between">
             <div className="text-2xl lg:text-3xl uppercase font-normal text-white galarama flex flex-end">
               <Link

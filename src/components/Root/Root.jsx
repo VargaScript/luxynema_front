@@ -14,8 +14,6 @@ export const Root = () => {
 
     if (user) {
       navigate("/home");
-    } else {
-      console.log("Usuario no iniciado");
     }
   }, [navigate]);
 
@@ -27,7 +25,7 @@ export const Root = () => {
         </h1>
         <ul className="mt-4 md:mt-8">
           <div className="mt-28 relative">
-            <h1 className="galarama text-white font-normal text-3xl mb-4">
+            <h1 className="galarama text-white font-normal text-2xl mb-4">
               Create an account and have access to the latest movies
             </h1>
             <li className="flex justify-center">

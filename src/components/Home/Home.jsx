@@ -1,50 +1,36 @@
 import { useState, useEffect } from "react";
-import { auth } from "../../credentials";
 import "./Home.css";
 import { Hero } from "../Hero/Hero";
 import { MostPopular } from "../MostPopular/MostPopular";
-import { HomeNavbar } from "../Navbar/HomeNavbar";
-import { Footer } from "../Footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import { Spinner } from "@material-tailwind/react";
 
 export const Home = () => {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    const fakeAsyncLoad = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+    const asyncLoader = async () => {
+      setLoader(true);
+
+      await new Promise(resolve => setTimeout(resolve, 1200));
+
       setLoader(false);
     };
 
-    void fakeAsyncLoad();
+    asyncLoader();
   }, []);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      navigate("/home");
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
-
   return (
-    <>
-      {loader ? (
-        <div className="flex items-center justify-center h-screen">
-          <Spinner className="h-12 w-12" color="indigo" />
+    <div className="relative h-screen">
+      {loader && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <Spinner className="h-12 w-12 mb-4" color="indigo" />
         </div>
-      ) : (
-        <>
-          <HomeNavbar />
-          <Hero />
-          <MostPopular />
-          <Footer />
-        </>
       )}
-    </>
+      <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
+        <Hero />
+        <MostPopular />
+      </div>
+    </div>
   );
 };

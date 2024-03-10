@@ -1,12 +1,11 @@
-import React from "react";
 import "./AboutUs.css";
-import { HomeNavbar } from "../Navbar/HomeNavbar";
+import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 
 export const AboutUs = () => {
   return (
     <>
       <HomeNavbar />
-      <div className="background  bg-no-repeat bg-cover">
+      <div className="background bg-no-repeat bg-cover">
         <div>
           <div className="textContainer">
             <div className='sm:text-6xl text-3xl pt-1 sm:pt-36 uppercase font-normal text-white galarama '>Luxynema</div>
