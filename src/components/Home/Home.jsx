@@ -28,6 +28,7 @@ export const Home = () => {
         </div>
       )}
       <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
+        <HomeNavbar />
         <Hero />
         <MostPopular />
       </div>
