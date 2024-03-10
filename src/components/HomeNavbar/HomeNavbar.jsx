@@ -9,11 +9,11 @@ import {
   Collapse
 } from "@material-tailwind/react";
 
-/* Corregir la navbar en móvil */
+/* Corregir la navbar en móvil para que se posicione encima del componente Hero */
 
 export function HomeNavbar() {
   const [openNav, setOpenNav] = useState(false);
-  const [navbarBackground, setNavbarBackground] = useState("transparent");
+  const [navbarBackground] = useState("transparent");
 
   useEffect(() => {
     window.addEventListener(

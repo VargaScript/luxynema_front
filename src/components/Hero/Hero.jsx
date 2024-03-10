@@ -7,12 +7,14 @@ import { collection, getDocs } from "firebase/firestore";
 import { Carousel, IconButton } from "@material-tailwind/react";
 import YouTube from 'react-youtube';
 
+/* Arreglar la sección de ver trailer para que se vea ccentrada en movil y en web */
+
 export function Hero() {
   const [peliculas, setPeliculas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentTrailer, setCurrentTrailer] = useState('');
   const [currentName, setCurrentName] = useState('');
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex] = useState(0);
 
   useEffect(() => {
     const fetchPeliculas = async () => {
@@ -25,7 +27,7 @@ export function Hero() {
 
         peliculasData.sort((a, b) => new Date(b.fecha_creacion) - new Date(a.fecha_creacion));
 
-        setPeliculas(peliculasData);
+        setPeliculas(peliculasData.slice(0, 4));
         setLoading(false);
       } catch (error) {
         console.error("Error getting peliculas: ", error);
@@ -78,7 +80,7 @@ export function Hero() {
               height: "100vh",
               position: "relative",
             }} className="flex relative md:justify-center">
-              <div className="flex items-center justify-center inset-x-0 top-1/2 z-50 mt-32 absolute">
+              <div className="flex items-center justify-center inset-x-0 top-1/2 z-50 mt-20 absolute">
                 <section>
                   {loading ? (
                     <h1>Hubo un problema, intenta más tarde</h1>

@@ -6,11 +6,3 @@
 .galarama {
   font-family: "galarama";
 }
-
-.below-all{
-  z-index: -1;
-}
-
-.above-all {
-  z-index: 1;
-}
