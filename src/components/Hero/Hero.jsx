@@ -7,14 +7,16 @@ import { collection, getDocs } from "firebase/firestore";
 import { Carousel, IconButton } from "@material-tailwind/react";
 import YouTube from 'react-youtube';
 
-/* Arreglar la sección de ver trailer para que se vea ccentrada en movil y en web */
+/* Arreglar la sección de ver trailer para que se vea centrada en movil y en web */
+/* Arreglar el modal en el que se muestra el trailer para que se meuestre en el índice en que se hizo clic para ver */
+/* Arreglar el modal en el que se muestra el trailer para que no se mueva el carrusel una vez se haya esté activo un trailer o modal */
 
 export function Hero() {
   const [peliculas, setPeliculas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentTrailer, setCurrentTrailer] = useState('');
   const [currentName, setCurrentName] = useState('');
-  const [activeIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const fetchPeliculas = async () => {

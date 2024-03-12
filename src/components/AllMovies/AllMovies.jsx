@@ -1,17 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
+import { useState, useEffect } from "react";
 import { db } from "../../credentials";
 import { collection, getDocs } from "firebase/firestore";
-import { Link } from "react-router-dom";
 import "./AllMovies.css";
+import { Link } from "react-router-dom";
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Typography,
+    Button,
+    Spinner
+} from "@material-tailwind/react";
+import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
+import { Footer } from "../Footer/Footer";
+
+/* Arreglar que cuando se haga clic y aparezca una card de película no se pueda hacer scroll y cuando se cierre la card no se regrese al principio de la página */
 
 export const AllMovies = () => {
     const [peliculas, setPeliculas] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [isExtendedVisible, setIsExtendedVisible] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [scrollDisabled, setScrollDisabled] = useState(false);
+    const [loader, setLoader] = useState(true);
+
+    useEffect(() => {
+        const asyncLoader = async () => {
+            setLoader(true);
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            setLoader(false);
+        };
+
+        asyncLoader();
+    }, []);
 
     useEffect(() => {
         const fetchPeliculas = async () => {
@@ -22,10 +46,8 @@ export const AllMovies = () => {
                     peliculasData.push({ id: doc.id, ...doc.data() });
                 });
                 setPeliculas(peliculasData);
-                setLoading(false);
             } catch (error) {
                 console.error("Error getting peliculas: ", error);
-                setLoading(false);
             }
         };
 
@@ -33,20 +55,35 @@ export const AllMovies = () => {
     }, []);
 
     useEffect(() => {
-        const closeDetailedView = () => {
-            setSelectedMovie(null);
+        let scrollPosition = 0;
+
+        const toggleScrollClass = () => {
+            if (scrollDisabled) {
+                scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+                window.addEventListener('scroll', disableScroll);
+            } else {
+                window.removeEventListener('scroll', disableScroll);
+                window.scrollTo(0, scrollPosition);
+            }
         };
 
-        setScrollDisabled(selectedMovie !== null);
+        const disableScroll = (e) => {
+            e.preventDefault();
+            window.scrollTo(0, scrollPosition);
+        };
+
+        toggleScrollClass();
 
         return () => {
-            setScrollDisabled(false);
+            window.removeEventListener('scroll', disableScroll);
         };
-    }, [selectedMovie]);
+    }, [scrollDisabled]);
 
     const handleEventClick = (event) => {
         setSelectedMovie(event);
         setIsAnimating(true);
+        setScrollDisabled(true);
 
         setTimeout(() => {
             setIsExtendedVisible(true);
@@ -56,23 +93,27 @@ export const AllMovies = () => {
 
     const closeDetailedView = () => {
         setSelectedMovie(null);
+        setScrollDisabled(false);
     };
+
     return (
         <>
-            <HomeNavbar />
-            <div className="div-container">
+            {loader && (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Spinner className="h-12 w-12 mb-4" color="indigo" />
+                </div>
+            )}
+            <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
+                <HomeNavbar />
                 <div>
-                    <section className="bg-white mx-10 md:mx-10 rounded-lg mt-16 md:mt-10 z-0">
+                    <section className="bg-white mx-10 md:mx-10 rounded-lg z-0 above-all mt-32 border">
                         <div className="px-4 md:px-20 py-4 md:py-10">
                             <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
                                 All Movies
                             </h2>
-
-                            <h6 className="text-center md:text-left">
-                                Schedule your tickets
-                            </h6>
+                            <h6 className="text-center md:text-left">Schedule your tickets</h6>
                             <hr className="bg-[color:var(--azul-fuerte)] lg:w-72 w-40 md:w-56 h-2 mb-8 mx-auto md:mx-0 mt-4 md:mt-5"></hr>
-                            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 gap-y-6 mt-4 md:mt-5">
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 gap-y-10 mt-4 md:mt-5">
                                 {peliculas.map((pelicula) => (
                                     <li
                                         className="grid"
@@ -95,64 +136,68 @@ export const AllMovies = () => {
                                     </li>
                                 ))}
                             </ul>
-
                             {selectedMovie && (
-                                <div
-                                    className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 ${isExtendedVisible ? "opacity-100" : "opacity-0"
-                                        } ${isAnimating ? "transition-opacity" : ""}`}
-                                >
-                                    <div className="bg-white p-8 rounded-md w-3/5 h-fit flex">
-                                        <div className="flex flex-col mr-10 ">
-                                            <img
-                                                className="mt-5 h-10 w-10 sm:w-96 sm:h-64 md:h-72 md:w-96 lg:h-72 lg:w-96 xl:w-96 xl:h-96 object-cover rounded-md"
-                                                src={selectedMovie.img_url}
-                                                alt={selectedMovie.titulo}
-                                            />
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <p className="mt-4 text-gray-700 mb-4">
-                                                <span className="font-bold text-3xl">
-                                                    {selectedMovie.titulo}
-                                                </span>
-                                            </p>
-                                            <p className="mt-2 text-gray-700">
-                                                {selectedMovie.generos ? selectedMovie.generos : "N/A"}
-                                            </p>
-                                            <p className="mt-2 font-bold text-gray-700">
-                                                {selectedMovie.horario}
-                                            </p>
-                                            <p className="mt-2 font-bold text-gray-700">
-                                                {selectedMovie.duracion} min
-                                            </p>
-                                            <div className="mt-2 mt-12 text-gray-700">
-                                                {selectedMovie.sinopsis
-                                                    ? selectedMovie.sinopsis
-                                                    : "N/A"}
-                                            </div>
-                                            <div className="flex flex-end mt-16">
-                                                <button className="hover:bg-[var(--azul-fuerte)] transition duration-500 mt-4 bg-[var(--azul)] text-white px-4 py-2 text-black rounded-md bg-black transition-colors duration-300">
-                                                    <Link to={`/mymovie?id=${selectedMovie.id}`}>
-                                                        Agendar boletos
+                                <>
+                                    <div className="absolute inset-0 bg-black bg-opacity-75"></div>
+                                    <div
+                                        className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 ${isExtendedVisible ? "opacity-100" : "opacity-0"
+                                            } ${isAnimating ? "transition-opacity" : ""}`}
+                                        onClick={closeDetailedView}
+                                    >
+                                        <Card className="mt-6 w-96">
+                                            <CardHeader color="blue-gray" className="relative h-56">
+                                                <img
+                                                    className="mx-auto my-auto w-full h-full object-cover rounded-md"
+                                                    src={selectedMovie.img_url}
+                                                    alt={selectedMovie.titulo}
+                                                />
+                                            </CardHeader>
+                                            <CardBody>
+                                                <Typography variant="h5" color="blue-gray" className="mb-2">
+                                                    <p className="text-gray-700 mb-4">
+                                                        <span className="font-bold text-3xl">
+                                                            {selectedMovie.titulo}
+                                                        </span>
+                                                    </p>
+                                                    <p className="text-gray-700">
+                                                        {selectedMovie.generos ? selectedMovie.generos : "N/A"}
+                                                    </p>
+                                                    <p className="font-bold text-gray-700">
+                                                        {selectedMovie.duracion} min
+                                                    </p>
+                                                </Typography>
+                                                <Typography>
+                                                    <div className="mt-2 text-gray-700 whitespace-normal">
+                                                        {selectedMovie.sinopsis ? selectedMovie.sinopsis : "N/A"}
+                                                    </div>
+                                                </Typography>
+                                            </CardBody>
+                                            <CardFooter className="pt-0">
+                                                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                                                    <Link to={`/schedule?id=${selectedMovie.id}`} className="rounded-md text-center flex-1 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black">
+                                                        <Button className="bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black shadow-none transition duration-500">
+                                                            Agendar boletos
+                                                        </Button>
                                                     </Link>
-                                                </button>
-
-                                                <button
-                                                    className="hover:bg-[var(--azul-claro)] transition duration-500 ml-2 mt-4 bg-[var(--navy-pink)] text-black px-4 py-2 rounded-md hover:bg-[var(--navy-pink)-dark] transition-colors duration-300"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        closeDetailedView();
-                                                    }}
-                                                >
-                                                    <span className="">Cerrar</span>
-                                                </button>
-                                            </div>
-                                        </div>
+                                                    <Button className="flex-1 transition duration-500 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black"><p
+                                                        className="rounded-md"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            closeDetailedView();
+                                                        }}
+                                                    >
+                                                        Cerrar
+                                                    </p></Button>
+                                                </div>
+                                            </CardFooter>
+                                        </Card>
                                     </div>
-                                </div>
+                                </>
                             )}
                         </div>
-                    </section>
-                </div>{" "}
+                    </section >
+                </div >
+                <Footer />
             </div>
         </>
     );

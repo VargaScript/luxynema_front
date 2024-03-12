@@ -3,6 +3,7 @@ import "./Home.css";
 import { Hero } from "../Hero/Hero";
 import { MostPopular } from "../MostPopular/MostPopular";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
+import { Footer } from "../Footer/Footer";
 import { Spinner } from "@material-tailwind/react";
 
 export const Home = () => {
@@ -12,7 +13,7 @@ export const Home = () => {
     const asyncLoader = async () => {
       setLoader(true);
 
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       setLoader(false);
     };
@@ -31,6 +32,7 @@ export const Home = () => {
         <HomeNavbar />
         <Hero />
         <MostPopular />
+        <Footer />
       </div>
     </div>
   );

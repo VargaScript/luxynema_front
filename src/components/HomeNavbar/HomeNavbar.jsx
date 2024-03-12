@@ -42,10 +42,10 @@ export function HomeNavbar() {
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
         <Link
-          to="/movies"
+          to="/all-movies"
           className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
         >
-          My Movies
+          All Movies
         </Link>
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
@@ -96,7 +96,7 @@ export function HomeNavbar() {
     </li>
     <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
       <Link
-        to="/movies"
+        to="/all-movies"
         className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
       >
         <IconButton variant="gradient" color="blue-gray" className="rounded-full">

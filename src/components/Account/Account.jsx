@@ -1,16 +1,55 @@
-import React, { useEffect, useState } from "react";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faUser } from "@fortawesome/free-solid-svg-icons";
-
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../credentials";
 import "./Account.css";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  Spinner,
+  List,
+  ListItem,
+  ListItemPrefix,
+  Avatar,
+  Button
+} from "@material-tailwind/react";
 
 export const Account = () => {
   const [sesionIniciada, setSesionIniciada] = useState(false);
   const [usuario, setUsuario] = useState(null);
+  const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const asyncLoader = async () => {
+      setLoader(true);
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      setLoader(false);
+    };
+
+    asyncLoader();
+  }, []);
+
+  useEffect(() => {
+    const verificarSesion = () => {
+      const usuarioActual = auth.currentUser;
+      if (usuarioActual) {
+        setSesionIniciada(true);
+        setUsuario({
+          correo: usuarioActual.email,
+          nombre: usuarioActual.displayName || "Nombre de usuario predeterminado",
+        });
+      } else {
+        setSesionIniciada(false);
+        setUsuario(null);
+      }
+    };
+
+    verificarSesion();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -23,86 +62,63 @@ export const Account = () => {
     }
   };
 
-  const handleBackHome = () => {
-    navigate("/home");
-  };
-
-  useEffect(() => {
-    const verificarSesion = () => {
-      const usuarioActual = auth.currentUser;
-      if (usuarioActual) {
-        setSesionIniciada(true);
-        setUsuario({
-          correo: usuarioActual.email,
-        });
-      } else {
-        setSesionIniciada(false);
-        setUsuario(null);
-      }
-    };
-
-    verificarSesion();
-  }, []);
-
-  useEffect(() => {
-    if (!sesionIniciada) {
-      navigate("/account");
-    }
-  }, [sesionIniciada, navigate]);
-
-  if (!sesionIniciada || !usuario) {
-    return <p>Cargando...</p>;
-  }
-
   return (
     <>
-      <HomeNavbar />
-      <div className="background-image flex flex-col md:flex-row">
-        <div className="w-full md:w-1/4 p-8 mt-40">
-          <div className="user-container rounded-2xl text-center md:text-left">
-            <div className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-60 xl:h-60 bg-slate-900 rounded-full flex items-center justify-center mx-auto md:mx-0">
-              <FontAwesomeIcon
-                icon={faUser}
-                className="text-gray-300 text-6xl md:text-7xl lg:text-8xl xl:text-9xl mb-2"
-              />
-            </div>
-            <br />
-
-            <label>Email</label>
-            <p className="text-black font-bold text-2xl md:text-3xl mb-8">
-              {usuario.correo}
-            </p>
-
-            <button
-              className="bg-transparent text-black text-md md:text-lg font-bold py-2"
-              onClick={handleLogout}
-            >
-              LOG OUT
-            </button>
-          </div>
-          <br />
-          <button
-            className="text-white bg-transparent text-center font-bold text-lg"
-            onClick={handleBackHome}
-          >
-            BACK HOME
-          </button>
+      {loader && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <Spinner className="h-12 w-12 mb-4" color="indigo" />
         </div>
-        <div className="w-full md:w-2/3 p-8 mt-8 md:h-auto bg-transparent">
-          <div className="user-container2 rounded-xl">
-            <h2 className="text-2xl font-bold mb-4 mt-4">Películas Vistas</h2>
-
-            <div className="flex flex-wrap gap-4"></div>
-
-            <div className="w-full md:w-1/4 lg:w-1/3 xl:w-1/4">
-              <div className="bg-white rounded-xl p-4 shadow-md">
-                <h3 className="text-lg font-semibold mb-2">
-                  Película Predeterminada
-                </h3>
-                <p className="text-gray-500">Género: Desconocido</p>
-                <p className="text-gray-500">Director: Desconocido</p>
-              </div>
-            </div>
+      )}
+      <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
+        <HomeNavbar />
+        <div className="background-image flex flex-col md:flex-row">
+          <div className=" flex flex-col md:flex-row w-full">
+            <Card className="md:w-1/2 mx-auto mb-4 md:mb-0">
+              <CardHeader floated={true} className="h-80">
+                <img src="https://docs.material-tailwind.com/img/team-3.jpg" alt="Profile Picture" />
+              </CardHeader>
+              <CardBody className="text-center">
+                <Typography variant="h4" color="blue-gray" className="mb-4">
+                  <label>Nombre</label>
+                  <p className="text-lg font-thin">
+                    {usuario ? usuario.nombre : "Cargando..."}
+                  </p>
+                </Typography>
+                <Typography variant="h4" color="blue-gray" className="mb-4">
+                  <label>Email</label>
+                  <p className="text-lg font-thin">
+                    {usuario ? usuario.correo : "Cargando..."}
+                  </p>
+                </Typography>
+              </CardBody>
+              <CardFooter className="flex justify-center gap-7 pt-2">
+                <Button
+                  className="flex-1 transition duration-500 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black"
+                  onClick={handleLogout}
+                >Log Out
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+          <div className=" flex flex-col md:flex-row w-full">
+            <Card className="md:w-1/2 ">
+              <List>
+                <Typography variant="h1">Historial de Películas</Typography>
+                <ListItem>
+                  <ListItemPrefix>
+                    <Avatar variant="circular" alt="candice" src="https://docs.material-tailwind.com/img/face-1.jpg" />
+                  </ListItemPrefix>
+                  <div>
+                    <Typography variant="h6" color="blue-gray">
+                      Nombre película
+                    </Typography>
+                    <Typography variant="small" color="gray" className="font-normal">
+                      Género
+                    </Typography>
+                  </div>
+                </ListItem>
+              </List>
+            </Card>
           </div>
         </div>
       </div>
