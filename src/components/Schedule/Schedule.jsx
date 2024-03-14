@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import "./Schedule.css";
 import { useSearchParams } from "react-router-dom";
-import { db } from "../../credentials";
+import { db } from "../../utils/firebase.js";
+import { Link } from "react-router-dom";
 import {
   collection,
   getDoc,
@@ -13,41 +14,28 @@ import {
 import { Spinner } from "@material-tailwind/react";
 
 export const Schedule = () => {
-
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [ticketPrice, setTicketPrice] = useState(70);
   const [count, setCount] = useState(0);
   const [total, setTotal] = useState(0);
-  const [hour] = useState("12:00PM");
   const [loader, setLoader] = useState(true);
 
   const [searchParams] = useSearchParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [asientos, setAsientos] = useState([]);
-  const [parentDocumentId, setParentDocumentId] = useState(null);
-  const [parentDocumentId2, setParentDocumentId2] = useState(null);
-  const seats = document.querySelectorAll(".row .seat:not(.occupied)");
-
-  const getMovieData = async (movie_id) => {
-    const docRef = doc(db, "peliculas", movie_id);
-    const docSnap = await getDoc(docRef);
-    const infoMovie = docSnap.data();
-    setMovieDetails(infoMovie);
-  };
+  const [selectedSeats, setSelectedSeats] = useState([]); // Estado para los asientos seleccionados
+  const [parentDocumentId, setParentDocumentId] = useState(null); // Agregamos estado para el ID del documento padre
 
   useEffect(() => {
     const asyncLoader = async () => {
       setLoader(true);
-
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setLoader(false);
     };
 
     asyncLoader();
   }, []);
-
 
   useEffect(() => {
     const fetchAsientos = async () => {
@@ -59,6 +47,9 @@ export const Schedule = () => {
           const primerDocumento = querySnapshot.docs[0];
           const parentDocRef = primerDocumento.ref;
           const parentDocId = primerDocumento.id;
+
+          // Guardamos el ID del documento padre en el estado
+          setParentDocumentId(parentDocId);
 
           const subcoleccionId = "Sala1";
           const subcoleccionRef = collection(parentDocRef, subcoleccionId);
@@ -94,91 +85,69 @@ export const Schedule = () => {
   }, []);
 
   useEffect(() => {
-    getMovieData(selectedMovieIndex.toString()); //be aware here
+    const getMovieData = async (movie_id) => {
+      const docRef = doc(db, "peliculas", movie_id);
+      const docSnap = await getDoc(docRef);
+      const infoMovie = docSnap.data();
+      setMovieDetails(infoMovie);
+    };
+
+    getMovieData(selectedMovieIndex.toString());
   }, [selectedMovieIndex]);
 
-
   useEffect(() => {
-    populateUI();
     setSelectedMovieIndex(searchParams.get("id") || 0);
   }, []);
 
-
-  const setMovieData = (movieIndex, moviePrice, movieHour) => {
-    localStorage.setItem("selectedMovieIndex", movieIndex);
-    localStorage.setItem("selectedMoviePrice", moviePrice);
-    localStorage.setItem("selectedMovieHour", movieHour);
+  const handleMovieChange = (e) => {
+    setTicketPrice(+e.target.value);
+    updateSelectedCount();
   };
+
   const updateSelectedCount = () => {
-    const selectedSeats = document.querySelectorAll(".row .seat.selected");
-
-    const seatsIndex = [...selectedSeats].map((seat) =>
-      [...seats].indexOf(seat)
-    );
-    localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
-
     const selectedSeatsCount = selectedSeats.length;
     setCount(selectedSeatsCount);
     setTotal(selectedSeatsCount * ticketPrice);
   };
 
-  const populateUI = () => {
-    const storedSelectedSeats = JSON.parse(
-      localStorage.getItem("selectedSeats")
-    );
-
-    if (storedSelectedSeats !== null && storedSelectedSeats.length > 0) {
-      // This part needs to be modified based on your React component structure.
-      // You might use state to manage seat selections instead of manipulating the DOM directly.
-    }
-
-    const storedSelectedMovieIndex = localStorage.getItem("selectedMovieIndex");
-
-    if (storedSelectedMovieIndex !== null) {
-      // This part needs to be modified based on your React component structure.
-      // You might use state to manage movie selection instead of manipulating the DOM directly.
-    }
-  };
-
-  const handleMovieChange = (e) => {
-    setTicketPrice(+e.target.value);
-    setMovieData(e.target.selectedIndex, e.target.value);
-
-    updateSelectedCount();
-  };
-
   const handleSeatClick = (seatId) => {
-    const selectedSeatIndex = asientos.findIndex(
-      (asiento) => asiento.id === seatId
-    );
-    const updatedAsientos = [...asientos];
-    // Si el asiento está seleccionado, lo deselecciona; de lo contrario, lo selecciona
-    updatedAsientos[selectedSeatIndex].selected =
-      !updatedAsientos[selectedSeatIndex].selected;
-    setAsientos(updatedAsientos);
-    const selectedSeats = updatedAsientos.filter((asiento) => asiento.selected);
-    const selectedSeatIds = selectedSeats.map((asiento) => asiento.id);
-    console.log("Asientos seleccionados:", selectedSeatIds);
-    updateSelectedCount();
+    const updatedSeats = [...selectedSeats];
+    const index = updatedSeats.indexOf(seatId);
+
+    // Si el asiento no está en la lista de asientos seleccionados, añadirlo
+    if (index === -1) {
+      updatedSeats.push(seatId);
+    } else { // Si el asiento está en la lista de asientos seleccionados, quitarlo
+      updatedSeats.splice(index, 1);
+    }
+
+    setSelectedSeats(updatedSeats); // Actualizar el estado de los asientos seleccionados
+
+    // Actualizar el estado de los asientos en el estado 'asientos'
+    const updatedAsientos = asientos.map((asiento) => {
+      if (asiento.id === seatId) {
+        return {
+          ...asiento,
+          estado: updatedSeats.includes(seatId) ? "seleccionado" : "disponible",
+        };
+      }
+      return asiento;
+    });
+
+    setAsientos(updatedAsientos); // Actualizar el estado de los asientos
   };
-  const movies = [{ name: "Arrival", price: 70, hour: "12pm" }];
 
   const handleSend = async () => {
-    // Verifica si hay asientos seleccionados
-    const selectedSeats = asientos.filter((seat) => seat.selected);
-
-    if (selectedSeats.length > 0) {
+    if (selectedSeats.length > 0 && parentDocumentId) { // Verificamos si hay asientos seleccionados y si tenemos un ID de documento padre
       try {
         const batch = writeBatch(db);
-        const idS = parentDocumentId; // Utilizar el ID superior
+        const idS = parentDocumentId;
 
-        // Actualiza el estado de los asientos seleccionados en la base de datos
-        selectedSeats.forEach((seat) => {
-          const seatRef = doc(db, "asientos", idS, "Sala1", seat.id);
+        selectedSeats.forEach((seatId) => {
+          const seatRef = doc(db, "asientos", idS, "Sala1", seatId);
           batch.update(seatRef, { estado: "ocupado" });
         });
 
-        // Ejecuta la transacción en lote
         await batch.commit();
 
         alert("Asientos agregados correctamente.");
@@ -189,12 +158,9 @@ export const Schedule = () => {
         );
       }
     } else {
-      alert("No hay asientos seleccionados para agregar.");
+      alert("No hay asientos seleccionados para agregar o no se ha cargado la información necesaria.");
     }
-  }
-
-
-
+  };
 
 
   return (
@@ -246,11 +212,17 @@ export const Schedule = () => {
                         onChange={handleMovieChange}
                         value={ticketPrice}
                       >
-                        {movies.map((movie, index) => (
-                          <option key={index} value={movie.price}>
-                            {movieDetails?.titulo}- ${movie.price}
-                          </option>
-                        ))}
+                        {movieDetails && (
+                          <select
+                            id="movie"
+                            onChange={handleMovieChange}
+                            value={ticketPrice}
+                          >
+                            <option value={ticketPrice}>
+                              {movieDetails?.titulo}- ${ticketPrice}
+                            </option>
+                          </select>
+                        )}
                       </select>
                     </div>
 
@@ -387,12 +359,12 @@ export const Schedule = () => {
                     <div className="m-4 text-white">
                       <p>{movieDetails?.titulo}</p>
                       <p>{movieDetails?.duracion} minutos</p>
-                      <a
+                      <Link to="/payment"
                         className="bg-[color:var(--negro)] text-white rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
                         onClick={handleSend}
                       >
                         Agregar boletos
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

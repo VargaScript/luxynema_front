@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
 import { Typography, Button } from "@material-tailwind/react";
-import { auth } from "../../credentials";
+import { auth } from "../../utils/firebase.js";
 
 export const Root = () => {
   const navigate = useNavigate();

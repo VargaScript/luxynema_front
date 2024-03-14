@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import axios from "axios";
 import { Login } from "../Login/Login"
-import { auth } from "../../credentials";
+// import { auth } from "../../utils/firebase.js";
 import {
   Card,
   Input,
@@ -18,23 +18,26 @@ const validatePassword = (password) =>
 
 export const Register = () => {
   const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  /* useEffect(() => {
     const user = auth.currentUser;
 
     if (user) {
       navigate("/home");
     }
-  }, [navigate]);
+  }, [navigate]); */
 
   const isFormValid = isValidEmail && isValidPassword;
 
   const handleNameChange = (e) => setName(e.target.value);
+
+  const handleLastNameChange = (e) => setLastName(e.target.value);
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
@@ -50,20 +53,24 @@ export const Register = () => {
     );
   };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+  const handleRegister = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-      console.log(user);
-      navigate("/home");
+      if (!isValidEmail || !isValidPassword || !name) {
+        console.error('Por favor, complete todos los campos correctamente.');
+        return;
+      }
+
+      const response = await axios.post('http://127.0.0.1:8000/register/', {
+        email: email,
+        password: password,
+        name: name,
+      });
+
+      if (response.status === 200) {
+        navigate("/login");
+      }
     } catch (error) {
-      const { code, message } = error;
-      console.error(code, message);
+      console.error('Error en el registro:', error.message);
     }
   };
 
@@ -77,19 +84,34 @@ export const Register = () => {
         <form className="mt-8 mb-2 w-full max-w-screen-sm mx-auto">
           <div className="mb-1 flex flex-col gap-6">
             <p color="white" className="-mb-5 galarama text-lg text-white">
-              Full Name
+              First Name
             </p>
             <Input
               id="name"
               type="name"
               size="lg"
-              placeholder="Your name"
-              className=" !border-t-white-200 focus:!border-white"
+              placeholder="Your first name"
+              className=" !border-t-white-200 focus:!border-white text-white"
               labelProps={{
-                className: "before:content-none after:content-none",
+                className: "before:content-none after:content-none text-white",
               }}
               value={name}
               onChange={handleNameChange}
+            />
+            <p color="white" className="-mb-5 galarama text-lg text-white">
+              Last Name
+            </p>
+            <Input
+              id="last-name"
+              type="last-name"
+              size="lg"
+              placeholder="Your last name"
+              className=" !border-t-white-200 focus:!border-white text-white"
+              labelProps={{
+                className: "before:content-none after:content-none text-white",
+              }}
+              value={lastName}
+              onChange={handleLastNameChange}
             />
             <p color="white" className="-mb-5 galarama text-lg text-white">
               Email
@@ -99,7 +121,7 @@ export const Register = () => {
               type="email"
               size="lg"
               placeholder="email@email.com"
-              className=" !border-t-white-200 focus:!border-white"
+              className=" !border-t-white-200 focus:!border-white text-white"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
@@ -121,9 +143,9 @@ export const Register = () => {
               type="password"
               size="lg"
               placeholder="********"
-              className=" !border-t-white-200 focus:!border-white"
+              className=" !border-t-white-200 focus:!border-white text-white"
               labelProps={{
-                className: "before:content-none after:content-none",
+                className: "before:content-none after:content-none text-white",
               }}
               value={password}
               onChange={handlePasswordChange}
@@ -175,7 +197,3 @@ export const Register = () => {
     </div>
   );
 }
-
-
-
-

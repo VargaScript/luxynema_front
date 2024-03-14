@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../credentials";
+import { auth } from "../../utils/firebase.js";
 import "./Account.css";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import {

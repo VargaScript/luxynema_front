@@ -3,7 +3,6 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyAgmIyskHcifEiF7XwsJQtiSlpw6Tc3xpU",
   authDomain: "app-cine-full.firebaseapp.com",
@@ -18,4 +17,4 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
-export { auth, app, db};
+export { auth, app, db };

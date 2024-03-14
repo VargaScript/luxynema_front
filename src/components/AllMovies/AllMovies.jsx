@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { db } from "../../credentials";
+import { db } from "../../utils/firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 import "./AllMovies.css";
 import { Link } from "react-router-dom";
