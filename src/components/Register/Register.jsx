@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Login } from "../Login/Login"
-// import { auth } from "../../utils/firebase.js";
+import { auth } from "../../utils/firebase.js";
 import {
   Card,
   Input,
@@ -25,13 +25,13 @@ export const Register = () => {
   const [isValidPassword, setIsValidPassword] = useState(false);
   const navigate = useNavigate();
 
-  /* useEffect(() => {
+  useEffect(() => {
     const user = auth.currentUser;
-
     if (user) {
       navigate("/home");
     }
-  }, [navigate]); */
+  }, [navigate]);
+
 
   const isFormValid = isValidEmail && isValidPassword;
 
@@ -52,6 +52,27 @@ export const Register = () => {
       newPassword === "" ? false : validatePassword(newPassword)
     );
   };
+
+  /* const handleRegister = async () => {
+    try {
+      if (!isValidEmail || !isValidPassword || !name) {
+        console.error('Por favor, complete todos los campos correctamente.');
+        return;
+      }
+
+      const response = await axios.post('https://ericksvilla.pythonanywhere.com/register/', {
+        email: email,
+        password: password,
+        name: name,
+      });
+
+      if (response.status === 200) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error('Error en el registro:', error.message);
+    }
+  }; */
 
   const handleRegister = async () => {
     try {
