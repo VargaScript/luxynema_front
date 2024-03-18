@@ -21,33 +21,77 @@ export function Hero() {
   useEffect(() => {
     const fetchPeliculas = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "peliculas"));
-        const peliculasData = [];
-        querySnapshot.forEach((doc) => {
-          peliculasData.push({ id: doc.id, ...doc.data() });
+        let token = localStorage.getItem('token');
+
+        if (!token) {
+          const tokenResponse = await fetchToken();
+          if (tokenResponse.status === 200 && tokenResponse.data.idToken) {
+            token = tokenResponse.data.idToken;
+            localStorage.setItem('token', token);
+          } else {
+            console.error('No se pudo obtener el token');
+            return;
+          }
+        }
+
+        const response = await fetch('http://127.0.0.1:8000/movies/', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
 
-        peliculasData.sort((a, b) => new Date(b.fecha_creacion) - new Date(a.fecha_creacion));
+        if (!response.ok) {
+          console.error('Error al obtener las películas:', response.statusText);
+          return;
+        }
 
-        setPeliculas(peliculasData.slice(0, 4));
+        const data = await response.json();
+        setPeliculas(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error getting peliculas: ", error);
+        console.error("Error al obtener las películas: ", error);
         setLoading(false);
       }
     };
     fetchPeliculas();
   }, []);
 
-  const fadeOverlayStyle = {
-    position: "absolute",
-    bottom: "0",
-    left: "0",
-    width: "100%",
-    height: "10%",
-    background: "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
-    pointerEvents: "auto",
+  const fetchToken = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: 'riada@gmail.com',
+          password: 'Cine1234'
+        })
+      });
+
+      if (!response.ok) {
+        console.error('Error al obtener el token:', response.statusText);
+        return { status: response.status, data: null };
+      }
+
+      const data = await response.json();
+      const token = data.token;
+      return { status: 200, data: { idToken: token } };
+    } catch (error) {
+      console.error("Error al obtener el token: ", error);
+      return { status: 500, data: null };
+    }
   };
+
+  /*  const fadeOverlayStyle = {
+     position: "absolute",
+     bottom: "0",
+     left: "0",
+     width: "100%",
+     height: "10%",
+     background: "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
+     pointerEvents: "auto",
+   }; */
 
   return (
     <div /* className="-mt-[90px]" */>
@@ -71,7 +115,7 @@ export function Hero() {
           </div>
         )}
       >
-        {peliculas.map((pelicula, index) => (
+        {/*  {peliculas.map((pelicula, index) => (
           <div key={pelicula.id} className="z-50">
             <div style={{
               backgroundImage: `
@@ -124,7 +168,7 @@ export function Hero() {
               <div style={fadeOverlayStyle}></div>
             </div>
           </div>
-        ))}
+        ))} */}
         {currentTrailer && (
           <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
             <div className="absolute inset-0 bg-black bg-opacity-75"></div>

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, /* useEffect */ } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Register } from "../Register/Register";
-import { auth } from "../../utils/firebase.js";
+// import { auth } from "../../utils/firebase.js";
 import axios from 'axios';
 import {
   Card,
@@ -24,6 +24,26 @@ export const Login = () => {
     setPassword(e.target.value);
   };
 
+  /* const handleLogin = async () => {
+    try {
+      const response = await axios.post('https://ericksvilla.pythonanywhere.com/login/', {
+        email: email,
+        password: password
+      });
+
+      if (response.status === 200 && response.data.idToken) {
+        const token = response.data.idToken;
+        console.log(token)
+
+        localStorage.setItem('token', token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
+  }; */
+
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/login/', {
@@ -43,13 +63,13 @@ export const Login = () => {
     }
   };
 
-  useEffect(() => {
-    const user = auth.currentUser;
-
-    if (user) {
-      navigate("/home");
-    }
-  }, [navigate]);
+  /*  useEffect(() => {
+     const user = auth.currentUser;
+ 
+     if (user) {
+       navigate("/home");
+     }
+   }, [navigate]); */
 
   return (
     <div className="text-center background-image">
@@ -70,7 +90,7 @@ export const Login = () => {
               type="email"
               size="lg"
               placeholder="email@email.com"
-              className=" !border-t-white-200 focus:!border-white"
+              className=" !border-t-white-200 focus:!border-white text-white"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
@@ -85,7 +105,7 @@ export const Login = () => {
               type="password"
               size="lg"
               placeholder="********"
-              className=" !border-t-white-200 focus:!border-white"
+              className=" !border-t-white-200 focus:!border-white text-white"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
