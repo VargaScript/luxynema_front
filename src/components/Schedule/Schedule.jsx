@@ -185,6 +185,7 @@ export const Schedule = () => {
                 <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center mt-5">
                   {movieDetails?.titulo}
                 </h2>
+                
               </div>
               <div className=" contenido  mt-6 m-10">
                 <h2
