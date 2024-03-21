@@ -74,7 +74,7 @@ export const Schedule = () => {
         // Guardar los datos en el estado asientos
         setAsientos(asientosData);
 
-        setLoading(false);
+        setLoading(false);          
       } catch (error) {
         console.error("Error obteniendo asientos: ", error);
         setLoading(false);
@@ -110,32 +110,68 @@ export const Schedule = () => {
     setTotal(selectedSeatsCount * ticketPrice);
   };
 
+
   const handleSeatClick = (seatId) => {
+    console.log('Clicked seat id:', seatId);
+    
     const updatedSeats = [...selectedSeats];
     const index = updatedSeats.indexOf(seatId);
-
+  
     // Si el asiento no está en la lista de asientos seleccionados, añadirlo
     if (index === -1) {
       updatedSeats.push(seatId);
+      console.log('Seat added:', seatId);
     } else { // Si el asiento está en la lista de asientos seleccionados, quitarlo
       updatedSeats.splice(index, 1);
+      console.log('Seat removed:', seatId);
     }
-
+  
     setSelectedSeats(updatedSeats); // Actualizar el estado de los asientos seleccionados
-
+  
     // Actualizar el estado de los asientos en el estado 'asientos'
     const updatedAsientos = asientos.map((asiento) => {
       if (asiento.id === seatId) {
         return {
           ...asiento,
-          estado: updatedSeats.includes(seatId) ? "seleccionado" : "disponible",
+          estado: updatedSeats.includes(asiento.id) ? "seleccionado" : "disponible",
         };
       }
       return asiento;
     });
-
+  
+    console.log('Updated asientos:', updatedAsientos);
+    
     setAsientos(updatedAsientos); // Actualizar el estado de los asientos
-  };
+  }; 
+  
+
+
+                // const handleSeatClick = (seatId) => {
+                //   const updatedSeats = [...selectedSeats];
+                //   const index = updatedSeats.indexOf(seatId);
+
+                //   // Si el asiento no está en la lista de asientos seleccionados, añadirlo
+                //   if (index === -1) {
+                //     updatedSeats.push(seatId);
+                //   } else { // Si el asiento está en la lista de asientos seleccionados, quitarlo
+                //     updatedSeats.splice(index, 1);
+                //   }
+
+                //   setSelectedSeats(updatedSeats); // Actualizar el estado de los asientos seleccionados
+
+                //   // Actualizar el estado de los asientos en el estado 'asientos'
+                //   const updatedAsientos = asientos.map((asiento) => {
+                //     if (asiento.id === seatId) {
+                //       return {
+                //         ...asiento,
+                //         estado: updatedSeats.includes(seatId) ? "seleccionado" : "disponible",
+                //       };
+                //     }
+                //     return asiento;
+                //   });
+
+                //   setAsientos(updatedAsientos); // Actualizar el estado de los asientos
+                // };
 
   const handleSend = async () => {
     if (selectedSeats.length > 0 && parentDocumentId) { // Verificamos si hay asientos seleccionados y si tenemos un ID de documento padre

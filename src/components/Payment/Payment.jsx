@@ -26,7 +26,7 @@ export const Payment = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer USER_TOKEN`, //El token va despues del bearer y un espacio
+                        //Authorization: `Bearer USER_TOKEN`, //El token va despues del bearer y un espacio
                     },
                     body: JSON.stringify({ paymentMethod: result.paymentMethod }),
                 });
