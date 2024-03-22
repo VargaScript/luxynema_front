@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import "./Schedule.css";
 import { useSearchParams } from "react-router-dom";
-import { db } from "../../utils/firebase.js";
+import { firestore } from "../../utils/firebase.js";
 import { Link } from "react-router-dom";
 import {
   collection,

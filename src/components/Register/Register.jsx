@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Login } from "../Login/Login"
-import { auth } from "../../utils/firebase.js";
+import { Login } from "../Login/Login";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../utils/firebase";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Card,
   Input,
@@ -11,19 +14,14 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-const validatePassword = (password) =>
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
-
 export const Register = () => {
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
   const navigate = useNavigate();
+  const firestore = getFirestore();
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -32,18 +30,15 @@ export const Register = () => {
     }
   }, [navigate]);
 
-
-  const isFormValid = isValidEmail && isValidPassword;
-
-  const handleNameChange = (e) => setName(e.target.value);
-
-  const handleLastNameChange = (e) => setLastName(e.target.value);
+  const handleUserNameChange = (e) => setUserName(e.target.value);
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
     setIsValidEmail(newEmail === "" ? false : validateEmail(newEmail));
   };
+
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
@@ -53,50 +48,33 @@ export const Register = () => {
     );
   };
 
-  /* const handleRegister = async () => {
-    try {
-      if (!isValidEmail || !isValidPassword || !name) {
-        console.error('Por favor, complete todos los campos correctamente.');
-        return;
-      }
+  const validatePassword = (password) =>
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
 
-      const response = await axios.post('https://ericksvilla.pythonanywhere.com/register/', {
+  const isFormValid = isValidEmail && isValidPassword;
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await addDoc(collection(firestore, "users"), {
+        userName: userName,
         email: email,
-        password: password,
-        name: name,
+        password: password
       });
 
-      if (response.status === 200) {
-        navigate("/login");
-      }
+      navigate("/home");
     } catch (error) {
-      console.error('Error en el registro:', error.message);
+      toast.error("Oops! An error has ocurred");
     }
-  }; */
-
-  const handleRegister = async () => {
-    try {
-      if (!isValidEmail || !isValidPassword || !name) {
-        console.error('Por favor, complete todos los campos correctamente.');
-        return;
-      }
-
-      const response = await axios.post('http://127.0.0.1:8000/register/', {
-        email: email,
-        password: password,
-        name: name,
-      });
-
-      if (response.status === 200) {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error('Error en el registro:', error.message);
-    }
-  };
+  }
 
   return (
     <div className="text-center background-image">
+      <ToastContainer />
       <Card color="transparent" shadow={false} className="flex items-center">
         <h1 className="text-2xl md:text-4xl text-white galarama">LUXYNEMA</h1>
         <Typography variant="h4" color="white">
@@ -105,34 +83,19 @@ export const Register = () => {
         <form className="mt-8 mb-2 w-full max-w-screen-sm mx-auto">
           <div className="mb-1 flex flex-col gap-6">
             <p color="white" className="-mb-5 galarama text-lg text-white">
-              First Name
+              User Name
             </p>
             <Input
-              id="name"
-              type="name"
+              id="userName"
+              type="userName"
               size="lg"
-              placeholder="Your first name"
+              placeholder="User Name"
               className=" !border-t-white-200 focus:!border-white text-white"
               labelProps={{
                 className: "before:content-none after:content-none text-white",
               }}
-              value={name}
-              onChange={handleNameChange}
-            />
-            <p color="white" className="-mb-5 galarama text-lg text-white">
-              Last Name
-            </p>
-            <Input
-              id="last-name"
-              type="last-name"
-              size="lg"
-              placeholder="Your last name"
-              className=" !border-t-white-200 focus:!border-white text-white"
-              labelProps={{
-                className: "before:content-none after:content-none text-white",
-              }}
-              value={lastName}
-              onChange={handleLastNameChange}
+              value={userName}
+              onChange={handleUserNameChange}
             />
             <p color="white" className="-mb-5 galarama text-lg text-white">
               Email
@@ -217,4 +180,4 @@ export const Register = () => {
       </ Card >
     </div>
   );
-}
+};

@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "galarama";
+    src: url("../../../fonts//garalama/GARALAMA.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "lemon-milk";
+    src: url("../../../fonts/lemon_milk/LEMONMILK-Regular.otf")
+      format("truetype");
+  }

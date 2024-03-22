@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import "./Hero.css";
-import { db } from "../../utils/firebase.js";
+import { firestore } from "../../../utils/firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 import { Carousel, IconButton } from "@material-tailwind/react";
 import YouTube from 'react-youtube';

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { db } from "../../utils/firebase.js";
+import { firestore } from "../../../utils/firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 import "./AllMovies.css";
 import { Link } from "react-router-dom";
@@ -12,8 +12,8 @@ import {
     Button,
     Spinner
 } from "@material-tailwind/react";
-import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
-import { Footer } from "../Footer/Footer";
+import { HomeNavbar } from "../HomeNavbar/HomeNavbar.jsx";
+import { Footer } from "../Footer/Footer.jsx";
 
 /* Arreglar que cuando se haga clic y aparezca una card de película no se pueda hacer scroll y cuando se cierre la card no se regrese al principio de la página */
 
@@ -40,7 +40,7 @@ export const AllMovies = () => {
     useEffect(() => {
         const fetchPeliculas = async () => {
             try {
-                const querySnapshot = await getDocs(collection(db, "peliculas"));
+                const querySnapshot = await getDocs(collection(firestore, "peliculas"));
                 const peliculasData = [];
                 querySnapshot.forEach((doc) => {
                     peliculasData.push({ id: doc.id, ...doc.data() });

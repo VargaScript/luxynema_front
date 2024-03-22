@@ -1,9 +1,11 @@
-import { useState, /* useEffect */ } from "react";
+import { useState, useEffect } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { Register } from "../Register/Register";
-// import { auth } from "../../utils/firebase.js";
-import axios from 'axios';
+import { Register } from "../Register/Register.jsx";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../utils/firebase.js";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Card,
   Input,
@@ -24,55 +26,29 @@ export const Login = () => {
     setPassword(e.target.value);
   };
 
-  /* const handleLogin = async () => {
-    try {
-      const response = await axios.post('https://ericksvilla.pythonanywhere.com/login/', {
-        email: email,
-        password: password
-      });
-
-      if (response.status === 200 && response.data.idToken) {
-        const token = response.data.idToken;
-        console.log(token)
-
-        localStorage.setItem('token', token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        toast.success('Log in success');
         navigate("/home");
-      }
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-    }
-  }; */
-
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/login/', {
-        email: email,
-        password: password
+      })
+      .catch(() => {
+        toast.error("Failed logging in. Check your credentials");
       });
-
-      if (response.status === 200 && response.data.idToken) {
-        const token = response.data.idToken;
-
-        localStorage.setItem('token', token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        navigate("/home");
-      }
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-    }
   };
 
-  /*  useEffect(() => {
-     const user = auth.currentUser;
- 
-     if (user) {
-       navigate("/home");
-     }
-   }, [navigate]); */
+  useEffect(() => {
+    const user = auth.currentUser;
+
+    if (user) {
+      navigate("/home");
+    }
+  }, [navigate]);
 
   return (
     <div className="text-center background-image">
+      <ToastContainer />
       <Card color="transparent" shadow={false} className="flex items-center">
         <h1 className="text-2xl md:text-4xl text-white galarama">
           LUXYNEMA

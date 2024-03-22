@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import "./Root.css";
 import { Link, useNavigate } from "react-router-dom";
-import { Register } from "../Register/Register";
-import { Login } from "../Login/Login";
+import { Register } from "../Register/Register.jsx";
+import { Login } from "../Login/Login.jsx";
 import { Typography, Button } from "@material-tailwind/react";
 import { auth } from "../../utils/firebase.js";
 

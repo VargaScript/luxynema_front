@@ -4,17 +4,14 @@ import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAgmIyskHcifEiF7XwsJQtiSlpw6Tc3xpU",
-  authDomain: "app-cine-full.firebaseapp.com",
-  projectId: "app-cine-full",
-  storageBucket: "app-cine-full.appspot.com",
-  messagingSenderId: "772835170323",
-  appId: "1:772835170323:web:65848c70d4b94c403287e6",
+    apiKey: "AIzaSyC8bcEhY3nSOcHBMwJxxCk--uGliE2fVlQ",
+    authDomain: "luxynema.firebaseapp.com",
+    projectId: "luxynema",
+    storageBucket: "luxynema.appspot.com",
+    messagingSenderId: "1031368976002",
+    appId: "1:1031368976002:web:569c634f516912f446b69b"
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-export { auth, app, db };
+export const auth = getAuth(app);
+export const firestore = getFirestore(app);

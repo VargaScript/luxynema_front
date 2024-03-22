@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { db } from "../../utils/firebase.js";
+import { firestore } from "../../utils/firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 import "./MostPopular.css";
 import { Link } from "react-router-dom";
@@ -25,7 +25,7 @@ export const MostPopular = () => {
   useEffect(() => {
     const fetchPeliculas = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "peliculas"));
+        const querySnapshot = await getDocs(collection(firestore, "peliculas"));
         const peliculasData = [];
         querySnapshot.forEach((doc) => {
           peliculasData.push({ id: doc.id, ...doc.data() });
