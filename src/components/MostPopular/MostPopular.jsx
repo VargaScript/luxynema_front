@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { firestore } from "../../utils/firebase";
-import { collection, getDocs } from "firebase/firestore";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import "./MostPopular.css"; // Asegúrate de importar tu hoja de estilos
+import "./MostPopular.css"; 
 import { Link } from "react-router-dom";
+import Movies from "../../utils/Movies.json"; 
 
 export const MostPopular = () => {
   const [peliculas, setPeliculas] = useState([]);
@@ -14,22 +13,8 @@ export const MostPopular = () => {
   const [scrollDisabled, setScrollDisabled] = useState(false);
 
   useEffect(() => {
-    const fetchPeliculas = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(firestore, "peliculas"));
-        const peliculasData = [];
-        querySnapshot.forEach((doc) => {
-          peliculasData.push({ id: doc.id, ...doc.data() });
-        });
-        setPeliculas(peliculasData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error getting peliculas: ", error);
-        setLoading(false);
-      }
-    };
-
-    fetchPeliculas();
+    setPeliculas(Movies.peliculas || []);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -44,8 +29,8 @@ export const MostPopular = () => {
     };
   }, [selectedMovie]);
 
-  const handleEventClick = (event) => {
-    setSelectedMovie(event);
+  const handleEventClick = (pelicula) => {
+    setSelectedMovie(pelicula);
     setIsAnimating(true);
 
     setTimeout(() => {
@@ -80,7 +65,7 @@ export const MostPopular = () => {
                     <img
                       className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105"
                       alt={pelicula.titulo}
-                      src={pelicula.img_url}
+                      src={pelicula.imagen}
                     />
                   </div>
                   <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left">
@@ -103,7 +88,7 @@ export const MostPopular = () => {
                   <div className="flex flex-col mr-10 ">
                     <img
                       className="mt-5 h-10 w-10 sm:w-96 sm:h-64 md:h-72 md:w-96 lg:h-72 lg:w-96 xl:w-96 xl:h-96 object-cover rounded-md"
-                      src={selectedMovie.img_url}
+                      src={selectedMovie.imagen}
                       alt={selectedMovie.titulo}
                     />
                   </div>
@@ -114,16 +99,16 @@ export const MostPopular = () => {
                       </span>
                     </p>
                     <p className="mt-2 text-gray-700">
-                      {selectedMovie.generos ? selectedMovie.generos : "N/A"}
+                      {selectedMovie.genero ? selectedMovie.genero.join(", ") : "N/A"} 
                     </p>
                     <p className="mt-2 font-bold text-gray-700">
-                      {selectedMovie.horario}
+                      {selectedMovie.horarios ? selectedMovie.horarios.join(", ") : "N/A"} 
                     </p>
                     <p className="mt-2 font-bold text-gray-700">
                       {selectedMovie.duracion} min
                     </p>
                     <div className="mt-2 mt-12 text-gray-700">
-                      {selectedMovie.sinopsis ? selectedMovie.sinopsis : "N/A"}
+                      {selectedMovie.descripcion ? selectedMovie.descripcion : "N/A"}
                     </div>
                     <div className="flex flex-end mt-16">
                       <button className="hover:bg-[var(--azul-fuerte)] transition duration-500 mt-4 bg-[var(--azul)] text-white px-4 py-2 text-black rounded-md bg-black transition-colors duration-300">

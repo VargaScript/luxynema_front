@@ -1,0 +1,37 @@
+{
+  "peliculas": [
+    {
+      "id": 1,
+      "titulo": "Spider-Man: Sin camino a casa",
+      "descripcion": "Peter Parker lucha por encontrar un equilibrio entre su vida cotidiana y su papel como superhéroe, cuando aparecen en su vida unos villanos procedentes de otras dimensiones.",
+      "clasificacion": "PG-13",
+      "genero": ["Acción", "Aventura", "Fantasía"],
+      "duracion": 148,
+      "horarios": ["10:00", "13:00", "16:00", "19:00", "22:00"],
+      "sala": 1,
+      "imagen": "../assets/NoWay.jpg"
+    },
+    {
+      "id": 2,
+      "titulo": "Matrix Resurrections",
+      "descripcion": "Thomas Anderson vive en la actualidad como un programador de videojuegos y no recuerda nada de sus anteriores aventuras como Neo. Sin embargo, pronto se encontrará con Trinity y descubrirá la verdad sobre su pasado.",
+      "clasificacion": "R",
+      "genero": ["Ciencia ficción", "Acción"],
+      "duracion": 148,
+      "horarios": ["11:00", "14:00", "17:00", "20:00", "23:00"],
+      "sala": 2,
+      "imagen": "../assets/Matrix.jpg"
+    },
+    {
+      "id": 3,
+      "titulo": "El batallón de los condenados",
+      "descripcion": "Durante la Segunda Guerra Mundial, un pelotón de soldados condenados a muerte es enviado en una misión suicida para infiltrarse en una fortaleza nazi y detener un arma secreta que podría cambiar el curso de la guerra.",
+      "clasificacion": "R",
+      "genero": ["Acción", "Bélico"],
+      "duracion": 120,
+      "horarios": ["09:30", "12:30", "15:30", "18:30", "21:30"],
+      "sala": 3,
+      "imagen": "https://ejemplo.com/imagen_batallon.jpg"
+    }
+  ]
+}
