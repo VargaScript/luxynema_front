@@ -1,0 +1,55 @@
+:root {
+  --negro: #112236;
+  --azul-fuerte: #436280;
+  --azul: #a3bad2;
+  --azul-claro: #dbe4ed;
+  --blanco: #ffffff;
+  --garalama: "galarama";
+  --lemon-milk: "lemon-milk";
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--negro);
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--azul);
+  border-radius: none;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--negro);
+}
+
+@font-face {
+  font-family: "galarama";
+  src: url("../public/fonts/garalama/GARALAMA.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "lemon-milk";
+  src: url("../public/fonts/lemon_milk/LEMONMILK-Regular.otf")
+    format("truetype");
+}
+
+.lemon-milk {
+  font-family: "lemon-milk";
+}
+
+.galarama {
+  font-family: "galarama";
+}
+
+.text-sm {
+  font-size: 10px;
+}
+
