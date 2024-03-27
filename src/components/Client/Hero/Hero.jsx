@@ -19,71 +19,52 @@ export function Hero() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
+
     const fetchPeliculas = async () => {
       try {
-        let token = localStorage.getItem('token');
-
-        if (!token) {
-          const tokenResponse = await fetchToken();
-          if (tokenResponse.status === 200 && tokenResponse.data.idToken) {
-            token = tokenResponse.data.idToken;
-            localStorage.setItem('token', token);
-          } else {
-            console.error('No se pudo obtener el token');
-            return;
-          }
-        }
-
-        const response = await fetch('http://127.0.0.1:8000/movies/', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+        const querySnapshot = await getDocs(collection(firestore, "peliculas"));
+        const peliculasData = [];
+        querySnapshot.forEach((doc) => {
+          peliculasData.push({ id: doc.id, ...doc.data() });
         });
-
-        if (!response.ok) {
-          console.error('Error al obtener las películas:', response.statusText);
-          return;
-        }
-
-        const data = await response.json();
-        setPeliculas(data);
+        setPeliculas(peliculasData);
         setLoading(false);
       } catch (error) {
-        console.error("Error al obtener las películas: ", error);
+        console.error("Error getting peliculas: ", error);
         setLoading(false);
       }
     };
+  
     fetchPeliculas();
+    console.log(fetchPeliculas())
   }, []);
 
-  const fetchToken = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: 'riada@gmail.com',
-          password: 'Cine1234'
-        })
-      });
 
-      if (!response.ok) {
-        console.error('Error al obtener el token:', response.statusText);
-        return { status: response.status, data: null };
-      }
 
-      const data = await response.json();
-      const token = data.token;
-      return { status: 200, data: { idToken: token } };
-    } catch (error) {
-      console.error("Error al obtener el token: ", error);
-      return { status: 500, data: null };
-    }
-  };
 
-  /*  const fadeOverlayStyle = {
+  // const heroStyle = {
+  //   backgroundImage: `
+  //   linear-gradient(rgba(17, 34, 54, 0.7), rgba(17, 34, 54 , 0.7)), 
+  //   url(${!loading && peliculas.length > 0 ? peliculas[0].img_url_hd : ""})
+  // `,
+  // backgroundSize: "cover",
+  // height: "100vh",
+  // position: "relative",
+  // };
+
+  // const fadeOverlayStyle = {
+  //   position: "absolute",
+  //   bottom: "0",
+  //   left: "0",
+  //   width: "100%",
+  //   height: "20%",
+  //   background:
+  //     "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
+  //   pointerEvents: "none",
+  // };
+  
+
+    const fadeOverlayStyle = {
      position: "absolute",
      bottom: "0",
      left: "0",
@@ -91,7 +72,7 @@ export function Hero() {
      height: "10%",
      background: "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
      pointerEvents: "auto",
-   }; */
+   }; 
 
   return (
     <div /* className="-mt-[90px]" */>
@@ -99,7 +80,7 @@ export function Hero() {
         autoplay
         autoplayDelay={4000}
         loop
-        activeIndex={activeIndex}
+        activeindex={activeIndex}
         navigation={({ setActiveIndex, activeIndex, length }) => (
           <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
             {new Array(length).fill("").map((_, i) => (
@@ -115,7 +96,7 @@ export function Hero() {
           </div>
         )}
       >
-        {/*  {peliculas.map((pelicula, index) => (
+         {peliculas.map((pelicula, index) => (
           <div key={pelicula.id} className="z-50">
             <div style={{
               backgroundImage: `
@@ -168,7 +149,7 @@ export function Hero() {
               <div style={fadeOverlayStyle}></div>
             </div>
           </div>
-        ))} */}
+        ))}
         {currentTrailer && (
           <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
             <div className="absolute inset-0 bg-black bg-opacity-75"></div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { firestore } from "../../utils/firebase.js";
+import { firestore } from "../../../utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import "./MostPopular.css";
 import { Link } from "react-router-dom";

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Home.css";
 import { Hero } from "../Hero/Hero";
-import { MostPopular } from "../../MostPopular/MostPopular";
+import { MostPopular } from "../MostPopular/MostPopular";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import { Footer } from "../Footer/Footer";
 import { Spinner } from "@material-tailwind/react";
