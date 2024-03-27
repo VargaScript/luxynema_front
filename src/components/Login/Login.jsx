@@ -6,6 +6,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/firebase.js";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { initializeApp } from "firebase/app";
+
 import {
   Card,
   Input,
