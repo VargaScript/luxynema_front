@@ -27,7 +27,7 @@ export const AboutUs = () => {
       )}
       <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
         <HomeNavbar />
-        <div className="background bg-no-repeat bg-cover">
+        <div className="background bg-no-repeat bg-cover -mt-24">
           <div>
             <div className="pt-24 ml-[10%] mr-[10%] flex-direction-column">
               <div className='sm:text-6xl text-3xl pt-1 sm:pt-36 uppercase font-normal text-white galarama '>Luxynema</div>

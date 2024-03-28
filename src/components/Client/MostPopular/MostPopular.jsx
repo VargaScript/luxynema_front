@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { firestore } from "../../utils/firebase.js";
+import { firestore } from "../../../utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import "./MostPopular.css";
 import { Link } from "react-router-dom";
@@ -25,14 +25,14 @@ export const MostPopular = () => {
   useEffect(() => {
     const fetchPeliculas = async () => {
       try {
-        const querySnapshot = await getDocs(collection(firestore, "peliculas"));
+        const querySnapshot = await getDocs(collection(firestore, "movies"));
         const peliculasData = [];
         querySnapshot.forEach((doc) => {
           peliculasData.push({ id: doc.id, ...doc.data() });
         });
         setPeliculas(peliculasData);
       } catch (error) {
-        console.error("Error getting peliculas: ", error);
+        console.error("Error getting movies: ", error);
       }
     };
 
@@ -46,7 +46,6 @@ export const MostPopular = () => {
       if (scrollDisabled) {
         scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
-        // Deshabilitar scroll
         window.addEventListener('scroll', disableScroll);
       } else {
         window.removeEventListener('scroll', disableScroll);
@@ -102,15 +101,15 @@ export const MostPopular = () => {
                   <div className="overlay-gradient">
                     <img
                       className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105"
-                      alt={pelicula.titulo}
-                      src={pelicula.img_url}
+                      alt={pelicula.title}
+                      src={pelicula.image_url}
                     />
                   </div>
                   <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left">
-                    {pelicula.titulo}
+                    {pelicula.title}
                   </h3>
                   <p className="mt-1 font-bold text-sm lemon-milk text-gray-600 text-center md:text-left">
-                    {pelicula.duracion} min
+                    {pelicula.duration} min
                   </p>
                 </li>
               ))}
@@ -127,22 +126,22 @@ export const MostPopular = () => {
                     <CardHeader color="blue-gray" className="relative h-56">
                       <img
                         className="mx-auto my-auto w-full h-full object-cover rounded-md"
-                        src={selectedMovie.img_url}
-                        alt={selectedMovie.titulo}
+                        src={selectedMovie.image_url_hd}
+                        alt={selectedMovie.title}
                       />
                     </CardHeader>
                     <CardBody>
                       <Typography variant="h5" color="blue-gray" className="mb-2">
                         <p className="text-gray-700 mb-4">
                           <span className="font-bold text-3xl">
-                            {selectedMovie.titulo}
+                            {selectedMovie.title}
                           </span>
                         </p>
                         <p className="text-gray-700">
-                          {selectedMovie.generos ? selectedMovie.generos : "N/A"}
+                          {selectedMovie.genre ? selectedMovie.genre : "N/A"}
                         </p>
                         <p className="font-bold text-gray-700">
-                          {selectedMovie.duracion} min
+                          {selectedMovie.duration} min
                         </p>
                       </Typography>
                       <Typography>

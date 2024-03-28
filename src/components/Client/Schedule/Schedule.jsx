@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import "./Schedule.css";
-import { useSearchParams } from "react-router-dom";
-import { firestore } from "../../utils/firebase.js";
-import { Link } from "react-router-dom";
-import {
-  collection,
-  getDoc,
-  getDocs,
-  doc,
-  writeBatch,
-} from "firebase/firestore";
+import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
+import { firestore } from "../../../utils/firebase";
+import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
 
 export const Schedule = () => {
@@ -24,8 +17,8 @@ export const Schedule = () => {
   const [movieDetails, setMovieDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [asientos, setAsientos] = useState([]);
-  const [selectedSeats, setSelectedSeats] = useState([]); // Estado para los asientos seleccionados
-  const [parentDocumentId, setParentDocumentId] = useState(null); // Agregamos estado para el ID del documento padre
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [parentDocumentId, setParentDocumentId] = useState(null);
 
   useEffect(() => {
     const asyncLoader = async () => {
@@ -40,7 +33,7 @@ export const Schedule = () => {
   useEffect(() => {
     const fetchAsientos = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "asientos"));
+        const querySnapshot = await getDocs(collection(firestore, "seats"));
         const asientosData = [];
 
         if (!querySnapshot.empty) {
@@ -48,7 +41,6 @@ export const Schedule = () => {
           const parentDocRef = primerDocumento.ref;
           const parentDocId = primerDocumento.id;
 
-          // Guardamos el ID del documento padre en el estado
           setParentDocumentId(parentDocId);
 
           const subcoleccionId = "Sala1";
@@ -59,19 +51,16 @@ export const Schedule = () => {
             const estado = subdoc.data().estado;
             const id = subdoc.id;
 
-            // Construir la ruta completa con el ID adicional
             const fullPath = `asientos/${parentDocId}/Sala1/${id}`;
 
-            // Agregar los datos al arreglo asientosData
             asientosData.push({
-              id: fullPath, // Aquí utilizamos el fullPath
+              id: fullPath,
               estado: estado,
               ...subdoc.data(),
             });
           });
         }
 
-        // Guardar los datos en el estado asientos
         setAsientos(asientosData);
 
         setLoading(false);          
@@ -86,7 +75,7 @@ export const Schedule = () => {
 
   useEffect(() => {
     const getMovieData = async (movie_id) => {
-      const docRef = doc(db, "peliculas", movie_id);
+      const docRef = doc(firestore, "movies", movie_id);
       const docSnap = await getDoc(docRef);
       const infoMovie = docSnap.data();
       setMovieDetails(infoMovie);
@@ -110,77 +99,39 @@ export const Schedule = () => {
     setTotal(selectedSeatsCount * ticketPrice);
   };
 
-
   const handleSeatClick = (seatId) => {
-    console.log('Clicked seat id:', seatId);
-    
     const updatedSeats = [...selectedSeats];
     const index = updatedSeats.indexOf(seatId);
-  
-    // Si el asiento no está en la lista de asientos seleccionados, añadirlo
+
     if (index === -1) {
       updatedSeats.push(seatId);
-      console.log('Seat added:', seatId);
-    } else { // Si el asiento está en la lista de asientos seleccionados, quitarlo
+    } else {
       updatedSeats.splice(index, 1);
-      console.log('Seat removed:', seatId);
     }
-  
-    setSelectedSeats(updatedSeats); // Actualizar el estado de los asientos seleccionados
-  
-    // Actualizar el estado de los asientos en el estado 'asientos'
+
+    setSelectedSeats(updatedSeats);
+
     const updatedAsientos = asientos.map((asiento) => {
       if (asiento.id === seatId) {
         return {
           ...asiento,
-          estado: updatedSeats.includes(asiento.id) ? "seleccionado" : "disponible",
+          estado: updatedSeats.includes(seatId) ? "seleccionado" : "disponible",
         };
       }
       return asiento;
     });
-  
-    console.log('Updated asientos:', updatedAsientos);
-    
-    setAsientos(updatedAsientos); // Actualizar el estado de los asientos
+
+    setAsientos(updatedAsientos);
   }; 
-  
-
-
-                // const handleSeatClick = (seatId) => {
-                //   const updatedSeats = [...selectedSeats];
-                //   const index = updatedSeats.indexOf(seatId);
-
-                //   // Si el asiento no está en la lista de asientos seleccionados, añadirlo
-                //   if (index === -1) {
-                //     updatedSeats.push(seatId);
-                //   } else { // Si el asiento está en la lista de asientos seleccionados, quitarlo
-                //     updatedSeats.splice(index, 1);
-                //   }
-
-                //   setSelectedSeats(updatedSeats); // Actualizar el estado de los asientos seleccionados
-
-                //   // Actualizar el estado de los asientos en el estado 'asientos'
-                //   const updatedAsientos = asientos.map((asiento) => {
-                //     if (asiento.id === seatId) {
-                //       return {
-                //         ...asiento,
-                //         estado: updatedSeats.includes(seatId) ? "seleccionado" : "disponible",
-                //       };
-                //     }
-                //     return asiento;
-                //   });
-
-                //   setAsientos(updatedAsientos); // Actualizar el estado de los asientos
-                // };
 
   const handleSend = async () => {
-    if (selectedSeats.length > 0 && parentDocumentId) { // Verificamos si hay asientos seleccionados y si tenemos un ID de documento padre
+    if (selectedSeats.length > 0 && parentDocumentId) {
       try {
-        const batch = writeBatch(db);
+        const batch = writeBatch(firestore);
         const idS = parentDocumentId;
 
         selectedSeats.forEach((seatId) => {
-          const seatRef = doc(db, "asientos", idS, "Sala1", seatId);
+          const seatRef = doc(firestore, "asientos", idS, "Sala1", seatId);
           batch.update(seatRef, { estado: "ocupado" });
         });
 
@@ -198,7 +149,6 @@ export const Schedule = () => {
     }
   };
 
-
   return (
     <>
       {loader && (
@@ -209,25 +159,20 @@ export const Schedule = () => {
       <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
         <HomeNavbar />
         <div>
-          <section className="flex justify-center    md:p-0  bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2  rounded-xl mt-40">
-            <div className=" flex   p-0 justify-center flex-wrap">
-              <div className="justify-between align-center ">
+          <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2 rounded-xl mt-40">
+            <div className="flex p-0 justify-center flex-wrap">
+              <div className="justify-between align-center">
                 <img
-                  className=" mt-20 sm:w-56 md:w-64 xl:w-72 w-44 "
+                  className="mt-20 sm:w-56 md:w-64 xl:w-72 w-44"
                   src={movieDetails?.img_url}
-                  alt={movieDetails?.titulo}
-
+                  alt={movieDetails?.title}
                 />
                 <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center mt-5">
                   {movieDetails?.titulo}
                 </h2>
-                
               </div>
-              <div className=" contenido  mt-6 m-10">
-                <h2
-                  id="horarios"
-                  className="uppercase text-2xl font-medium lemon-milk"
-                >
+              <div className="contenido mt-6 m-10">
+                <h2 id="horarios" className="uppercase text-2xl font-medium lemon-milk">
                   Horarios
                 </h2>
                 <a
@@ -237,7 +182,6 @@ export const Schedule = () => {
                 >
                   {movieDetails?.horario}
                 </a>
-
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
                   <div className="body p-6">
@@ -278,7 +222,6 @@ export const Schedule = () => {
                       </li>
                     </ul>
 
-
                     <div className="container">
                       <div className="screen"></div>
                       <div className="row">
@@ -288,12 +231,12 @@ export const Schedule = () => {
                               asiento.estado === "ocupado"
                                 ? "seat occupied"
                                 : asiento.selected
-                                  ? "seat selected"
-                                  : "seat"
+                                ? "seat selected"
+                                : "seat"
                             }
                             key={asiento.id}
-                            data-seat-id={asiento.id} // Añade el atributo data-seat-id
-                            onClick={() => handleSeatClick(asiento.id)} // Pasa la clase CSS del asiento como parámetro
+                            data-seat-id={asiento.id}
+                            onClick={() => handleSeatClick(asiento.id)}
                           ></div>
                         ))}
                         <div className="seat"></div>
@@ -305,61 +248,7 @@ export const Schedule = () => {
                         <div className="seat"></div>
                         <div className="seat"></div>
                       </div>
-
-                      <div className="row">
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat occupied"></div>
-                        <div className="seat occupied"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                      </div>
-
-                      <div className="row">
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat occupied"></div>
-                        <div className="seat occupied"></div>
-                      </div>
-
-                      <div className="row">
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                      </div>
-
-                      <div className="row">
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat occupied"></div>
-                        <div className="seat occupied"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                      </div>
-
-                      <div className="row">
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat occupied"></div>
-                        <div className="seat occupied"></div>
-                        <div className="seat occupied"></div>
-                        <div className="seat"></div>
-                      </div>
+                      ...
                     </div>
                   </div>
 
@@ -396,9 +285,13 @@ export const Schedule = () => {
                     <div className="m-4 text-white">
                       <p>{movieDetails?.titulo}</p>
                       <p>{movieDetails?.duracion} minutos</p>
-                      <Link to="/payment"
+                      {/* Cambiamos <a> por <Link> */}
+                      <Link
+                        
                         className="bg-[color:var(--negro)] text-white rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
                         onClick={handleSend}
+                        // Pasamos los datos de la película seleccionada como parámetros en la URL
+                        to={`/payment?id=${selectedMovieIndex}`}
                       >
                         Agregar boletos
                       </Link>

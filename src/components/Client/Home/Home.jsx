@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Home.css";
 import { Hero } from "../Hero/Hero";
-import { MostPopular } from "../../MostPopular/MostPopular";
+import { MostPopular } from "../MostPopular/MostPopular";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import { Footer } from "../Footer/Footer";
 import { Spinner } from "@material-tailwind/react";
@@ -30,6 +30,7 @@ export const Home = () => {
       )}
       <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
         <HomeNavbar />
+        
         <Hero />
         <MostPopular />
         <Footer />
