@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import "./Hero.css";
@@ -7,16 +7,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { Carousel, IconButton } from "@material-tailwind/react";
 import YouTube from 'react-youtube';
 
-/* Arreglar la sección de ver trailer para que se vea centrada en movil y en web */
-/* Arreglar el modal en el que se muestra el trailer para que se muestre en el índice en que se hizo clic para ver */
-/* Arreglar el modal en el que se muestra el trailer para que no se mueva el carrusel una vez se haya esté activo un trailer o modal */
-
 export function Hero() {
   const [peliculas, setPeliculas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentTrailer, setCurrentTrailer] = useState('');
   const [currentName, setCurrentName] = useState('');
-  const [activeIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [carouselEnabled, setCarouselEnabled] = useState(true);
 
   useEffect(() => {
     const fetchPeliculas = async () => {
@@ -37,15 +34,27 @@ export function Hero() {
     fetchPeliculas();
   }, []);
 
-   const fadeOverlayStyle = {
-     position: "absolute",
-     bottom: "0",
-     left: "0",
-     width: "100%",
-     height: "10%",
-     background: "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
-     pointerEvents: "auto",
-   }; 
+  const fadeOverlayStyle = {
+    position: "absolute",
+    bottom: "0",
+    left: "0",
+    width: "100%",
+    height: "10%",
+    background: "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
+    pointerEvents: "auto",
+  }; 
+
+  const openTrailer = (trailerUrl, movieName, index) => {
+    setCurrentTrailer(trailerUrl);
+    setCurrentName(movieName);
+    setCurrentIndex(index);
+    setCarouselEnabled(false); // Deshabilitar el carrusel
+  };
+
+  const closeTrailer = () => {
+    setCurrentTrailer('');
+    setCarouselEnabled(true); // Habilitar el carrusel
+  };
 
   return (
     <div>
@@ -53,7 +62,7 @@ export function Hero() {
         autoplay
         autoplayDelay={4000}
         loop
-        activeIndex={activeIndex}
+        activeIndex={currentIndex}
         navigation={({ setActiveIndex, activeIndex, length }) => (
           <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
             {new Array(length).fill("").map((_, i) => (
@@ -68,6 +77,7 @@ export function Hero() {
             ))}
           </div>
         )}
+        disabled={!carouselEnabled} // Deshabilitar el carrusel cuando esté activo el modal
       >
         {peliculas.map((pelicula, index) => (
           <div key={pelicula.id} className="z-50">
@@ -100,8 +110,7 @@ export function Hero() {
                               className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000"
                               onClick={(e) => {
                                 e.preventDefault();
-                                setCurrentTrailer(peliculas[index].trailer);
-                                setCurrentName(peliculas[index].titulo);
+                                openTrailer(peliculas[index].trailer, peliculas[index].titulo, index);
                               }}
                             >
                               Watch Trailer
@@ -122,56 +131,56 @@ export function Hero() {
               <div style={fadeOverlayStyle}></div>
             </div>
           </div>
-        ))} 
-        {currentTrailer && (
-          <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
-            <div className="absolute inset-0 bg-black bg-opacity-75"></div>
-            <div className="relative w-full max-w-screen-lg mx-4">
-              <div className="bg-white p-8 rounded-md h-full">
-                <h2 className="text-2xl font-bold -mb-4">
-                  Trailer: <span className="text-[color:var(--azul-fuerte)]">{currentName}</span>
-                </h2>
-                <div className="flex flex-col md:flex-row w-full h-full relative">
-                  <div className="w-full md:w-full mt-6 md:mt-6 relative">
-                    <YouTube
-                      videoId={extractVideoIdFromUrl(currentTrailer)}
-                      opts={{
-                        width: '100%',
-                        playerVars: {
-                          autoplay: 1,
-                        },
-                      }}
-                    />
-                  </div>
-                  <div className="absolute -top-5 right-0">
-                    <IconButton
-                      className="bg-[color:var(--azul-claro)] w-8 h-8"
-                      onClick={() => setCurrentTrailer('')}
-                    >
-                      <div className="text-[color:var(--azul-fuerte)] hover:text-[color:var(--azul)] duration-300">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          className="h-6 w-6"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </div>
-                    </IconButton>
-                  </div>
+        ))}
+      </Carousel>
+      {currentTrailer && (
+        <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
+          <div className="absolute inset-0 bg-black bg-opacity-75"></div>
+          <div className="relative w-full max-w-screen-lg mx-4">
+            <div className="bg-white p-8 rounded-md h-full">
+              <h2 className="text-2xl font-bold -mb-4">
+                Trailer: <span className="text-[color:var(--azul-fuerte)]">{currentName}</span>
+              </h2>
+              <div className="flex flex-col md:flex-row w-full h-full relative">
+                <div className="w-full md:w-full mt-6 md:mt-6 relative">
+                  <YouTube
+                    videoId={extractVideoIdFromUrl(currentTrailer)}
+                    opts={{
+                      width: '100%',
+                      playerVars: {
+                        autoplay: 1,
+                      },
+                    }}
+                  />
+                </div>
+                <div className="absolute -top-5 right-0">
+                  <IconButton
+                    className="bg-[color:var(--azul-claro)] w-8 h-8"
+                    onClick={closeTrailer}
+                  >
+                    <div className="text-[color:var(--azul-fuerte)] hover:text-[color:var(--azul)] duration-300">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        className="h-6 w-6"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </div>
+                  </IconButton>
                 </div>
               </div>
             </div>
           </div>
-        )}
-      </Carousel>
+        </div>
+      )}
     </div>
   );
 }
