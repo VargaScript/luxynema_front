@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { firestore } from "../../utils/firebase.js";
+import React, { useState, useEffect } from "react";
+import { firestore } from "../../../utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import "./MostPopular.css";
 import { Link } from "react-router-dom";
@@ -12,27 +12,29 @@ import {
   Button,
 } from "@material-tailwind/react";
 
-/* Arreglar que cuando se haga clic y aparezca una card de película no se pueda hacer scroll y cuando se cierre la card no se regrese al principio de la página */
-/* Mostrar solo las 8 películas mas populares */
-
 export const MostPopular = () => {
   const [peliculas, setPeliculas] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isExtendedVisible, setIsExtendedVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isCloseHandled, setIsCloseHandled] = useState(false);
   const [scrollDisabled, setScrollDisabled] = useState(false);
 
   useEffect(() => {
     const fetchPeliculas = async () => {
       try {
-        const querySnapshot = await getDocs(collection(firestore, "peliculas"));
+        const querySnapshot = await getDocs(collection(firestore, "movies"));
         const peliculasData = [];
+        let count = 0;
         querySnapshot.forEach((doc) => {
-          peliculasData.push({ id: doc.id, ...doc.data() });
+          if (count < 8) {
+            peliculasData.push({ id: doc.id, ...doc.data() });
+            count++;
+          }
         });
         setPeliculas(peliculasData);
       } catch (error) {
-        console.error("Error getting peliculas: ", error);
+        console.error("Error getting movies: ", error);
       }
     };
 
@@ -40,36 +42,17 @@ export const MostPopular = () => {
   }, []);
 
   useEffect(() => {
-    let scrollPosition = 0;
-
-    const toggleScrollClass = () => {
-      if (scrollDisabled) {
-        scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-
-        // Deshabilitar scroll
-        window.addEventListener('scroll', disableScroll);
-      } else {
-        window.removeEventListener('scroll', disableScroll);
-        window.scrollTo(0, scrollPosition);
-      }
-    };
-
-    const disableScroll = (e) => {
-      e.preventDefault();
-      window.scrollTo(0, scrollPosition);
-    };
-
-    toggleScrollClass();
-
-    return () => {
-      window.removeEventListener('scroll', disableScroll);
-    };
-  }, [scrollDisabled]);
+    if (selectedMovie) {
+      document.body.style.overflow = "hidden"; // Deshabilitar scroll
+    } else {
+      document.body.style.overflow = "auto"; // Habilitar scroll
+    }
+  }, [selectedMovie]);
 
   const handleEventClick = (event) => {
     setSelectedMovie(event);
     setIsAnimating(true);
-    setScrollDisabled(true);
+    setIsCloseHandled(false);
 
     setTimeout(() => {
       setIsExtendedVisible(true);
@@ -78,8 +61,10 @@ export const MostPopular = () => {
   };
 
   const closeDetailedView = () => {
-    setSelectedMovie(null);
-    setScrollDisabled(false);
+    if (!isCloseHandled) {
+      setIsCloseHandled(true);
+      setSelectedMovie(null);
+    }
   };
 
   return (
@@ -102,15 +87,15 @@ export const MostPopular = () => {
                   <div className="overlay-gradient">
                     <img
                       className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105"
-                      alt={pelicula.titulo}
-                      src={pelicula.img_url}
+                      alt={pelicula.title}
+                      src={pelicula.image_url}
                     />
                   </div>
                   <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left">
-                    {pelicula.titulo}
+                    {pelicula.title}
                   </h3>
                   <p className="mt-1 font-bold text-sm lemon-milk text-gray-600 text-center md:text-left">
-                    {pelicula.duracion} min
+                    {pelicula.duration} min
                   </p>
                 </li>
               ))}
@@ -127,22 +112,22 @@ export const MostPopular = () => {
                     <CardHeader color="blue-gray" className="relative h-56">
                       <img
                         className="mx-auto my-auto w-full h-full object-cover rounded-md"
-                        src={selectedMovie.img_url}
-                        alt={selectedMovie.titulo}
+                        src={selectedMovie.image_url_hd}
+                        alt={selectedMovie.title}
                       />
                     </CardHeader>
                     <CardBody>
                       <Typography variant="h5" color="blue-gray" className="mb-2">
                         <p className="text-gray-700 mb-4">
                           <span className="font-bold text-3xl">
-                            {selectedMovie.titulo}
+                            {selectedMovie.title}
                           </span>
                         </p>
                         <p className="text-gray-700">
-                          {selectedMovie.generos ? selectedMovie.generos : "N/A"}
+                          {selectedMovie.genre ? selectedMovie.genre : "N/A"}
                         </p>
                         <p className="font-bold text-gray-700">
-                          {selectedMovie.duracion} min
+                          {selectedMovie.duration} min
                         </p>
                       </Typography>
                       <Typography>
@@ -158,15 +143,17 @@ export const MostPopular = () => {
                             Agendar boletos
                           </Button>
                         </Link>
-                        <Button className="flex-1 transition duration-500 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black"><p
-                          className="rounded-md"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            closeDetailedView();
-                          }}
-                        >
-                          Cerrar
-                        </p></Button>
+                        <Button className="flex-1 transition duration-500 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black">
+                          <p
+                            className="rounded-md"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              closeDetailedView();
+                            }}
+                          >
+                            Cerrar
+                          </p>
+                        </Button>
                       </div>
                     </CardFooter>
                   </Card>

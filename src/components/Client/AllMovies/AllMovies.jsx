@@ -19,6 +19,7 @@ import { Footer } from "../Footer/Footer.jsx";
 
 export const AllMovies = () => {
     const [peliculas, setPeliculas] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [isExtendedVisible, setIsExtendedVisible] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
@@ -39,20 +40,22 @@ export const AllMovies = () => {
 
     useEffect(() => {
         const fetchPeliculas = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(firestore, "peliculas"));
-                const peliculasData = [];
-                querySnapshot.forEach((doc) => {
-                    peliculasData.push({ id: doc.id, ...doc.data() });
-                });
-                setPeliculas(peliculasData);
-            } catch (error) {
-                console.error("Error getting peliculas: ", error);
-            }
+          try {
+            const querySnapshot = await getDocs(collection(firestore, "movies"));
+            const peliculasData = [];
+            querySnapshot.forEach((doc) => {
+              peliculasData.push({ id: doc.id, ...doc.data() });
+            });
+            setPeliculas(peliculasData);
+            setLoading(false);
+          } catch (error) {
+            console.error("Error getting movies: ", error);
+            setLoading(false);
+          }
         };
-
+    
         fetchPeliculas();
-    }, []);
+      }, []);
 
     useEffect(() => {
         let scrollPosition = 0;
@@ -105,7 +108,7 @@ export const AllMovies = () => {
             )}
             <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
                 <HomeNavbar />
-                <div>
+                <div className="-mt-24">
                     <section className="bg-white mx-10 md:mx-10 rounded-lg z-0 above-all mt-32 border">
                         <div className="px-4 md:px-20 py-4 md:py-10">
                             <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
@@ -123,15 +126,15 @@ export const AllMovies = () => {
                                         <div className="overlay-gradient">
                                             <img
                                                 className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105"
-                                                alt={pelicula.titulo}
-                                                src={pelicula.img_url}
+                                                alt={pelicula.title}
+                                                src={pelicula.image_url}
                                             />
                                         </div>
                                         <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left">
-                                            {pelicula.titulo}
+                                            {pelicula.title}
                                         </h3>
                                         <p className="mt-1 font-bold text-sm lemon-milk text-gray-600 text-center md:text-left">
-                                            {pelicula.duracion} min
+                                            {pelicula.duration} min
                                         </p>
                                     </li>
                                 ))}
@@ -148,22 +151,22 @@ export const AllMovies = () => {
                                             <CardHeader color="blue-gray" className="relative h-56">
                                                 <img
                                                     className="mx-auto my-auto w-full h-full object-cover rounded-md"
-                                                    src={selectedMovie.img_url}
-                                                    alt={selectedMovie.titulo}
+                                                    src={selectedMovie.image_url_hd}
+                                                    alt={selectedMovie.title}
                                                 />
                                             </CardHeader>
                                             <CardBody>
                                                 <Typography variant="h5" color="blue-gray" className="mb-2">
                                                     <p className="text-gray-700 mb-4">
                                                         <span className="font-bold text-3xl">
-                                                            {selectedMovie.titulo}
+                                                            {selectedMovie.title}
                                                         </span>
                                                     </p>
                                                     <p className="text-gray-700">
-                                                        {selectedMovie.generos ? selectedMovie.generos : "N/A"}
+                                                        {selectedMovie.genre ? selectedMovie.genre[0] : "N/A"}, {selectedMovie.genre ? selectedMovie.genre[1] : "N/A"}
                                                     </p>
                                                     <p className="font-bold text-gray-700">
-                                                        {selectedMovie.duracion} min
+                                                        {selectedMovie.duration} min
                                                     </p>
                                                 </Typography>
                                                 <Typography>

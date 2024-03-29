@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../../utils/firebase.js";
+import { auth, firestore } from "../../../utils/firebase.js";
+import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import "./Account.css";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar.jsx";
 import {
@@ -21,6 +22,8 @@ export const Account = () => {
   const [sesionIniciada, setSesionIniciada] = useState(false);
   const [usuario, setUsuario] = useState(null);
   const [loader, setLoader] = useState(true);
+  const [watchHistory, setWatchHistory] = useState([]);
+  // const [users, setUsers] =
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export const Account = () => {
         setSesionIniciada(true);
         setUsuario({
           correo: usuarioActual.email,
-          nombre: usuarioActual.displayName || "Nombre de usuario predeterminado",
+          nombre: usuarioActual.displayName || "Dear User",
         });
       } else {
         setSesionIniciada(false);
@@ -49,6 +52,18 @@ export const Account = () => {
     };
 
     verificarSesion();
+  }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const usersRef = collection(firestore, "users");
+      const usersQuery = await getDocs(usersRef);
+  
+      const usersData = usersQuery.docs.map((doc) => doc.data());
+      setUsuarios(usersData);
+    };
+  
+    fetchUsers();
   }, []);
 
   const handleLogout = async () => {
@@ -62,6 +77,25 @@ export const Account = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchHistory = async () => {
+      const usuarioActual = auth.currentUser;
+      if (usuarioActual) {
+        const userDocRef = doc(firestore, 'seen_movies', usuarioActual.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          const watchHistory = userDocSnap.data().watchHistory || [];
+          setWatchHistory(watchHistory);
+        } else {
+          console.log("Historial del usuario no encontrado");
+        }
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
   return (
     <>
       {loader && (
@@ -72,7 +106,7 @@ export const Account = () => {
       <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
         <HomeNavbar />
         <div className="background-image flex flex-col md:flex-row">
-          <div className=" flex flex-col md:flex-row w-full">
+          <div className="flex flex-col md:flex-row w-full -mt-24">
             <Card className="md:w-1/2 mx-auto mb-4 md:mb-0">
               <CardHeader floated={true} className="h-80">
                 <img src="https://docs.material-tailwind.com/img/team-3.jpg" alt="Profile Picture" />
