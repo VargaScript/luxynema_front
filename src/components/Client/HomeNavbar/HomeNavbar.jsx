@@ -14,43 +14,28 @@ export function HomeNavbar() {
 
   const navList = (
     <ul className="lg:flex flex-col lg:flex-row sm:py-1 lg:py-3 gap-2 lg:gap-6 justify-end">
-      <li className="lg:pl-5 text-xl lg:text-xl uppercase text-white li-font"
-      >
-        <Link to="/home"
-          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
+      <li className="lg:pl-5 text-xl lg:text-xl uppercase text-white li-font">
+        <Link to="/home" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
           Home
         </Link>
       </li>
-      <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font"
-      >
-        <Link
-          to="/about-us"
-          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
-        >
+      <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
+        <Link to="/about-us" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
           About Us
         </Link>
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
-        <Link
-          to="/all-movies"
-          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
-        >
+        <Link to="/all-movies" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
           All Movies
         </Link>
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
-        <Link
-          to="/membership"
-          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
-        >
+        <Link to="/membership" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
           Membership
         </Link>
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-2xl uppercase li-font">
-        <Link
-          to="/account"
-          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
-        >
+        <Link to="/account" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
           <FontAwesomeIcon icon={faUser} />
         </Link>
       </li>
@@ -60,79 +45,38 @@ export function HomeNavbar() {
   const mobileNavList = (
     <ul className="mt-5 lg:flex flex-col lg:flex-row lg:py-10 gap-2 lg:gap-6 justify-end bg-transparent">
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link
-          to="/home"
-          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-        >
-          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-            <i className="fa-solid fa-house"></i>
-          </IconButton>
-          <p className="ml-3">
-            Home
-          </p>
+        <Link to="/home" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+          Home
         </Link>
       </li>
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link
-          to="/about-us"
-          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-        >
-          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-            <i className="fa-solid fa-building"></i>
-          </IconButton>
-          <p className="ml-3">
-            About Us
-          </p>
+        <Link to="/about-us" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+          About Us
         </Link>
       </li>
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link
-          to="/all-movies"
-          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-        >
-          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-            <i className="fa-solid fa-video"></i>
-          </IconButton>
-          <p className="ml-3">
-            All Movies
-          </p>
+        <Link to="/all-movies" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+          All Movies
         </Link>
       </li>
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link
-          to="/membership"
-          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-        >
-          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-            <i className="fa-solid fa-credit-card"></i>
-          </IconButton>
-          <p className="ml-3">
-            Membership
-          </p>
+        <Link to="/membership" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+          Membership
         </Link>
       </li>
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link
-          to="/account"
-          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-        >
-          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-            <i className="fa-solid fa-user"></i>
-          </IconButton>
-          <p className="ml-3">
-            Account
-          </p>
+        <Link to="/account" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+          Account
         </Link>
       </li>
     </ul>
   );
 
   return (
-    <div className="relative">
+    <div className="fixed top-0 w-full z-50">
       <Navbar
         color="transparent"
-        className="max-w-full px-4 py-2 lg:px-8 lg:py-4 absolute w-full"
-        style={{ zIndex: 1000 }}
+        className="max-w-full px-4 py-2 lg:px-8 lg:py-4"
       >
         <div className="flex items-center justify-between">
           <div className="text-2xl lg:text-3xl uppercase font-normal text-white galarama flex flex-end">
