@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./Home.css";
 import { Hero } from "../Hero/Hero";
 import { MostPopular } from "../MostPopular/MostPopular";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";

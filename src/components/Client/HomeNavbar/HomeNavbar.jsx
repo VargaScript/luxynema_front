@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./HomeNavbar.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,18 +9,8 @@ import {
   Collapse
 } from "@material-tailwind/react";
 
-/* Corregir la navbar en móvil para que se posicione encima del componente Hero */
-
 export function HomeNavbar() {
   const [openNav, setOpenNav] = useState(false);
-  const [navbarBackground] = useState("transparent");
-
-  useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false),
-    );
-  }, []);
 
   const navList = (
     <ul className="lg:flex flex-col lg:flex-row sm:py-1 lg:py-3 gap-2 lg:gap-6 justify-end">
@@ -67,79 +57,81 @@ export function HomeNavbar() {
     </ul>
   );
 
-  const mobileNavList = (<ul className="mt-5 lg:flex flex-col lg:flex-row lg:py-10 gap-2 lg:gap-6 justify-end bg-transparent">
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <Link
-        to="/home"
-        className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-      >
-        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-          <i className="fa-solid fa-house"></i>
-        </IconButton>
-        <p className="ml-3">
-          Home
-        </p>
-      </Link>
-    </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <Link
-        to="/about-us"
-        className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-      >
-        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-          <i className="fa-solid fa-building"></i>
-        </IconButton>
-        <p className="ml-3">
-          About Us
-        </p>
-      </Link>
-    </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <Link
-        to="/all-movies"
-        className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-      >
-        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-          <i className="fa-solid fa-video"></i>
-        </IconButton>
-        <p className="ml-3">
-          All Movies
-        </p>
-      </Link>
-    </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <Link
-        to="/membership"
-        className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-      >
-        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-          <i className="fa-solid fa-credit-card"></i>
-        </IconButton>
-        <p className="ml-3">
-          Membership
-        </p>
-      </Link>
-    </li>
-    <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-      <Link
-        to="/account"
-        className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
-      >
-        <IconButton variant="gradient" color="blue-gray" className="rounded-full">
-          <i className="fa-solid fa-user"></i>
-        </IconButton>
-        <p className="ml-3">
-          Account
-        </p>
-      </Link>
-    </li>
-  </ul>)
+  const mobileNavList = (
+    <ul className="mt-5 lg:flex flex-col lg:flex-row lg:py-10 gap-2 lg:gap-6 justify-end bg-transparent">
+      <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
+        <Link
+          to="/home"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
+          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+            <i className="fa-solid fa-house"></i>
+          </IconButton>
+          <p className="ml-3">
+            Home
+          </p>
+        </Link>
+      </li>
+      <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
+        <Link
+          to="/about-us"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
+          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+            <i className="fa-solid fa-building"></i>
+          </IconButton>
+          <p className="ml-3">
+            About Us
+          </p>
+        </Link>
+      </li>
+      <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
+        <Link
+          to="/all-movies"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
+          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+            <i className="fa-solid fa-video"></i>
+          </IconButton>
+          <p className="ml-3">
+            All Movies
+          </p>
+        </Link>
+      </li>
+      <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
+        <Link
+          to="/membership"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
+          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+            <i className="fa-solid fa-credit-card"></i>
+          </IconButton>
+          <p className="ml-3">
+            Membership
+          </p>
+        </Link>
+      </li>
+      <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
+        <Link
+          to="/account"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
+          <IconButton variant="gradient" color="blue-gray" className="rounded-full">
+            <i className="fa-solid fa-user"></i>
+          </IconButton>
+          <p className="ml-3">
+            Account
+          </p>
+        </Link>
+      </li>
+    </ul>
+  );
 
   return (
-    <div>
+    <div className="relative">
       <Navbar
-        color={navbarBackground}
-        className="max-w-full px-4 py-2 lg:px-8 lg:py-4"
+        color="transparent"
+        className="max-w-full px-4 py-2 lg:px-8 lg:py-4 absolute w-full"
         style={{ zIndex: 1000 }}
       >
         <div className="flex items-center justify-between">

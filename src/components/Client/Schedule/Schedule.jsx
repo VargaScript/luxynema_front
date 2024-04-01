@@ -5,7 +5,7 @@ import { useSearchParams, Link } from "react-router-dom"; // Importa Link de rea
 import { firestore } from "../../../utils/firebase";
 import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
-
+import {SeatBooking} from './Seats.jsx'
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [ticketPrice, setTicketPrice] = useState(70);
@@ -99,30 +99,14 @@ export const Schedule = () => {
     setTotal(selectedSeatsCount * ticketPrice);
   };
 
-  const handleSeatClick = (seatId) => {
-    const updatedSeats = [...selectedSeats];
-    const index = updatedSeats.indexOf(seatId);
-
-    if (index === -1) {
-      updatedSeats.push(seatId);
+  const handleSeatClick = (seatIndex) => {
+    if (selectedSeats.includes(seatIndex)) {
+      setSelectedSeats(selectedSeats.filter((index) => index !== seatIndex));
     } else {
-      updatedSeats.splice(index, 1);
+      setSelectedSeats([...selectedSeats, seatIndex]);
     }
-
-    setSelectedSeats(updatedSeats);
-
-    const updatedAsientos = asientos.map((asiento) => {
-      if (asiento.id === seatId) {
-        return {
-          ...asiento,
-          estado: updatedSeats.includes(seatId) ? "seleccionado" : "disponible",
-        };
-      }
-      return asiento;
-    });
-
-    setAsientos(updatedAsientos);
   }; 
+
 
   const handleSend = async () => {
     if (selectedSeats.length > 0 && parentDocumentId) {
@@ -168,7 +152,7 @@ export const Schedule = () => {
                   alt={movieDetails?.title}
                 />
                 <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center mt-5">
-                  {movieDetails?.titulo}
+                  {movieDetails?.title}
                 </h2>
               </div>
               <div className="contenido mt-6 m-10">
@@ -180,7 +164,7 @@ export const Schedule = () => {
                   className="bg-[color:var(--azul)] text-black rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
                   href=""
                 >
-                  {movieDetails?.horario}
+                  {movieDetails?.schedule }
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
@@ -188,24 +172,23 @@ export const Schedule = () => {
                     <h1>Select your places</h1>
                     <div className="movie-container">
                       <label>Movie </label>
+
+                      
+                      {/* se removio un segundo select que alteraba el funcionamiento */}
                       <select
                         id="movie"
                         onChange={handleMovieChange}
                         value={ticketPrice}
                       >
                         {movieDetails && (
-                          <select
-                            id="movie"
-                            onChange={handleMovieChange}
-                            value={ticketPrice}
-                          >
-                            <option value={ticketPrice}>
-                              {movieDetails?.titulo}- ${ticketPrice}
-                            </option>
-                          </select>
+                          <option value={ticketPrice}>
+                            {movieDetails?.title}- ${ticketPrice}
+                          </option>
                         )}
                       </select>
+
                     </div>
+                    <SeatBooking />
 
                     <ul className="showcase">
                       <li>
@@ -227,16 +210,10 @@ export const Schedule = () => {
                       <div className="row">
                         {asientos.map((asiento) => (
                           <div
-                            className={
-                              asiento.estado === "ocupado"
-                                ? "seat occupied"
-                                : asiento.selected
-                                ? "seat selected"
-                                : "seat"
-                            }
-                            key={asiento.id}
-                            data-seat-id={asiento.id}
-                            onClick={() => handleSeatClick(asiento.id)}
+                          //className={selectedSeats.includes(asiento.id) ? "seat selected" : "seat"}
+                          className={`seat ${asiento.estado === "ocupado" ? "occupied" : asiento.estado === "seleccionado" ? "selected" : ""}`}
+                          key={asiento.id}
+                          onClick={() => handleSeatClick(asiento.id)}
                           ></div>
                         ))}
                         <div className="seat"></div>
@@ -274,7 +251,7 @@ export const Schedule = () => {
                               </div>
                               <div className="text-white">
                                 <p>${total}</p>
-                                <p>{movieDetails?.horario}</p>
+                                <p>{movieDetails?.schedule}</p>
                                 <p>{count}</p>
                               </div>
                             </div>
@@ -283,8 +260,8 @@ export const Schedule = () => {
                       </div>
                     </div>
                     <div className="m-4 text-white">
-                      <p>{movieDetails?.titulo}</p>
-                      <p>{movieDetails?.duracion} minutos</p>
+                      <p>{movieDetails?.title}</p>
+                      <p>{movieDetails?.duration} minutos</p>
                       {/* Cambiamos <a> por <Link> */}
                       <Link
                         
