@@ -99,12 +99,30 @@ export const Schedule = () => {
     setTotal(selectedSeatsCount * ticketPrice);
   };
 
-  const handleSeatClick = (seatIndex) => {
-    if (selectedSeats.includes(seatIndex)) {
-      setSelectedSeats(selectedSeats.filter((index) => index !== seatIndex));
+  const handleSeatClick = (seatId) => {
+    console.log("seat clicked:", seatId);
+    const updatedSeats = [...selectedSeats];
+    const index = updatedSeats.indexOf(seatId);
+
+    if (index === -1) {
+      updatedSeats.push(seatId);
     } else {
-      setSelectedSeats([...selectedSeats, seatIndex]);
+      updatedSeats.splice(index, 1);
     }
+
+    setSelectedSeats(updatedSeats);
+
+    const updatedAsientos = asientos.map((asiento) => {
+      if (asiento.id === seatId) {
+        return {
+          ...asiento,
+          estado: updatedSeats.includes(seatId) ? "selected" : "disponible",
+        };
+      }
+      return asiento;
+    });
+
+    setAsientos(updatedAsientos);
   }; 
 
 
