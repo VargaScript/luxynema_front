@@ -88,7 +88,6 @@
 
 // export default SeatBooking;
 
-
 //segundo intento -------------------------------------------------
 
 
@@ -210,6 +209,11 @@
 import React, { useState, useEffect } from 'react';
 
 const Seats = () => {
+
+
+import React, { useEffect, useState } from 'react';
+
+export const SeatBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [ticketPrice, setTicketPrice] = useState(10);
 
@@ -274,7 +278,6 @@ const Seats = () => {
           <option value="9">The Lion King ($9)</option>
         </select>
       </div>
-
       <ul className="showcase">
         <li>
           <div className="seat"></div>
@@ -311,6 +314,47 @@ const Seats = () => {
         <div className="seat"></div>
         <div className="seat"></div>
         <div className="seat"></div>
+  // Renderizando los asientos
+  const renderSeats = () => {
+    const rows = 10;
+    const cols = 10;
+    const seats = [];
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const seatIndex = row * cols + col;
+        const isOccupied = () => {
+          // Aquí puedes tener tu lógica para determinar si un asiento está ocupado
+          // Por ahora, asumiremos que todos los asientos están disponibles
+          return false;
+        };
+        const isSelected = selectedSeats.includes(seatIndex);
+
+        seats.push(
+          <div
+            key={seatIndex}
+            className={`seat ${isOccupied() ? 'occupied' : ''} ${isSelected ? 'selected' : ''}`}
+            onClick={() => handleSeatClick(seatIndex)}
+          />
+        );
+      }
+    }
+
+    return seats;
+  };
+
+  return (
+    <div>
+      {/* <select id="movie" onChange={handleMovieChange} value={ticketPrice}>
+        <option value={10}>Movie 1 - $10</option>
+        <option value={15}>Movie 2 - $15</option>
+        //////// Agrega más opciones de películas si es necesario 
+      </select> */}
+
+      <div className="container">
+        {/* Renderizando los asientos */}
+        
+        {/* {renderSeats()} */}
       </div>
       <div className="row" onClick={handleSeatClick}>
         <div className="seat"></div>
@@ -354,10 +398,11 @@ const Seats = () => {
       </div>
 
       {/* Add other rows here */}
-
       <p className="text">
         You have selected <span id="count"> 0 </span> seats {/*for a price of $<span id="total">0</span>*/}
       </p>
+      {/* <p>Selected Seats: {count}</p>
+      <p>Total: ${total}</p> */}
     </div>
   );
 };
