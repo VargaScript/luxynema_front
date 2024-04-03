@@ -6,7 +6,7 @@ import { firestore } from "../../../utils/firebase";
 import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
 import Seats from './Seats'
-import {SeatBooking} from './Seats.jsx'
+
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [ticketPrice, setTicketPrice] = useState(70);
@@ -174,63 +174,10 @@ export const Schedule = () => {
                   <div className="body p-6">
                     <h1>Select your places</h1>
                   <Seats/>
-                    <div className="movie-container">
-                      <label>Movie </label>
 
-                      
-                      {/* se removio un segundo select que alteraba el funcionamiento */}
-                      <select
-                        id="movie"
-                        onChange={handleMovieChange}
-                        value={ticketPrice}
-                      >
-                        {movieDetails && (
-                          <option value={ticketPrice}>
-                            {movieDetails?.title}- ${ticketPrice}
-                          </option>
-                        )}
-                      </select>
+                    
 
-                    </div>
-                    <SeatBooking />
 
-                    <ul className="showcase">
-                      <li>
-                        <div className="seat"></div>
-                        <small>N/A</small>
-                      </li>
-                      <li>
-                        <div className="seat selected"></div>
-                        <small>Selected</small>
-                      </li>
-                      <li>
-                        <div className="seat occupied"></div>
-                        <small>Occupied</small>
-                      </li>
-                    </ul>
-
-                    <div className="container">
-                      <div className="screen"></div>
-                      <div className="row">
-                        {asientos.map((asiento) => (
-                          <div
-                          //className={selectedSeats.includes(asiento.id) ? "seat selected" : "seat"}
-                          className={`seat ${asiento.estado === "ocupado" ? "occupied" : asiento.estado === "seleccionado" ? "selected" : ""}`}
-                          key={asiento.id}
-                          onClick={() => handleSeatClick(asiento.id)}
-                          ></div>
-                        ))}
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                      </div>
-                      ...
-                    </div>
                   </div>
 
                   <div className="contenidoCheckOut bg-black rounded-xl mt-4 mx-4 md:w-auto flex flex-col items-center justify-center">
@@ -281,6 +228,7 @@ export const Schedule = () => {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </section>
         </div>
