@@ -5,15 +5,15 @@ import "./Hero.css";
 import { firestore } from "../../../utils/firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 import { Carousel, IconButton } from "@material-tailwind/react";
-import YouTube from 'react-youtube';
+import YouTube from "react-youtube";
 
 export function Hero() {
   const [peliculas, setPeliculas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentTrailer, setCurrentTrailer] = useState('');
-  const [currentName, setCurrentName] = useState('');
+  const [currentTrailer, setCurrentTrailer] = useState("");
+  const [currentName, setCurrentName] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [carouselEnabled, setCarouselEnabled] = useState(true);
+  const [carouselMoving, setCarouselMoving] = useState(true);
 
   useEffect(() => {
     const fetchPeliculas = async () => {
@@ -40,26 +40,28 @@ export function Hero() {
     left: "0",
     width: "100%",
     height: "10%",
-    background: "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
+    background:
+      "linear-gradient(to bottom, rgba(17, 34, 54, 0), rgba(17, 34, 54, 0.7))",
     pointerEvents: "auto",
-  }; 
+  };
 
   const openTrailer = (trailerUrl, movieName, index) => {
     setCurrentTrailer(trailerUrl);
     setCurrentName(movieName);
     setCurrentIndex(index);
-    setCarouselEnabled(false); // Deshabilitar el carrusel
+    setCarouselMoving(false); 
   };
 
   const closeTrailer = () => {
-    setCurrentTrailer('');
-    setCarouselEnabled(true); // Habilitar el carrusel
+    setCurrentTrailer("");
+    setCarouselMoving(true); 
   };
 
   return (
     <div>
-      <Carousel className="above-all"
-        autoplay
+      <Carousel
+        className="above-all"
+        autoplay={carouselMoving} 
         autoplayDelay={4000}
         loop
         activeIndex={currentIndex}
@@ -68,8 +70,9 @@ export function Hero() {
             {new Array(length).fill("").map((_, i) => (
               <span
                 key={i}
-                className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
-                  }`}
+                className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
+                  activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
+                }`}
                 onClick={() => {
                   setActiveIndex(i);
                 }}
@@ -77,26 +80,28 @@ export function Hero() {
             ))}
           </div>
         )}
-        disabled={!carouselEnabled} // Deshabilitar el carrusel cuando esté activo el modal
       >
         {peliculas.map((pelicula, index) => (
           <div key={pelicula.id} className="z-50">
-            <div style={{
-              backgroundImage: `
+            <div
+              style={{
+                backgroundImage: `
     linear-gradient(rgba(17, 34, 54, 0.7), rgba(17, 34, 54 , 0.7)), 
     url(${!loading && pelicula.image_url_hd ? pelicula.image_url_hd : ""})
   `,
-              backgroundSize: "cover",
-              height: "100vh",
-              position: "relative",
-            }} className="flex relative md:justify-center">
+                backgroundSize: "cover",
+                height: "100vh",
+                position: "relative",
+              }}
+              className="flex relative md:justify-center"
+            >
               <div className="flex items-center justify-center inset-x-0 top-1/2 z-50 mt-20 absolute">
                 <section>
                   {loading ? (
                     <h1>Hubo un problema, intenta más tarde</h1>
                   ) : (
                     <>
-                      <h1 className="ml-2 text-center lg:ml-24 text-xl lg:text-8xl uppercase lemon-milk text-white font-thin">
+                      <h1 className="text-center lg:ml-24 text-xl lg:text-8xl uppercase lemon-milk text-white font-thin">
                         <a className="">{pelicula.title}</a>
                       </h1>
                       <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-12 ml-4 sm:ml-8 md:ml-16 lg:ml-24">
@@ -110,7 +115,11 @@ export function Hero() {
                               className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000"
                               onClick={(e) => {
                                 e.preventDefault();
-                                openTrailer(peliculas[index].trailer, peliculas[index].titulo, index);
+                                openTrailer(
+                                  peliculas[index].trailer,
+                                  peliculas[index].titulo,
+                                  index
+                                );
                               }}
                             >
                               Watch Trailer
@@ -139,14 +148,17 @@ export function Hero() {
           <div className="relative w-full max-w-screen-lg mx-4">
             <div className="bg-white p-8 rounded-md h-full">
               <h2 className="text-2xl font-bold -mb-4">
-                Trailer: <span className="text-[color:var(--azul-fuerte)]">{currentName}</span>
+                Trailer:{" "}
+                <span className="text-[color:var(--azul-fuerte)]">
+                  {currentName}
+                </span>
               </h2>
               <div className="flex flex-col md:flex-row w-full h-full relative">
                 <div className="w-full md:w-full mt-6 md:mt-6 relative">
                   <YouTube
                     videoId={extractVideoIdFromUrl(currentTrailer)}
                     opts={{
-                      width: '100%',
+                      width: "100%",
                       playerVars: {
                         autoplay: 1,
                       },
