@@ -87,7 +87,7 @@ export function Hero() {
               style={{
                 backgroundImage: `
     linear-gradient(rgba(17, 34, 54, 0.7), rgba(17, 34, 54 , 0.7)), 
-    url(${!loading && pelicula.image_url_hd ? pelicula.image_url_hd : ""})
+    url(${!loading && pelicula.img_url_hd ? pelicula.img_url_hd : ""})
   `,
                 backgroundSize: "cover",
                 height: "100vh",

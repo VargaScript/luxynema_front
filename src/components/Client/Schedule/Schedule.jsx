@@ -5,7 +5,7 @@ import { useSearchParams, Link } from "react-router-dom"; // Importa Link de rea
 import { firestore } from "../../../utils/firebase";
 import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
-
+import Seats from './Seats'
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [ticketPrice, setTicketPrice] = useState(70);
@@ -88,6 +88,7 @@ export const Schedule = () => {
     setSelectedMovieIndex(searchParams.get("id") || 0);
   }, []);
 
+
   const handleMovieChange = (e) => {
     setTicketPrice(+e.target.value);
     updateSelectedCount();
@@ -168,7 +169,7 @@ export const Schedule = () => {
                   alt={movieDetails?.title}
                 />
                 <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center mt-5">
-                  {movieDetails?.titulo}
+                  {movieDetails?.title}
                 </h2>
               </div>
               <div className="contenido mt-6 m-10">
@@ -180,76 +181,15 @@ export const Schedule = () => {
                   className="bg-[color:var(--azul)] text-black rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
                   href=""
                 >
-                  {movieDetails?.horario}
+                  {movieDetails?.schedule}
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
                   <div className="body p-6">
                     <h1>Select your places</h1>
-                    <div className="movie-container">
-                      <label>Movie </label>
-                      <select
-                        id="movie"
-                        onChange={handleMovieChange}
-                        value={ticketPrice}
-                      >
-                        {movieDetails && (
-                          <select
-                            id="movie"
-                            onChange={handleMovieChange}
-                            value={ticketPrice}
-                          >
-                            <option value={ticketPrice}>
-                              {movieDetails?.titulo}- ${ticketPrice}
-                            </option>
-                          </select>
-                        )}
-                      </select>
-                    </div>
 
-                    <ul className="showcase">
-                      <li>
-                        <div className="seat"></div>
-                        <small>N/A</small>
-                      </li>
-                      <li>
-                        <div className="seat selected"></div>
-                        <small>Selected</small>
-                      </li>
-                      <li>
-                        <div className="seat occupied"></div>
-                        <small>Occupied</small>
-                      </li>
-                    </ul>
+                  <Seats/>
 
-                    <div className="container">
-                      <div className="screen"></div>
-                      <div className="row">
-                        {asientos.map((asiento) => (
-                          <div
-                            className={
-                              asiento.estado === "ocupado"
-                                ? "seat occupied"
-                                : asiento.selected
-                                ? "seat selected"
-                                : "seat"
-                            }
-                            key={asiento.id}
-                            data-seat-id={asiento.id}
-                            onClick={() => handleSeatClick(asiento.id)}
-                          ></div>
-                        ))}
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                      </div>
-                      ...
-                    </div>
                   </div>
 
                   <div className="contenidoCheckOut bg-black rounded-xl mt-4 mx-4 md:w-auto flex flex-col items-center justify-center">
@@ -274,7 +214,7 @@ export const Schedule = () => {
                               </div>
                               <div className="text-white">
                                 <p>${total}</p>
-                                <p>{movieDetails?.horario}</p>
+                                <p>{movieDetails?.schedule}</p>
                                 <p>{count}</p>
                               </div>
                             </div>
@@ -282,9 +222,9 @@ export const Schedule = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="m-4 text-white">
-                      <p>{movieDetails?.titulo}</p>
-                      <p>{movieDetails?.duracion} minutos</p>
+                    <div className=" text-white">
+                      <p>{movieDetails?.title}</p>
+                      <p>{movieDetails?.duration} minutos</p>
                       {/* Cambiamos <a> por <Link> */}
                       <Link
                         
