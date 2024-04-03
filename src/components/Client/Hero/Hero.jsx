@@ -49,19 +49,19 @@ export function Hero() {
     setCurrentTrailer(trailerUrl);
     setCurrentName(movieName);
     setCurrentIndex(index);
-    setCarouselMoving(false);  //
+    setCarouselMoving(false); //
   };
 
   const closeTrailer = () => {
     setCurrentTrailer("");
-    setCarouselMoving(true); 
+    setCarouselMoving(true);
   };
 
   return (
     <div>
       <Carousel
         className="above-all"
-        autoplay={carouselMoving} 
+        autoplay={carouselMoving}
         autoplayDelay={4000}
         loop
         activeIndex={currentIndex}
@@ -106,7 +106,12 @@ export function Hero() {
                       </h1>
                       <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-12 ml-4 sm:ml-8 md:ml-16 lg:ml-24">
                         <p className="text-lg sm:text-xl lg:text-2xl text-white capitalize">
-                          {pelicula.genre}
+                          {Array.isArray(pelicula.genre)
+                            ? pelicula.genre.length > 2
+                              ? pelicula.genre.slice(0, 2).join(", ") +
+                                ", and more"
+                              : pelicula.genre.join(", ")
+                            : pelicula.genre}
                         </p>
                         <div className="mt-4">
                           <div>
