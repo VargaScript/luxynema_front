@@ -49,7 +49,7 @@ export function Hero() {
     setCurrentTrailer(trailerUrl);
     setCurrentName(movieName);
     setCurrentIndex(index);
-    setCarouselMoving(false); 
+    setCarouselMoving(false);  //
   };
 
   const closeTrailer = () => {
