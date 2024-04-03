@@ -5,6 +5,7 @@ import { useSearchParams, Link } from "react-router-dom"; // Importa Link de rea
 import { firestore } from "../../../utils/firebase";
 import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
+import Seats from './Seats'
 import {SeatBooking} from './Seats.jsx'
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
@@ -88,6 +89,7 @@ export const Schedule = () => {
     setSelectedMovieIndex(searchParams.get("id") || 0);
   }, []);
 
+
   const handleMovieChange = (e) => {
     setTicketPrice(+e.target.value);
     updateSelectedCount();
@@ -164,12 +166,14 @@ export const Schedule = () => {
                   className="bg-[color:var(--azul)] text-black rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
                   href=""
                 >
+                  {movieDetails?.schedule}
                   {movieDetails?.schedule }
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
                   <div className="body p-6">
                     <h1>Select your places</h1>
+                  <Seats/>
                     <div className="movie-container">
                       <label>Movie </label>
 
@@ -259,6 +263,7 @@ export const Schedule = () => {
                         </div>
                       </div>
                     </div>
+                    <div className=" text-white">
                     <div className="m-4 text-white">
                       <p>{movieDetails?.title}</p>
                       <p>{movieDetails?.duration} minutos</p>
