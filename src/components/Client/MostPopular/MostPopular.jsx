@@ -88,7 +88,7 @@ export const MostPopular = () => {
                     <img
                       className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105"
                       alt={pelicula.title}
-                      src={pelicula.image_url}
+                      src={pelicula.img_url}
                     />
                   </div>
                   <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left">
@@ -112,7 +112,7 @@ export const MostPopular = () => {
                     <CardHeader color="blue-gray" className="relative h-56">
                       <img
                         className="mx-auto my-auto w-full h-full object-cover rounded-md"
-                        src={selectedMovie.image_url_hd}
+                        src={selectedMovie.img_url_hd}
                         alt={selectedMovie.title}
                       />
                     </CardHeader>
