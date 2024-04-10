@@ -6,7 +6,6 @@ import { firestore } from "../../../utils/firebase";
 import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
 import Seats from './Seats'
-import {SeatBooking} from './Seats.jsx'
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [ticketPrice, setTicketPrice] = useState(70);
@@ -142,14 +141,14 @@ export const Schedule = () => {
           <Spinner className="h-12 w-12 mb-4" color="indigo" />
         </div>
       )}
-      <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
         <HomeNavbar />
+      <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
         <div>
-          <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2 rounded-xl mt-40">
+          <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2 rounded-xl mt-40 border ">
             <div className="flex p-0 justify-center flex-wrap">
               <div className="justify-between align-center">
                 <img
-                  className="mt-20 sm:w-56 md:w-64 xl:w-72 w-44"
+                  className="mt-20 sm:w-56 md:w-64 xl:w-72 w-44 "
                   src={movieDetails?.img_url}
                   alt={movieDetails?.title}
                 />
@@ -157,7 +156,7 @@ export const Schedule = () => {
                   {movieDetails?.title}
                 </h2>
               </div>
-              <div className="contenido mt-6 m-10">
+              <div className="contenido mt-6 m-10  ">
                 <h2 id="horarios" className="uppercase text-2xl font-medium lemon-milk">
                   Horarios
                 </h2>
@@ -167,15 +166,15 @@ export const Schedule = () => {
                   href=""
                 >
                   {movieDetails?.schedule}
-                  {movieDetails?.schedule }
+                 
                 </a>
-                <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
+                <hr className="bg-[color:var(--negro)] w-100 h-1 m-4 " ></hr>
                 <div className="flex flex-wrap">
                   <div className="body p-6">
                     <h1>Select your places</h1>
-                  <Seats/>
-                    <div className="movie-container">
+                    <div className="movie-container ">
                       <label>Movie </label>
+                       <Seats/>
 
                       
                       {/* se removio un segundo select que alteraba el funcionamiento */}
@@ -183,6 +182,7 @@ export const Schedule = () => {
                         id="movie"
                         onChange={handleMovieChange}
                         value={ticketPrice}
+                        
                       >
                         {movieDetails && (
                           <option value={ticketPrice}>
@@ -190,46 +190,6 @@ export const Schedule = () => {
                           </option>
                         )}
                       </select>
-
-                    </div>
-                    <SeatBooking />
-
-                    <ul className="showcase">
-                      <li>
-                        <div className="seat"></div>
-                        <small>N/A</small>
-                      </li>
-                      <li>
-                        <div className="seat selected"></div>
-                        <small>Selected</small>
-                      </li>
-                      <li>
-                        <div className="seat occupied"></div>
-                        <small>Occupied</small>
-                      </li>
-                    </ul>
-
-                    <div className="container">
-                      <div className="screen"></div>
-                      <div className="row">
-                        {asientos.map((asiento) => (
-                          <div
-                          //className={selectedSeats.includes(asiento.id) ? "seat selected" : "seat"}
-                          className={`seat ${asiento.estado === "ocupado" ? "occupied" : asiento.estado === "seleccionado" ? "selected" : ""}`}
-                          key={asiento.id}
-                          onClick={() => handleSeatClick(asiento.id)}
-                          ></div>
-                        ))}
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                        <div className="seat"></div>
-                      </div>
-                      ...
                     </div>
                   </div>
 
@@ -244,7 +204,7 @@ export const Schedule = () => {
                           CheckOut
                         </h3>
                         <div>
-                          <div className="flex flex-col">
+                          <div className="flex flex-col  ">
                             <div className="flex justify-between">
                               <div>
                                 <div>
@@ -281,6 +241,7 @@ export const Schedule = () => {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </section>
         </div>
