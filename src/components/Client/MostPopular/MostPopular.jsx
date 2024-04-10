@@ -72,10 +72,10 @@ export const MostPopular = () => {
       <div>
         <section className="bg-white mx-10 md:mx-10 rounded-lg mt-4 md:mt-10 z-0 above-all">
           <div className="px-4 md:px-20 py-4 md:py-10">
-            <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
+            <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center text-black">
               Most Popular Movies
             </h2>
-            <h6 className="text-center md:text-left">Schedule your tickets</h6>
+            <h6 className="text-center md:text-left text-black">Schedule your tickets</h6>
             <hr className="bg-[color:var(--azul-fuerte)] lg:w-72 w-40 md:w-56 h-2 mb-8 mx-auto md:mx-0 mt-4 md:mt-5"></hr>
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 gap-y-10 mt-4 md:mt-5">
               {peliculas.map((pelicula) => (
@@ -86,15 +86,15 @@ export const MostPopular = () => {
                 >
                   <div className="overlay-gradient">
                     <img
-                      className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105"
+                      className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105 "
                       alt={pelicula.title}
                       src={pelicula.img_url}
                     />
                   </div>
-                  <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left">
+                  <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left text-black">
                     {pelicula.title}
                   </h3>
-                  <p className="mt-1 font-bold text-sm lemon-milk text-gray-600 text-center md:text-left">
+                  <p className="mt-1 font-bold text-sm lemon-milk text-black text-center md:text-left">
                     {pelicula.duration} min
                   </p>
                 </li>
@@ -136,7 +136,7 @@ export const MostPopular = () => {
                         </p>
                       </Typography>
                       <Typography>
-                        <div className="mt-2 text-gray-700 whitespace-normal">
+                        <div className="mt-2 text-black whitespace-normal">
                           {selectedMovie.sinopsis
                             ? selectedMovie.sinopsis
                             : "N/A"}

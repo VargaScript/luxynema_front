@@ -101,7 +101,7 @@ export function Hero() {
                     <h1>Hubo un problema, intenta más tarde</h1>
                   ) : (
                     <>
-                      <h1 className="text-center lg:ml-24 text-xl lg:text-8xl uppercase lemon-milk text-white font-thin">
+                      <h1 className="text-center  lg:ml-24 text-xl lg:text-8xl uppercase lemon-milk text-white font-thin">
                         <a className="">{pelicula.title}</a>
                       </h1>
                       <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-12 ml-4 sm:ml-8 md:ml-16 lg:ml-24">
