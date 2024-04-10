@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { Register } from "../Register/Register.jsx";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../utils/firebase.js";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { initializeApp } from "firebase/app";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../utils/firebase.js";
 
 import {
   Card,
@@ -30,13 +28,17 @@ export const Login = () => {
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+      .then(() => {
         toast.success('Log in success');
-        navigate("/home");
+        // Aquí deberías validar el campo isSuperuser y redirigir según su valor
+        if (/* condición para verificar isSuperuser */) {
+          navigate("/home-a");
+        } else {
+          navigate("/home-c");
+        }
       })
-      .catch(() => {
-        toast.error("Failed logging in. Check your credentials");
+      .catch((error) => {
+        toast.error(error.message);
       });
   };
 
@@ -44,7 +46,12 @@ export const Login = () => {
     const user = auth.currentUser;
 
     if (user) {
-      navigate("/home");
+      // Aquí también deberías validar el campo isSuperuser y redirigir según su valor
+      if (/* condición para verificar isSuperuser */) {
+        navigate("/home-a");
+      } else {
+        navigate("/home-c");
+      }
     }
   }, [navigate]);
 
