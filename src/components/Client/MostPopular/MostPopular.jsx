@@ -104,8 +104,9 @@ export const MostPopular = () => {
               <>
                 <div className="absolute inset-0 bg-black bg-opacity-75"></div>
                 <div
-                  className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 ${isExtendedVisible ? "opacity-100" : "opacity-0"
-                    } ${isAnimating ? "transition-opacity" : ""}`}
+                  className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 ${
+                    isExtendedVisible ? "opacity-100" : "opacity-0"
+                  } ${isAnimating ? "transition-opacity" : ""}`}
                   onClick={closeDetailedView}
                 >
                   <Card className="mt-6 w-96">
@@ -117,7 +118,11 @@ export const MostPopular = () => {
                       />
                     </CardHeader>
                     <CardBody>
-                      <Typography variant="h5" color="blue-gray" className="mb-2">
+                      <Typography
+                        variant="h5"
+                        color="blue-gray"
+                        className="mb-2"
+                      >
                         <p className="text-gray-700 mb-4">
                           <span className="font-bold text-3xl">
                             {selectedMovie.title}
@@ -132,13 +137,18 @@ export const MostPopular = () => {
                       </Typography>
                       <Typography>
                         <div className="mt-2 text-gray-700 whitespace-normal">
-                          {selectedMovie.sinopsis ? selectedMovie.sinopsis : "N/A"}
+                          {selectedMovie.sinopsis
+                            ? selectedMovie.sinopsis
+                            : "N/A"}
                         </div>
                       </Typography>
                     </CardBody>
                     <CardFooter className="pt-0">
                       <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-                        <Link to={`/schedule?id=${selectedMovie.id}`} className="rounded-md text-center flex-1 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black">
+                        <Link
+                          to={`/schedule?id=${selectedMovie.id}`}
+                          className="rounded-md text-center flex-1 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black"
+                        >
                           <Button className="bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black shadow-none transition duration-500">
                             Agendar boletos
                           </Button>
@@ -161,8 +171,8 @@ export const MostPopular = () => {
               </>
             )}
           </div>
-        </section >
-      </div >
+        </section>
+      </div>
     </>
   );
 };
