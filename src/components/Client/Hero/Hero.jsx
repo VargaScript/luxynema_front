@@ -113,11 +113,11 @@ export function Hero() {
                               : pelicula.genre.join(", ")
                             : pelicula.genre}
                         </p>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-center items-center">
                           <div>
                             <a
                               href={pelicula.trailer}
-                              className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000"
+                              className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000 "
                               onClick={(e) => {
                                 e.preventDefault();
                                 openTrailer(
