@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { Sidebar } from "../Sidebar/Sidebar";
-import { Button, Input, Typography, Spinner } from "@material-tailwind/react";
+import {
+  Button,
+  Input,
+  Typography,
+  Spinner,
+  Card,
+} from "@material-tailwind/react";
 import { firestore } from "../../../utils/firebase";
 import {
   collection,
@@ -118,14 +124,14 @@ export const ListUsers = () => {
           <Sidebar className="z-50" />
           <section className="bg-white mx-10 md:mx-10 rounded-lg mt-4 md:mt-10 z-0 above-all">
             <div className="px-4 md:px-20 py-4 md:py-10">
-              <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
+              <h2 className="uppercase text-xl text-black md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
                 All Users
               </h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6 gap-y-10 mt-4 md:mt-5">
                 {users.map((user) => (
-                  <li
+                  <Card
                     key={user.id}
-                    className="gap-x-5 width-[200px] h-[200px] flex"
+                    className="bg-gray-100 border border-gray-200 rounded-lg p-4 shadow-md gap-x-5 width-[200px] h-[250px] flex items-center"
                   >
                     {editMode && editedUser.id === user.id ? (
                       <div className="flex flex-col gap-5 width-[200px]">
@@ -138,7 +144,7 @@ export const ListUsers = () => {
                           placeholder="Username"
                         />
                         <Input
-                          className="mb-2"
+                          className=""
                           type="text"
                           name="email"
                           value={editedUser.email}
@@ -162,7 +168,7 @@ export const ListUsers = () => {
                         </Button>
                       </div>
                     ) : (
-                      <div className="w-[200px] flex flex-col justify-between">
+                      <div className="flex flex-col justify-between items-center">
                         <Typography
                           variant="h6"
                           color="gray"
@@ -184,7 +190,7 @@ export const ListUsers = () => {
                         >
                           Is Superuser: {user.isSuperuser ? "Yes" : "No"}
                         </Typography>
-                        <div className="flex gap-9 w-[200px] mt-2">
+                        <div className="flex gap-4 mt-4 justify-end">
                           <Button
                             className="bg-[color:var(--azul-fuerte)] text-white hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300"
                             onClick={() => handleEditClick(user)}
@@ -200,11 +206,12 @@ export const ListUsers = () => {
                         </div>
                       </div>
                     )}
-                  </li>
+                  </Card>
                 ))}
               </ul>
             </div>
           </section>
+          <div className="pb-20" />
         </div>
       </div>
     </>

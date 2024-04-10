@@ -127,9 +127,9 @@ export const ListMovies = () => {
           } transition-opacity duration-700`}
         >
           <Sidebar className="z-50" />
-          <section className="bg-white mx-10 md:mx-10 rounded-lg mt-4 md:mt-10 z-0 above-all">
-            <div className="px-4 md:px-20 py-4 md:py-10 w-[1450px]">
-              <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
+          <section className="bg-white mx-14 rounded-lg mt-4 md:mt-10 z-0 above-all">
+            <div className="md:px-20 py-4 md:py-10 -mr-10">
+              <h2 className="uppercase text-black text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
                 All Movies
               </h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6 gap-y-10 mt-4 md:mt-5">
