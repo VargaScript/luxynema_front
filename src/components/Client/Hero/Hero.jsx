@@ -101,7 +101,7 @@ export function Hero() {
                     <h1>Hubo un problema, intenta más tarde</h1>
                   ) : (
                     <>
-                      <h1 className="text-center lg:ml-24 text-xl lg:text-8xl uppercase lemon-milk text-white font-thin">
+                      <h1 className="text-center  lg:ml-24 text-xl lg:text-8xl uppercase lemon-milk text-white font-thin">
                         <a className="">{pelicula.title}</a>
                       </h1>
                       <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-12 ml-4 sm:ml-8 md:ml-16 lg:ml-24">
@@ -113,11 +113,11 @@ export function Hero() {
                               : pelicula.genre.join(", ")
                             : pelicula.genre}
                         </p>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-center items-center">
                           <div>
                             <a
                               href={pelicula.trailer}
-                              className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000"
+                              className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000 "
                               onClick={(e) => {
                                 e.preventDefault();
                                 openTrailer(

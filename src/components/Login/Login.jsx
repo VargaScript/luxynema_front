@@ -29,7 +29,6 @@ export const Login = () => {
 
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
-        console.log(userData);
         if (userData.isSuperuser === true) {
           navigate("/home-a");
         } else {

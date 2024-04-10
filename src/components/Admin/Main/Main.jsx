@@ -14,7 +14,7 @@ import Movie from "../../../assets/movie.jpg";
 export const Main = () => {
   return (
     <>
-      <div className="flex h-screen background">
+      <div className="flex h-screen ">
         <div className="container mx-auto flex justify-center items-center">
           <div className="text-center">
             <Typography variant="h1" color="white" className="-mt-10 mb-10">
