@@ -6,7 +6,7 @@ import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import { Footer } from "../Footer/Footer";
 import { Spinner } from "@material-tailwind/react";
 
-export const HomeC = () => {
+export const Home = () => {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {

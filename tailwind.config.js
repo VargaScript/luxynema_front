@@ -11,4 +11,4 @@ export default withMT({
   theme: {
     extend: {},
   },
-})
+});

@@ -64,7 +64,7 @@ export const Sidebar = () => {
           className="h-[calc(100vh-2rem)] w-full p-4"
         >
           <Link
-            to="/home"
+            to="/home-a"
             className="hover:text-[color:var(--azul-fuerte)] duration-300"
           >
             <div className="mb-2 flex items-center gap-4 p-4">
@@ -72,7 +72,7 @@ export const Sidebar = () => {
             </div>
           </Link>
           <List>
-            <Link to="/home">
+            <Link to="/home-a">
               <ListItem className="px-3 py-3 rounded-none b-0 p-3 text-[color:var(--azul-fuerte)] hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300">
                 <ListItemPrefix>
                   <UserCircleIcon className="h-5 w-5" />
@@ -107,7 +107,7 @@ export const Sidebar = () => {
               </ListItem>
               <AccordionBody className="py-1">
                 <List className="p-0">
-                  <Link to="/all-movies">
+                  <Link to="/list-movies">
                     <ListItem className="border-b-0 pl-5 text-[color:var(--azul-fuerte)] hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300">
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -150,7 +150,7 @@ export const Sidebar = () => {
               </ListItem>
               <AccordionBody className="py-1">
                 <List className="p-0">
-                  <Link to="/all-users">
+                  <Link to="/list-users">
                     <ListItem className="border-b-0 pl-5 text-[color:var(--azul-fuerte)] hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300">
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />

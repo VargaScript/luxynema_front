@@ -12,6 +12,7 @@ import { firestore } from "../../../utils/firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./AddMovies.css";
 
 export const AddMovies = () => {
   const [loader, setLoader] = useState(true);

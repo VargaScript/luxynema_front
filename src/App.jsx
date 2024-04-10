@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Root } from "./components/Root/Root";
 import { Register } from "./components/Register/Register";
 import { Login } from "./components/Login/Login";
-import { HomeC } from "./components/Client/Home/Home";
+import { Home } from "./components/Client/Home/Home";
 import { AboutUs } from "./components/Client/AboutUs/AboutUs";
 import { AllMovies } from "./components/Client/AllMovies/AllMovies";
 import { Schedule } from "./components/Client/Schedule/Schedule";
@@ -21,7 +21,7 @@ const App = () => {
       <Route path="/" element={<Root />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/home-c" element={<HomeC />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/all-movies" element={<AllMovies />} />
       <Route path="/schedule" element={<Schedule />} />
@@ -31,8 +31,8 @@ const App = () => {
       <Route path="/home-a" element={<HomeA />} />
       <Route path="/add-movies" element={<AddMovies />} />
       <Route path="/add-users" element={<AddUser />}></Route>
-      <Route path="/all-movies" element={<ListMovies />} />
-      <Route path="/all-users" element={<ListUsers />}></Route>
+      <Route path="/list-movies" element={<ListMovies />} />
+      <Route path="/list-users" element={<ListUsers />}></Route>
     </Routes>
   );
 };

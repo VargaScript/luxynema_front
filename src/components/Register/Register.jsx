@@ -4,8 +4,8 @@ import { Login } from "../Login/Login";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Card,
   Input,
@@ -26,7 +26,7 @@ export const Register = () => {
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
-      navigate("/home");
+      navigate("/login");
     }
   }, [navigate]);
 
@@ -57,20 +57,24 @@ export const Register = () => {
     e.preventDefault();
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
       await addDoc(collection(firestore, "users"), {
         userName: userName,
         email: email,
-        password: password
+        password: password,
       });
 
-      navigate("/home");
+      navigate("/login");
     } catch (error) {
       toast.error("Oops! An error has ocurred");
     }
-  }
+  };
 
   return (
     <div className="text-center background-image">
@@ -115,7 +119,10 @@ export const Register = () => {
             {email.length > 0 && isValidEmail ? (
               <p>{""}</p>
             ) : email.length > 0 ? (
-              <p className={`text-xs ${isValidEmail ? "invisible" : ""}`} style={{ color: "red" }}>
+              <p
+                className={`text-xs ${isValidEmail ? "invisible" : ""}`}
+                style={{ color: "red" }}
+              >
                 Email no válido
               </p>
             ) : null}
@@ -137,10 +144,19 @@ export const Register = () => {
             {password.length > 0 && isValidPassword ? (
               <p>{""}</p>
             ) : password.length > 0 ? (
-              <p className={`text-xs ${isValidPassword ? "invisible" : ""}`} style={{ color: "red" }}>
-                <span style={{ display: "block" }}>La contraseña debe tener al menos</span>
-                <span style={{ display: "block" }}>8 caracteres, una letra mayúscula,</span>
-                <span style={{ display: "block" }}>una letra minúscula y un número.</span>
+              <p
+                className={`text-xs ${isValidPassword ? "invisible" : ""}`}
+                style={{ color: "red" }}
+              >
+                <span style={{ display: "block" }}>
+                  La contraseña debe tener al menos
+                </span>
+                <span style={{ display: "block" }}>
+                  8 caracteres, una letra mayúscula,
+                </span>
+                <span style={{ display: "block" }}>
+                  una letra minúscula y un número.
+                </span>
               </p>
             ) : null}
           </div>
@@ -172,12 +188,16 @@ export const Register = () => {
           </Button>
           <Typography color="white" className="mt-4 text-center font-normal">
             Already have an account?{" "}
-            <Link to="/login" element={<Login />} className="font-medium text-white transition-all duration-300 hover:text-[color:var(--azul)] underline">
+            <Link
+              to="/login"
+              element={<Login />}
+              className="font-medium text-white transition-all duration-300 hover:text-[color:var(--azul)] underline"
+            >
               Log In
             </Link>
           </Typography>
         </form>
-      </ Card >
+      </Card>
     </div>
   );
 };
