@@ -2,13 +2,6 @@ import { Route, Routes } from 'react-router-dom';
 import { Root } from './components/Root/Root';
 import { Register } from './components/Register/Register';
 import { Login } from './components/Login/Login';
-// import { Payment } from './components/Payment/Payment';
-// import { Schedule } from './components/Schedule/Schedule';
-// import { AboutUs } from './components/AboutUs/AboutUs';
-// import { Membership } from './components/Membership/Membership';
-// import { AllMovies } from './components/AllMovies/AllMovies';
-// import { Account } from './components/Account/Account';
-// import { ErrorPage } from './components/ErrorPage/ErrorPage';
 import { Home } from './components/Client/Home/Home';
 import { AboutUs } from './components/Client/AboutUs/AboutUs';
 import { AllMovies } from './components/Client/AllMovies/AllMovies';
@@ -24,13 +17,6 @@ const App = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} /> 
-      {/* <Route path="/schedule" element={<Schedule />} /> */}
-      {/* <Route path="/about-us" element={<AboutUs />} /> */}
-      {/* <Route path="/membership" element={<Membership />} /> */}
-      {/* <Route path="/all-movies" element={<AllMovies />} /> */}
-      {/* <Route path="/account" element={<Account />} /> */}
-      {/* <Route path="/payment" element={<Payment />} /> */}
-      {/* <Route path="/error" element={<ErrorPage />} /> */}
       <Route path="/home" element={<Home />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/all-movies" element={<AllMovies />} />
@@ -38,6 +24,11 @@ const App = () => {
       <Route path="/membership" element={<Membership />} />
       <Route path="/account" element={<Account />} />
       <Route path="/payment" element={<Payment />} />
+      <Route path="/home-a" element={<HomeA />} />
+      <Route path="/add-movies" element={<AddMovies />} />
+      <Route path="/add-users" element={<AddUser />}></Route>
+      <Route path="/list-movies" element={<ListMovies />} />
+      <Route path="/list-users" element={<ListUsers />}></Route>
     </Routes>
   );
 };
