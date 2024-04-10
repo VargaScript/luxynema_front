@@ -108,8 +108,8 @@ export const AllMovies = () => {
             )}
             <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
                 <HomeNavbar />
-                <div className="-mt-24">
-                    <section className="bg-white mx-10 md:mx-10 rounded-lg z-0 above-all mt-32 border">
+                <div className="mt-24">
+                    <section className="bg-white mx-10 md:mx-10 rounded-lg z-0 above-all  border">
                         <div className="px-4 md:px-20 py-4 md:py-10">
                             <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
                                 All Movies
@@ -130,10 +130,10 @@ export const AllMovies = () => {
                                                 src={pelicula.img_url}
                                             />
                                         </div>
-                                        <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left">
+                                        <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left text-black">
                                             {pelicula.title}
                                         </h3>
-                                        <p className="mt-1 font-bold text-sm lemon-milk text-gray-600 text-center md:text-left">
+                                        <p className="mt-1 font-bold text-sm lemon-milk  text-center md:text-left text-black">
                                             {pelicula.duration} min
                                         </p>
                                     </li>
@@ -151,7 +151,7 @@ export const AllMovies = () => {
                                             <CardHeader color="blue-gray" className="relative h-56">
                                                 <img
                                                     className="mx-auto my-auto w-full h-full object-cover rounded-md"
-                                                    src={selectedMovie.image_url_hd}
+                                                    src={selectedMovie.img_url_hd}
                                                     alt={selectedMovie.title}
                                                 />
                                             </CardHeader>

@@ -202,7 +202,7 @@ export const Schedule = () => {
                               </div>
                               <div className="text-white">
                                 <p>${total}</p>
-                                <p>{movieDetails?.schedule}</p>
+                                <div>{movieDetails?.schedule}</div>
                                 <p>{count}</p>
                               </div>
                             </div>
@@ -212,8 +212,8 @@ export const Schedule = () => {
                     </div>
                     <div className=" text-white">
                     <div className="m-4 text-white">
-                      <p>{movieDetails?.title}</p>
-                      <p>{movieDetails?.duration} minutos</p>
+                      <div>{movieDetails?.title}</div>
+                      <div>{movieDetails?.duration} minutos</div>
                       {/* Cambiamos <a> por <Link> */}
                       <Link
                         

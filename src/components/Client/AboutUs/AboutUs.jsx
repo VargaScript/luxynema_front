@@ -31,7 +31,7 @@ export const AboutUs = () => {
           <div>
             <div className="pt-24 ml-[10%] mr-[10%] flex-direction-column">
               <div className='sm:text-6xl text-3xl pt-1 sm:pt-36 uppercase font-normal text-white galarama '>Luxynema</div>
-              <p className='sm:text-2md mr-9 font-normal text-white '>
+              <p className='sm:text-2md font-normal text-white '>
                 At Luxynema we are dedicated to providing you with an unparalleled
                 cinematic experience that trascends the ordinary.
                 <br />
