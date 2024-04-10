@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { firestore } from "../../../utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import "./MostPopular.css";
@@ -18,7 +18,6 @@ export const MostPopular = () => {
   const [isExtendedVisible, setIsExtendedVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isCloseHandled, setIsCloseHandled] = useState(false);
-  const [scrollDisabled, setScrollDisabled] = useState(false);
 
   useEffect(() => {
     const fetchPeliculas = async () => {
@@ -43,9 +42,9 @@ export const MostPopular = () => {
 
   useEffect(() => {
     if (selectedMovie) {
-      document.body.style.overflow = "hidden"; // Deshabilitar scroll
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"; // Habilitar scroll
+      document.body.style.overflow = "auto";
     }
   }, [selectedMovie]);
 
@@ -75,7 +74,9 @@ export const MostPopular = () => {
             <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center text-black">
               Most Popular Movies
             </h2>
-            <h6 className="text-center md:text-left text-black">Schedule your tickets</h6>
+            <h6 className="text-center md:text-left text-black">
+              Schedule your tickets
+            </h6>
             <hr className="bg-[color:var(--azul-fuerte)] lg:w-72 w-40 md:w-56 h-2 mb-8 mx-auto md:mx-0 mt-4 md:mt-5"></hr>
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 gap-y-10 mt-4 md:mt-5">
               {peliculas.map((pelicula) => (
@@ -128,8 +129,16 @@ export const MostPopular = () => {
                             {selectedMovie.title}
                           </span>
                         </p>
-                        <p className="text-gray-700">
-                          {selectedMovie.genre ? selectedMovie.genre : "N/A"}
+                        <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 capitalize">
+                          {Array.isArray(selectedMovie.genre)
+                            ? selectedMovie.genre.length > 1
+                              ? selectedMovie.genre.slice(0, -1).join(", ") +
+                                ", " +
+                                selectedMovie.genre[
+                                  selectedMovie.genre.length - 1
+                                ]
+                              : selectedMovie.genre[0]
+                            : selectedMovie.genre}
                         </p>
                         <p className="font-bold text-gray-700">
                           {selectedMovie.duration} min
