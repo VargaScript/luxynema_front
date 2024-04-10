@@ -121,7 +121,11 @@ export const ListUsers = () => {
             loader ? "opacity-0" : "opacity-100"
           } transition-opacity duration-700`}
         >
+          <div className="background-background">
+
+          
           <Sidebar className="z-50" />
+
           <section className="bg-white mx-10 md:mx-10 rounded-lg mt-4 md:mt-10 z-0 above-all">
             <div className="px-4 md:px-20 py-4 md:py-10">
               <h2 className="uppercase text-xl text-black md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
@@ -213,6 +217,7 @@ export const ListUsers = () => {
           </section>
           <div className="pb-20" />
         </div>
+      </div>
       </div>
     </>
   );
