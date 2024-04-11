@@ -60,8 +60,9 @@ export const MostPopular = () => {
     }, 500);
   };
 
-  const closeDetailedView = () => {
-    if (!isCloseHandled) {
+  const closeDetailedView = (e) => {
+    // se comprueba si el clic se realizó dentro del modal
+    if (!e.target.closest('.card-container')) {
       setIsCloseHandled(true);
       setSelectedMovie(null);
     }
@@ -109,7 +110,7 @@ export const MostPopular = () => {
                   } ${isAnimating ? "transition-opacity" : ""}`}
                   onClick={closeDetailedView}
                 >
-                  <Card className="mt-6 w-96">
+                  <Card className="mt-6 w-96 card-container">
                     <CardHeader color="blue-gray" className="relative h-56">
                       <img
                         className="mx-auto my-auto w-full h-full object-cover rounded-md"
