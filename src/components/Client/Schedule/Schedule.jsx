@@ -167,16 +167,14 @@ export const Schedule = () => {
                   href=""
                 >
                   {movieDetails?.schedule}
-                  {movieDetails?.schedule }
+                  
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
-                  <div className="body p-6">
+                  <div className=" p-4">
                     <h1>Select your places</h1>
-                  <Seats/>
 
-                    
-
+                  <Seats onSeatClick={handleSeatClick}/>
 
                   </div>
 
@@ -201,9 +199,9 @@ export const Schedule = () => {
                                 </div>
                               </div>
                               <div className="text-white">
-                                <p>${total}</p>
+                                <div >${total}</div>
                                 <div>{movieDetails?.schedule}</div>
-                                <p>{count}</p>
+                                <div> <span id="count">0</span></div>
                               </div>
                             </div>
                           </div>

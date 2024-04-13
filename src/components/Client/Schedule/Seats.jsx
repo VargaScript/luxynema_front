@@ -58,12 +58,9 @@ export const SeatBooking = () => {
   return (
     <div className="container">
       <div className="movie-container">
-        <label>Pick a movie:</label>
+        
         <select id="movie" onChange={handleMovieChange} value={ticketPrice}>
-          <option value="10">Avengers: Endgame ($10)</option>
-          <option value="12">Joker ($12)</option>
-          <option value="8">Toy Story 4 ($8)</option>
-          <option value="9">The Lion King ($9)</option>
+          <option value="10"></option>
         </select>
       </div>
       <ul className="showcase">

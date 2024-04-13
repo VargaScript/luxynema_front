@@ -4,19 +4,8 @@
   box-sizing: border-box;
 } */
 
-/* body {
-  background-color: #242333;
-  display: flex;
-  flex-direction: column;
-  color: #fff;
 
-  justify-content: center;
-  height: 100vh;
-  font-family: "Lato", sans-serif;
-  margin: 0;
-}
-cuidao aki pol q menea todo el codigo jjajaj
-*/
+
 
 .movie-container {
   margin: 20px 0;
@@ -34,9 +23,15 @@ cuidao aki pol q menea todo el codigo jjajaj
   -webkit-appearance: none;
 }
 
+
+
 .container {
   perspective: 1000px;
   margin-bottom: 10px;
+  
+  
+
+  
 }
 
 .seat {
