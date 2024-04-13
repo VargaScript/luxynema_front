@@ -5,7 +5,7 @@ import { useSearchParams, Link } from "react-router-dom"; // Importa Link de rea
 import { firestore } from "../../../utils/firebase";
 import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
-import Seats from './Seats'
+import SeatBooking from './Seats'
 
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
@@ -90,24 +90,26 @@ export const Schedule = () => {
   }, []);
 
 
-  const handleMovieChange = (e) => {
-    setTicketPrice(+e.target.value);
-    updateSelectedCount();
+
+
+
+
+  const handleSeatClick = (e) => {
+    if (!e.target.classList.contains("occupied")) {
+      e.target.classList.toggle("selected");
+      updateSelectedCount();
+    }
   };
 
   const updateSelectedCount = () => {
+    const selectedSeats = document.querySelectorAll(".row .seat.selected");
+    const seatsIndex = Array.from(selectedSeats).map(seat => seat.parentNode.cellIndex);
+    localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
     const selectedSeatsCount = selectedSeats.length;
-    setCount(selectedSeatsCount);
-    setTotal(selectedSeatsCount * ticketPrice);
+    document.getElementById("count").innerText = selectedSeatsCount;
+    document.getElementById("total").innerText = selectedSeatsCount * ticketPrice;
   };
 
-  const handleSeatClick = (seatIndex) => {
-    if (selectedSeats.includes(seatIndex)) {
-      setSelectedSeats(selectedSeats.filter((index) => index !== seatIndex));
-    } else {
-      setSelectedSeats([...selectedSeats, seatIndex]);
-    }
-  }; 
 
 
   const handleSend = async () => {
@@ -174,7 +176,7 @@ export const Schedule = () => {
                   <div className=" p-4">
                     <h1>Select your places</h1>
 
-                  <Seats onSeatClick={handleSeatClick}/>
+                  <SeatBooking onSeatClick={handleSeatClick} totalSeats={count}/>
 
                   </div>
 
@@ -201,7 +203,7 @@ export const Schedule = () => {
                               <div className="text-white">
                                 <div >${total}</div>
                                 <div>{movieDetails?.schedule}</div>
-                                <div> <span id="count">0</span></div>
+                                <div>{count}</div>
                               </div>
                             </div>
                           </div>
