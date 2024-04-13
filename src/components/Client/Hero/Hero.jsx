@@ -106,21 +106,23 @@ export function Hero() {
                     <h1>Hubo un problema, intenta más tarde</h1>
                   ) : (
                     <>
-                      <div className="">
-                        <h1 className="text-center lg:ml-24 text-xl lg:text-8xl uppercase lemon-milk text-white font-thin">
-                          <a className="">{pelicula.title}</a>
-                        </h1>
-                        <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-12 sm:ml-8 md:ml-16 lg:ml-24">
-                          <p className="text-lg sm:text-xl lg:text-2xl text-white capitalize -mt-8">
-                            {Array.isArray(pelicula.genre)
-                              ? pelicula.genre.length > 2
-                                ? pelicula.genre.slice(0, 2).join(", ") +
-                                  ", and more"
-                                : pelicula.genre.join(", ")
-                              : pelicula.genre}
-                          </p>
+                      <div>
+                        <div>
+                          <h1 className="text-2xl mt-48 lg:mt-12 lg:text-8xl mb-8 justify-start uppercase lemon-milk text-white font-thin center">
+                            <a className="">{pelicula.title}</a>
+                          </h1>
+                          <div className="mt-10 sm:mt-6 md:mt-8 lg:mt-12 lg:text-center">
+                            <p className="text-lg sm:text-xl lg:text-2xl text-white capitalize -mt-8">
+                              {Array.isArray(pelicula.genre)
+                                ? pelicula.genre.length > 2
+                                  ? pelicula.genre.slice(0, 2).join(", ") +
+                                    ", and more"
+                                  : pelicula.genre.join(", ")
+                                : pelicula.genre}
+                            </p>
+                          </div>
                         </div>
-                        <div className="mt-16 flex justify-center items-center">
+                        <div className="mt-4 flex justify-center items-center">
                           <div>
                             <a
                               href={pelicula.trailer}

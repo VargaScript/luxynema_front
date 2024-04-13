@@ -59,19 +59,16 @@ export const MostPopular = () => {
     }, 500);
   };
 
-  const closeDetailedView = (e) => {
-    // se comprueba si el clic se realizó dentro del modal
-    if (!e.target.closest('.card-container')) {
-      setIsCloseHandled(true);
-      setSelectedMovie(null);
-    }
+  const closeDetailedView = () => {
+    setIsCloseHandled(true);
+    setSelectedMovie(null);
   };
 
   return (
     <>
       <div>
         <section className="bg-white mx-10 md:mx-10 rounded-lg mt-4 md:mt-10 z-0 above-all">
-          <div className="px-4 md:px-20 py-4 md:py-10">
+          <div className="px-4 md:px-20 py-4 md:py-10 relative">
             <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center text-black">
               Most Popular Movies
             </h2>
@@ -109,8 +106,9 @@ export const MostPopular = () => {
                   className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 ${
                     isExtendedVisible ? "opacity-100" : "opacity-0"
                   } ${isAnimating ? "transition-opacity" : ""}`}
-                  onClick={closeDetailedView}
-                >
+                  onClick={() => !isCloseHandled && closeDetailedView()}
+                />
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
                   <Card className="mt-6 w-96 card-container">
                     <CardHeader color="blue-gray" className="relative h-56">
                       <img
@@ -163,16 +161,11 @@ export const MostPopular = () => {
                             Agendar boletos
                           </Button>
                         </Link>
-                        <Button className="flex-1 transition duration-500 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black">
-                          <p
-                            className="rounded-md"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              closeDetailedView();
-                            }}
-                          >
-                            Cerrar
-                          </p>
+                        <Button
+                          className="flex-1 transition duration-500 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black"
+                          onClick={closeDetailedView}
+                        >
+                          <p className="rounded-md">Cerrar</p>
                         </Button>
                       </div>
                     </CardFooter>

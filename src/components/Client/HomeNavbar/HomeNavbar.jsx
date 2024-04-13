@@ -3,11 +3,7 @@ import "./HomeNavbar.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import {
-  Navbar,
-  IconButton,
-  Collapse
-} from "@material-tailwind/react";
+import { Navbar, IconButton, Collapse } from "@material-tailwind/react";
 
 export function HomeNavbar() {
   const [openNav, setOpenNav] = useState(false);
@@ -15,27 +11,42 @@ export function HomeNavbar() {
   const navList = (
     <ul className="lg:flex flex-col lg:flex-row sm:py-1 lg:py-3 gap-2 lg:gap-6 justify-end">
       <li className="lg:pl-5 text-xl lg:text-xl uppercase text-white li-font">
-        <Link to="/home" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
+        <Link
+          to="/home"
+          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
+        >
           Home
         </Link>
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
-        <Link to="/about-us" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
+        <Link
+          to="/about-us"
+          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
+        >
           About Us
         </Link>
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
-        <Link to="/all-movies" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
+        <Link
+          to="/all-movies"
+          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
+        >
           All Movies
         </Link>
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-xl uppercase li-font">
-        <Link to="/membership" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
+        <Link
+          to="/membership"
+          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
+        >
           Membership
         </Link>
       </li>
       <li className="text-white lg:pl-5 text-xl lg:text-2xl uppercase li-font">
-        <Link to="/account" className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300">
+        <Link
+          to="/account"
+          className="lemon-milk cursor-pointer hover:text-[color:var(--azul)] duration-300"
+        >
           <FontAwesomeIcon icon={faUser} />
         </Link>
       </li>
@@ -45,27 +56,42 @@ export function HomeNavbar() {
   const mobileNavList = (
     <ul className="mt-5 lg:flex flex-col lg:flex-row lg:py-10 gap-2 lg:gap-6 justify-end bg-transparent">
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link to="/home" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+        <Link
+          to="/home"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
           Home
         </Link>
       </li>
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link to="/about-us" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+        <Link
+          to="/about-us"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
           About Us
         </Link>
       </li>
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link to="/all-movies" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+        <Link
+          to="/all-movies"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
           All Movies
         </Link>
       </li>
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link to="/membership" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+        <Link
+          to="/membership"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
           Membership
         </Link>
       </li>
       <li className="lg:pl-5 text-xl lg:text-2xl uppercase text-white li-font mb-2">
-        <Link to="/account" className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center">
+        <Link
+          to="/account"
+          className="lemon-milk flex cursor-pointer hover:text-[color:var(--azul)] duration-300 items-center"
+        >
           Account
         </Link>
       </li>
@@ -132,10 +158,8 @@ export function HomeNavbar() {
             </IconButton>
           </div>
         </div>
-        <Collapse open={openNav}>
-          {mobileNavList}
-        </Collapse>
+        <Collapse open={openNav}>{mobileNavList}</Collapse>
       </Navbar>
-    </div >
+    </div>
   );
 }

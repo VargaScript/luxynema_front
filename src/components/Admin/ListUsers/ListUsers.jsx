@@ -76,13 +76,12 @@ export const ListUsers = () => {
     try {
       const userRef = doc(firestore, "users", editedUser.id);
       await updateDoc(userRef, editedUser);
+
+      setUsers(
+        users.map((user) => (user.id === editedUser.id ? editedUser : user))
+      );
+
       setEditMode(false);
-      setEditedUser({
-        id: "",
-        userName: "",
-        email: "",
-        isSuperuser: false,
-      });
       toast.success("Changes saved successfully.");
     } catch (error) {
       toast.error("Error saving changes.");
@@ -122,102 +121,100 @@ export const ListUsers = () => {
           } transition-opacity duration-700`}
         >
           <div className="background-background">
+            <Sidebar className="z-50" />
 
-          
-          <Sidebar className="z-50" />
-
-          <section className="bg-white mx-10 md:mx-10 rounded-lg mt-4 md:mt-10 z-0 above-all">
-            <div className="px-4 md:px-20 py-4 md:py-10">
-              <h2 className="uppercase text-xl text-black md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
-                All Users
-              </h2>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6 gap-y-10 mt-4 md:mt-5">
-                {users.map((user) => (
-                  <Card
-                    key={user.id}
-                    className="bg-gray-100 border border-gray-200 rounded-lg p-4 shadow-md gap-x-5 width-[200px] h-[250px] flex items-center"
-                  >
-                    {editMode && editedUser.id === user.id ? (
-                      <div className="flex flex-col gap-5 width-[200px]">
-                        <Input
-                          className=""
-                          type="text"
-                          name="userName"
-                          value={editedUser.userName}
-                          onChange={handleInputChange}
-                          placeholder="Username"
-                        />
-                        <Input
-                          className=""
-                          type="text"
-                          name="email"
-                          value={editedUser.email}
-                          onChange={handleInputChange}
-                          placeholder="Email"
-                        />
-                        <label className="mb-2">
-                          <input
-                            type="checkbox"
-                            name="isSuperuser"
-                            checked={editedUser.isSuperuser}
+            <section className="bg-white mx-10 md:mx-10 rounded-lg mt-4 md:mt-10 z-0 above-all">
+              <div className="px-4 md:px-20 py-4 md:py-10">
+                <h2 className="uppercase text-xl text-black md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
+                  All Users
+                </h2>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6 gap-y-10 mt-4 md:mt-5">
+                  {users.map((user) => (
+                    <Card
+                      key={user.id}
+                      className="bg-gray-100 border border-gray-200 rounded-lg p-4 shadow-md gap-x-5 width-[200px] h-[250px] flex items-center"
+                    >
+                      {editMode && editedUser.id === user.id ? (
+                        <div className="flex flex-col gap-5 width-[200px]">
+                          <Input
+                            className=""
+                            type="text"
+                            name="userName"
+                            value={editedUser.userName}
                             onChange={handleInputChange}
-                          />{" "}
-                          Is Superuser
-                        </label>
-                        <Button
-                          className="-mt-3 -[200px] bg-[color:var(--azul-fuerte)] text-white hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300"
-                          onClick={handleSaveChanges}
-                        >
-                          Save Changes
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col justify-between items-center">
-                        <Typography
-                          variant="h6"
-                          color="gray"
-                          className="w-[200px] break-all"
-                        >
-                          Username: {user.userName}
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          color="gray"
-                          className="w-[200px] break-all"
-                        >
-                          Email: {user.email}
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          color="gray"
-                          className="w-[200px] break-all"
-                        >
-                          Is Superuser: {user.isSuperuser ? "Yes" : "No"}
-                        </Typography>
-                        <div className="flex gap-4 mt-4 justify-end">
+                            placeholder="Username"
+                          />
+                          <Input
+                            className=""
+                            type="text"
+                            name="email"
+                            value={editedUser.email}
+                            onChange={handleInputChange}
+                            placeholder="Email"
+                          />
+                          <label className="mb-2">
+                            <input
+                              type="checkbox"
+                              name="isSuperuser"
+                              checked={editedUser.isSuperuser}
+                              onChange={handleInputChange}
+                            />{" "}
+                            Is Superuser
+                          </label>
                           <Button
-                            className="bg-[color:var(--azul-fuerte)] text-white hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300"
-                            onClick={() => handleEditClick(user)}
+                            className="-mt-3 -[200px] bg-[color:var(--azul-fuerte)] text-white hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300"
+                            onClick={handleSaveChanges}
                           >
-                            Edit
-                          </Button>
-                          <Button
-                            className="bg-[color:var(--azul-fuerte)] text-white hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300"
-                            onClick={() => confirmDeleteUser(user)}
-                          >
-                            Delete
+                            Save Changes
                           </Button>
                         </div>
-                      </div>
-                    )}
-                  </Card>
-                ))}
-              </ul>
-            </div>
-          </section>
-          <div className="pb-20" />
+                      ) : (
+                        <div className="flex flex-col justify-between items-center">
+                          <Typography
+                            variant="h6"
+                            color="gray"
+                            className="w-[200px] break-all"
+                          >
+                            Username: {user.userName}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            color="gray"
+                            className="w-[200px] break-all"
+                          >
+                            Email: {user.email}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            color="gray"
+                            className="w-[200px] break-all"
+                          >
+                            Is Superuser: {user.isSuperuser ? "Yes" : "No"}
+                          </Typography>
+                          <div className="flex gap-4 mt-4 justify-end">
+                            <Button
+                              className="bg-[color:var(--azul-fuerte)] text-white hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300"
+                              onClick={() => handleEditClick(user)}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              className="bg-[color:var(--azul-fuerte)] text-white hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300"
+                              onClick={() => confirmDeleteUser(user)}
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </Card>
+                  ))}
+                </ul>
+              </div>
+            </section>
+            <div className="pb-20" />
+          </div>
         </div>
-      </div>
       </div>
     </>
   );
