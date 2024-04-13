@@ -32,7 +32,6 @@ export const HomeA = () => {
         } transition-opacity duration-700`}
       >
         <div className="background-background">
-          <Sidebar />
           <Main />
         </div>
       </div>

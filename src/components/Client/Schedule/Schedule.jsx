@@ -167,16 +167,14 @@ export const Schedule = () => {
                   href=""
                 >
                   {movieDetails?.schedule}
-                  {movieDetails?.schedule }
+                  
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
-                  <div className="body p-6">
+                  <div className=" p-4">
                     <h1>Select your places</h1>
-                  <Seats/>
 
-                    
-
+                  <Seats onSeatClick={handleSeatClick}/>
 
                   </div>
 
@@ -201,9 +199,9 @@ export const Schedule = () => {
                                 </div>
                               </div>
                               <div className="text-white">
-                                <p>${total}</p>
-                                <p>{movieDetails?.schedule}</p>
-                                <p>{count}</p>
+                                <div >${total}</div>
+                                <div>{movieDetails?.schedule}</div>
+                                <div> <span id="count">0</span></div>
                               </div>
                             </div>
                           </div>
@@ -212,8 +210,8 @@ export const Schedule = () => {
                     </div>
                     <div className=" text-white">
                     <div className="m-4 text-white">
-                      <p>{movieDetails?.title}</p>
-                      <p>{movieDetails?.duration} minutos</p>
+                      <div>{movieDetails?.title}</div>
+                      <div>{movieDetails?.duration} minutos</div>
                       {/* Cambiamos <a> por <Link> */}
                       <Link
                         

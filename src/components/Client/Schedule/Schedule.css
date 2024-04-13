@@ -1,20 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
-
+/* 
 * {
   box-sizing: border-box;
-}
+} */
 
-body {
-  background-color: #242333;
-  display: flex;
-  flex-direction: column;
-  color: #fff;
 
-  justify-content: center;
-  height: 100vh;
-  font-family: "Lato", sans-serif;
-  margin: 0;
-}
+
 
 .movie-container {
   margin: 20px 0;
@@ -32,9 +23,15 @@ body {
   -webkit-appearance: none;
 }
 
+
+
 .container {
   perspective: 1000px;
   margin-bottom: 10px;
+  
+  
+
+  
 }
 
 .seat {

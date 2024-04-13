@@ -159,7 +159,7 @@ export const ListMovies = () => {
                           name="genre"
                           value={editedMovie.genre}
                           onChange={handleInputChange}
-                          placeholder="Genre"
+                          placeholder="Genre (Comma separated)"
                         />
                         <Input
                           className="mb-10"
@@ -206,7 +206,14 @@ export const ListMovies = () => {
                           Duration: {movie.duration} min
                         </Typography>
                         <Typography variant="h6" color="gray">
-                          Genre: {movie.genre}
+                          Genre:{" "}
+                          {Array.isArray(movie.genre)
+                            ? movie.genre.length > 1
+                              ? movie.genre.slice(0, -1).join(", ") +
+                                ", " +
+                                movie.genre[movie.genre.length - 1]
+                              : movie.genre[0]
+                            : movie.genre}
                         </Typography>
                         <div className="flex gap-[86px] w-[250px] mt-2">
                           <Button
@@ -229,6 +236,7 @@ export const ListMovies = () => {
               </ul>
             </div>
           </section>
+          <div className="pb-20" />
         </div>
       </div>
     </>
