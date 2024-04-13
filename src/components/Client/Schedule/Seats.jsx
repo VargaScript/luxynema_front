@@ -11,7 +11,11 @@ export const SeatBooking = () => {
   const [parentDocumentId, setParentDocumentId] = useState(null);
 
   useEffect(() => {
-    populateUI();
+    const unsubscribe = populateUI(); // Llama a populateUI() cuando el componente se monta
+    
+    return () => {
+      unsubscribe(); // Cancela el observador cuando el componente se desmonta
+    };
   }, []);
 
   const sendSelectedSeatsToFirebase = async () => {
@@ -28,10 +32,7 @@ export const SeatBooking = () => {
     }
   };
 
-  const handleMovieChange = (e) => {
-    setTicketPrice(+e.target.value);
-    updateSelectedCount();
-  };
+
 
   const handleSeatClick = (e, seatId) => {
     if (!e.target.classList.contains("occupied")) {
@@ -52,7 +53,7 @@ export const SeatBooking = () => {
     setSelectedSeatsCount(updatedSelectedSeats.length);
   };
 
-  const populateUI = async () => {
+  const populateUI = () => {
     try {
       const seatCollectionRef = collection(firestore, "seats");
       const unsubscribe = onSnapshot(seatCollectionRef, (querySnapshot) => {
@@ -61,27 +62,28 @@ export const SeatBooking = () => {
           const data = doc.data();
           const estado = data.occupied;
           const id = doc.id;
-  
-          const fullPath = `seat/${parentDocumentId}/${id}`;
-  
+
           asientosData.push({
-            id: fullPath,
+            id: id,
             estado: estado,
             ...data,
           });
         });
-  
+
         setAsientos(asientosData);
         setLoading(false);
-        applyOccupiedStyles(); // Aplica los estilos para los asientos ocupados
       });
-  
-      return unsubscribe; // Retorna la función para cancelar el observador cuando sea necesario
+
+      return unsubscribe;
     } catch (error) {
       console.error("Error obteniendo asientos: ", error);
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    applyOccupiedStyles(); // Aplica los estilos para los asientos ocupados después de cargar los datos
+  }, [asientos]); 
   
 
   const applyOccupiedStyles = () => {
@@ -91,7 +93,7 @@ export const SeatBooking = () => {
       const seatData = asientos.find(asiento => asiento.id === seatId);
       if (seatData && seatData.estado) {
         seat.classList.add("occupied");
-        console.log("sijala")
+        // console.log("sijala")
       }
     });
   };
@@ -99,11 +101,7 @@ export const SeatBooking = () => {
 
   return (
     <div className="container">
-      <div className="movie-container">
-        <select id="movie" onChange={handleMovieChange} value={ticketPrice}>
-          <option value="10"></option>
-        </select>
-      </div>
+
       <ul className="showcase">
         <li>
           <div className="seat"></div>
@@ -151,14 +149,14 @@ export const SeatBooking = () => {
         <div className="seat" data-seat-id="seat24" onClick={(e) => handleSeatClick(e, "seat24")}></div>
       </div>
       <div className="row">
-        <div className="seat" data-seat-id="seat1" onClick={(e) => handleSeatClick(e, "seat1")}></div>
-        <div className="seat" data-seat-id="seat2" onClick={(e) => handleSeatClick(e, "seat2")}></div>
-        <div className="seat" data-seat-id="seat3" onClick={(e) => handleSeatClick(e, "seat3")}></div>
-        <div className="seat" data-seat-id="seat4" onClick={(e) => handleSeatClick(e, "seat4")}></div>
-        <div className="seat" data-seat-id="seat5" onClick={(e) => handleSeatClick(e, "seat5")}></div>
-        <div className="seat" data-seat-id="seat6" onClick={(e) => handleSeatClick(e, "seat6")}></div>
-        <div className="seat" data-seat-id="seat7" onClick={(e) => handleSeatClick(e, "seat7")}></div>
-        <div className="seat occupied" data-seat-id="seat8" onClick={(e) => handleSeatClick(e, "seat8")}></div>
+        <div className="seat" data-seat-id="seat25" onClick={(e) => handleSeatClick(e, "seat25")}></div>
+        <div className="seat" data-seat-id="seat26" onClick={(e) => handleSeatClick(e, "seat26")}></div>
+        <div className="seat" data-seat-id="seat27" onClick={(e) => handleSeatClick(e, "seat27")}></div>
+        <div className="seat" data-seat-id="seat28" onClick={(e) => handleSeatClick(e, "seat28")}></div>
+        <div className="seat" data-seat-id="seat29" onClick={(e) => handleSeatClick(e, "seat29")}></div>
+        <div className="seat" data-seat-id="seat30" onClick={(e) => handleSeatClick(e, "seat30")}></div>
+        <div className="seat" data-seat-id="seat31" onClick={(e) => handleSeatClick(e, "seat31")}></div>
+        <div className="seat" data-seat-id="seat32" onClick={(e) => handleSeatClick(e, "seat32")}></div>
       </div>
       
 
