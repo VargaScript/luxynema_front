@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { firestore } from "../../../utils/firebase";
 import { collection, doc, setDoc,getDocs, onSnapshot } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 
 export const SeatBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -69,6 +70,33 @@ export const SeatBooking = () => {
             estado: estado,
             ...data,
           });
+  const setMovieData = (movieIndex, moviePrice) => {
+    localStorage.setItem("selectedMovieIndex", movieIndex);
+    localStorage.setItem("selectedMoviePrice", moviePrice);
+  };
+
+  const updateSelectedCount = () => {
+    const selectedSeats = document.querySelectorAll(".row .seat.selected");
+    const seatsIndex = Array.from(selectedSeats).map(
+      (seat) => seat.parentNode.cellIndex
+    );
+    localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
+    const selectedSeatsCount = selectedSeats.length;
+    document.getElementById("count").innerText = selectedSeatsCount;
+    document.getElementById("total").innerText =
+      selectedSeatsCount * ticketPrice;
+  };
+
+  const populateUI = () => {
+    const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
+    if (selectedSeats !== null && selectedSeats.length > 0) {
+      const rows = document.querySelectorAll(".row");
+      rows.forEach((row, rowIndex) => {
+        const seats = row.querySelectorAll(".seat");
+        seats.forEach((seat, seatIndex) => {
+          if (selectedSeats.includes(seatIndex)) {
+            seat.classList.add("selected");
+          }
         });
   
         setAsientos(asientosData);
@@ -104,6 +132,7 @@ export const SeatBooking = () => {
           <option value="10"></option>
         </select>
       </div>
+      <div className="movie-container flex justify-center"></div>
       <ul className="showcase">
         <li>
           <div className="seat"></div>
@@ -166,6 +195,8 @@ export const SeatBooking = () => {
 
       <p className="text">
         You have selected <span>{selectedSeatsCount}</span> seats.
+        You have selected <span id="count"> 0 </span> seats{" "}
+        {/*for a price of $<span id="total">0</span>*/}
       </p>
 
       <button onClick={sendSelectedSeatsToFirebase}>Enviar asientos</button>

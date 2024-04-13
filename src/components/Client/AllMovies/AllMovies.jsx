@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { firestore } from "../../../utils/firebase.js";
+import { useState, useEffect } from "react";
+import { firestore } from "../../../utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import "./AllMovies.css";
 import { Link } from "react-router-dom";
@@ -12,22 +12,22 @@ import {
   Button,
   Spinner,
 } from "@material-tailwind/react";
-import { HomeNavbar } from "../HomeNavbar/HomeNavbar.jsx";
-import { Footer } from "../Footer/Footer.jsx";
+import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 
 export const AllMovies = () => {
+  const [loader, setLoader] = useState(true);
   const [peliculas, setPeliculas] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isExtendedVisible, setIsExtendedVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [scrollDisabled, setScrollDisabled] = useState(false);
-  const [loader, setLoader] = useState(true);
+  const [isCloseHandled, setIsCloseHandled] = useState(false);
 
   useEffect(() => {
     const asyncLoader = async () => {
       setLoader(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       setLoader(false);
     };
 
@@ -38,15 +38,17 @@ export const AllMovies = () => {
     const fetchPeliculas = async () => {
       try {
         const querySnapshot = await getDocs(collection(firestore, "movies"));
-        const peliculasData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const peliculasData = [];
+        let count = 0;
+        querySnapshot.forEach((doc) => {
+          if (count < 8) {
+            peliculasData.push({ id: doc.id, ...doc.data() });
+            count++;
+          }
+        });
         setPeliculas(peliculasData);
-        setLoading(false);
       } catch (error) {
         console.error("Error getting movies: ", error);
-        setLoading(false);
       }
     };
 
@@ -54,35 +56,17 @@ export const AllMovies = () => {
   }, []);
 
   useEffect(() => {
-    let scrollPosition = 0;
-
-    const toggleScrollClass = () => {
-      if (scrollDisabled) {
-        scrollPosition =
-          window.pageYOffset || document.documentElement.scrollTop;
-        window.addEventListener("scroll", disableScroll);
-      } else {
-        window.removeEventListener("scroll", disableScroll);
-        window.scrollTo(0, scrollPosition);
-      }
-    };
-
-    const disableScroll = (e) => {
-      e.preventDefault();
-      window.scrollTo(0, scrollPosition);
-    };
-
-    toggleScrollClass();
-
-    return () => {
-      window.removeEventListener("scroll", disableScroll);
-    };
-  }, [scrollDisabled]);
+    if (selectedMovie) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [selectedMovie]);
 
   const handleEventClick = (event) => {
     setSelectedMovie(event);
     setIsAnimating(true);
-    setScrollDisabled(true);
+    setIsCloseHandled(false);
 
     setTimeout(() => {
       setIsExtendedVisible(true);
@@ -91,8 +75,8 @@ export const AllMovies = () => {
   };
 
   const closeDetailedView = () => {
+    setIsCloseHandled(true);
     setSelectedMovie(null);
-    setScrollDisabled(false);
   };
 
   return (
@@ -108,13 +92,13 @@ export const AllMovies = () => {
         } transition-opacity duration-700`}
       >
         <HomeNavbar />
-        <div className="-mt-24">
-          <section className="bg-white mx-10 md:mx-10 rounded-lg z-0 above-all mt-32 border">
-            <div className="px-4 md:px-20 py-4 md:py-10">
-              <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center">
+        <div>
+          <section className="bg-white md:mx-10 rounded-lg mt-28 z-0 above-all">
+            <div className="px-4 md:px-20 py-4 md:py-10 relative">
+              <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center text-black">
                 All Movies
               </h2>
-              <h6 className="text-center md:text-left">
+              <h6 className="text-center md:text-left text-black">
                 Schedule your tickets
               </h6>
               <hr className="bg-[color:var(--azul-fuerte)] lg:w-72 w-40 md:w-56 h-2 mb-8 mx-auto md:mx-0 mt-4 md:mt-5"></hr>
@@ -127,7 +111,7 @@ export const AllMovies = () => {
                   >
                     <div className="overlay-gradient">
                       <img
-                        className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105"
+                        className="w-48 md:w-56 lg:h-96 md:h-72 mx-auto md:mx-0 cursor-pointer hover:opacity-80 duration-500 hover:scale-105 "
                         alt={pelicula.title}
                         src={pelicula.img_url}
                       />
@@ -135,7 +119,7 @@ export const AllMovies = () => {
                     <h3 className="uppercase mt-2 sm:mt-4 font-medium lemon-milk text-center md:text-left text-black">
                       {pelicula.title}
                     </h3>
-                    <p className="mt-1 font-bold text-sm lemon-milk text-gray-600 text-center md:text-left">
+                    <p className="mt-1 font-bold text-sm lemon-milk text-black text-center md:text-left">
                       {pelicula.duration} min
                     </p>
                   </li>
@@ -148,9 +132,10 @@ export const AllMovies = () => {
                     className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 ${
                       isExtendedVisible ? "opacity-100" : "opacity-0"
                     } ${isAnimating ? "transition-opacity" : ""}`}
-                    onClick={closeDetailedView}
-                  >
-                    <Card className="mt-6 w-96">
+                    onClick={() => !isCloseHandled && closeDetailedView()}
+                  />
+                  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+                    <Card className="mt-6 w-96 card-container">
                       <CardHeader color="blue-gray" className="relative h-56">
                         <img
                           className="mx-auto my-auto w-full h-full object-cover rounded-md"
@@ -159,42 +144,54 @@ export const AllMovies = () => {
                         />
                       </CardHeader>
                       <CardBody>
-                        <Typography variant="h5" color="blue-gray" className="mb-2">
+                        <Typography
+                          variant="h5"
+                          color="blue-gray"
+                          className="mb-2"
+                        >
                           <p className="text-gray-700 mb-4">
                             <span className="font-bold text-3xl">
                               {selectedMovie.title}
                             </span>
                           </p>
-                          <p className="text-gray-700">
-                            {selectedMovie.genre ? selectedMovie.genre[0] : "N/A"}, {selectedMovie.genre ? selectedMovie.genre[1] : "N/A"}
+                          <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 capitalize">
+                            {Array.isArray(selectedMovie.genre)
+                              ? selectedMovie.genre.length > 1
+                                ? selectedMovie.genre.slice(0, -1).join(", ") +
+                                  ", " +
+                                  selectedMovie.genre[
+                                    selectedMovie.genre.length - 1
+                                  ]
+                                : selectedMovie.genre[0]
+                              : selectedMovie.genre}
                           </p>
                           <p className="font-bold text-gray-700">
                             {selectedMovie.duration} min
                           </p>
                         </Typography>
                         <Typography>
-                          <div className="mt-2 text-gray-700 whitespace-normal">
-                            {selectedMovie.sinopsis ? selectedMovie.sinopsis : "N/A"}
+                          <div className="mt-2 text-black whitespace-normal">
+                            {selectedMovie.sinopsis
+                              ? selectedMovie.sinopsis
+                              : "N/A"}
                           </div>
                         </Typography>
                       </CardBody>
                       <CardFooter className="pt-0">
                         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-                          <Link to={`/schedule?id=${selectedMovie.id}`} className="rounded-md text-center flex-1 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black">
+                          <Link
+                            to={`/schedule?id=${selectedMovie.id}`}
+                            className="rounded-md text-center flex-1 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black"
+                          >
                             <Button className="bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black shadow-none transition duration-500">
                               Agendar boletos
                             </Button>
                           </Link>
-                          <Button className="flex-1 transition duration-500 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black">
-                            <p
-                              className="rounded-md"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                closeDetailedView();
-                              }}
-                            >
-                              Cerrar
-                            </p>
+                          <Button
+                            className="flex-1 transition duration-500 bg-[var(--azul-fuerte)] hover:bg-[var(--azul)] hover:text-black"
+                            onClick={closeDetailedView}
+                          >
+                            <p className="rounded-md">Cerrar</p>
                           </Button>
                         </div>
                       </CardFooter>
@@ -204,8 +201,8 @@ export const AllMovies = () => {
               )}
             </div>
           </section>
+          <div className="pb-20" />
         </div>
-        <Footer />
       </div>
     </>
   );
