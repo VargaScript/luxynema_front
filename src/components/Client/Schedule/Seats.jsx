@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from 'react';
+import { firestore } from "../../../utils/firebase";
+import { collection, doc, setDoc,getDocs, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { firestore } from "../../../utils/firebase";
 import {
@@ -17,7 +20,11 @@ const Seats = () => {
   const [parentDocumentId, setParentDocumentId] = useState(null);
 
   useEffect(() => {
-    populateUI();
+    const unsubscribe = populateUI(); // Llama a populateUI() cuando el componente se monta
+    
+    return () => {
+      unsubscribe(); // Cancela el observador cuando el componente se desmonta
+    };
   }, []);
 
   const sendSelectedSeatsToFirebase = async () => {
@@ -37,10 +44,7 @@ const Seats = () => {
     }
   };
 
-  const handleMovieChange = (e) => {
-    setTicketPrice(+e.target.value);
-    updateSelectedCount();
-  };
+
 
   const handleSeatClick = (e, seatId) => {
     if (!e.target.classList.contains("occupied")) {
@@ -61,7 +65,7 @@ const Seats = () => {
     setSelectedSeatsCount(updatedSelectedSeats.length);
   };
 
-  const populateUI = async () => {
+  const populateUI = () => {
     try {
       const seatCollectionRef = collection(firestore, "seats");
       const unsubscribe = onSnapshot(seatCollectionRef, (querySnapshot) => {
@@ -74,10 +78,40 @@ const Seats = () => {
           const fullPath = `seat/${parentDocumentId}/${id}`;
 
           asientosData.push({
-            id: fullPath,
+            id: id,
             estado: estado,
             ...data,
           });
+        });
+
+        setAsientos(asientosData);
+        setLoading(false);
+      });
+
+      return unsubscribe;
+    } catch (error) {
+      console.error("Error obteniendo asientos: ", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    applyOccupiedStyles(); // Aplica los estilos para los asientos ocupados después de cargar los datos
+  }, [asientos]); 
+  
+
+  const applyOccupiedStyles = () => {
+    const occupiedSeats = document.querySelectorAll('.seat');
+    occupiedSeats.forEach(seat => {
+      const seatId = seat.dataset.seatId;
+      const seatData = asientos.find(asiento => asiento.id === seatId);
+      if (seatData && seatData.estado) {
+        seat.classList.add("occupied");
+        // console.log("sijala")
+      }
+    });
+  };
+  
         });
       });
     } catch (err) {}
@@ -136,12 +170,7 @@ const Seats = () => {
   };
   return (
     <div className="container">
-      <div className="movie-container">
-        <select id="movie" onChange={handleMovieChange} value={ticketPrice}>
-          <option value="10"></option>
-        </select>
-      </div>
-      <div className="movie-container flex justify-center"></div>
+
       <ul className="showcase">
         <li>
           <div className="seat"></div>
@@ -285,6 +314,14 @@ const Seats = () => {
         ></div>
       </div>
       <div className="row">
+        <div className="seat" data-seat-id="seat25" onClick={(e) => handleSeatClick(e, "seat25")}></div>
+        <div className="seat" data-seat-id="seat26" onClick={(e) => handleSeatClick(e, "seat26")}></div>
+        <div className="seat" data-seat-id="seat27" onClick={(e) => handleSeatClick(e, "seat27")}></div>
+        <div className="seat" data-seat-id="seat28" onClick={(e) => handleSeatClick(e, "seat28")}></div>
+        <div className="seat" data-seat-id="seat29" onClick={(e) => handleSeatClick(e, "seat29")}></div>
+        <div className="seat" data-seat-id="seat30" onClick={(e) => handleSeatClick(e, "seat30")}></div>
+        <div className="seat" data-seat-id="seat31" onClick={(e) => handleSeatClick(e, "seat31")}></div>
+        <div className="seat" data-seat-id="seat32" onClick={(e) => handleSeatClick(e, "seat32")}></div>
         <div
           className="seat"
           data-seat-id="seat1"
@@ -330,6 +367,7 @@ const Seats = () => {
       {/* Add other rows here */}
 
       <p className="text">
+        You have selected <span>{selectedSeatsCount}</span> seats.
         You have selected <span>{selectedSeatsCount}</span> seats. You have
         selected <span id="count"> 0 </span> seats{" "}
         {/*for a price of $<span id="total">0</span>*/}
