@@ -69,9 +69,9 @@ export const Schedule = () => {
       <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
         <HomeNavbar />
         <div>
-          <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2 rounded-xl mt-40">
+          <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40  mx-2 rounded-xl mt-40">
             <div className="flex p-0 justify-center flex-wrap">
-              <div className="justify-between align-center">
+              <div className="justify-between align-center ">
                 <img
                   className="mt-20 sm:w-56 md:w-64 xl:w-72 w-44"
                   src={movieDetails?.img_url}
@@ -94,7 +94,7 @@ export const Schedule = () => {
                   
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap ">
                   <div className=" p-4">
                     <h1>Select your places</h1>
                     <h1>Ticket Price:$ {movieDetails?.price}</h1>

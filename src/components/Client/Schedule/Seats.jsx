@@ -143,9 +143,9 @@ export const SeatBooking = () => {
   
 
   return (
-  <div className=''>
-
-    
+  
+<div className='flex gap-8'>
+    <div className=''>
     <div className="container">
 
       <ul className="showcase">
@@ -210,7 +210,9 @@ export const SeatBooking = () => {
 
       <button onClick={sendSelectedSeatsToFirebase}>Enviar asientos</button>  
     </div>
-    <div className="contenidoCheckOut bg-black rounded-xl mt-4 mx-4 md:w-auto flex flex-col items-center justify-center">
+    </div>
+    <div>
+    <div className="contenidoCheckOut bg-black rounded-xl mt-4 mx-4 md:w-auto flex flex-col   items-center justify-center">
                     <div className="innerCheckOut mt-4 m-4 md:flex md:items-center">
                       <img
                         className="moviePictureCheckOut w-40 p-2"
@@ -257,7 +259,8 @@ export const SeatBooking = () => {
                     </div>
                   </div>
                 </div>
-    </div> 
+                </div>
+                </div>
   );
 };
 
