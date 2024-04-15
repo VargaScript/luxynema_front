@@ -1,14 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { firestore } from "../../../utils/firebase";
-import { collection, doc, setDoc,getDocs, onSnapshot } from "firebase/firestore";
+import { collection, doc, setDoc,getDocs, onSnapshot,getDoc } from "firebase/firestore";
+import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
 
 export const SeatBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [ticketPrice, setTicketPrice] = useState(10);
+  const[totalPrice,setTotalPrice]= useState('')
   const [selectedSeatsCount, setSelectedSeatsCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [asientos, setAsientos] = useState([]);
-  const [parentDocumentId, setParentDocumentId] = useState(null);
+  const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
+
+
+
+  const [loader, setLoader] = useState(true);
+
+  const [searchParams] = useSearchParams();
+  const [movieDetails, setMovieDetails] = useState(null);
+
+
+  useEffect(() => {
+    const asyncLoader = async () => {
+      setLoader(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setLoader(false);
+    };
+
+    asyncLoader();
+  }, []);
+
+
+
+  useEffect(() => {
+    const getMovieData = async (movie_id) => {
+      const docRef = doc(firestore, "movies", movie_id);
+      const docSnap = await getDoc(docRef);
+      const infoMovie = docSnap.data();
+      setMovieDetails(infoMovie);
+      const moviePrice = infoMovie.price;
+      setTicketPrice(moviePrice);
+    };
+
+    getMovieData(selectedMovieIndex.toString());
+  }, [selectedMovieIndex]);
+
+  useEffect(() => {
+    setSelectedMovieIndex(searchParams.get("id") || 0);
+    const totalPrice = ticketPrice * selectedSeatsCount;
+    setTotalPrice(totalPrice);
+  }, [selectedSeatsCount,ticketPrice]);
+
+
 
   useEffect(() => {
     const unsubscribe = populateUI(); // Llama a populateUI() cuando el componente se monta
@@ -100,6 +143,9 @@ export const SeatBooking = () => {
   
 
   return (
+  <div className=''>
+
+    
     <div className="container">
 
       <ul className="showcase">
@@ -162,12 +208,56 @@ export const SeatBooking = () => {
 
       {/* Add other rows here */}
 
-      <p className="text">
-        You have selected <span>{selectedSeatsCount}</span> seats.
-      </p>
-
-      <button onClick={sendSelectedSeatsToFirebase}>Enviar asientos</button>
+      <button onClick={sendSelectedSeatsToFirebase}>Enviar asientos</button>  
     </div>
+    <div className="contenidoCheckOut bg-black rounded-xl mt-4 mx-4 md:w-auto flex flex-col items-center justify-center">
+                    <div className="innerCheckOut mt-4 m-4 md:flex md:items-center">
+                      <img
+                        className="moviePictureCheckOut w-40 p-2"
+                        src={movieDetails?.img_url}
+                      />
+                      <div className="box mt-4 md:mt-0 md:ml-4">
+                        <h3 className="uppercase text-white text-2xl font-medium lemon-milk mt-4 md:mt-0">
+                          CheckOut
+                        </h3>
+                        <div>
+                          <div className="flex flex-col">
+                            <div className="flex justify-between">
+                              <div>
+                                <div>
+                                  <p className="text-blue-300">Total:</p>
+                                  <p className="text-blue-300">Hora:</p>
+                                  <p className="text-blue-300">Asientos:</p>
+                                </div>
+                              </div>
+                              <div className="text-white">
+                                <div >${totalPrice}</div>
+                                <div>{movieDetails?.schedule}</div>
+                                <div>{selectedSeatsCount}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className=" text-white">
+                    <div className="m-4 text-white">
+                      <div>{movieDetails?.title}</div>
+                      <div>{movieDetails?.duration} minutos</div>
+                      {/* Cambiamos <a> por <Link> */}
+                      <Link
+                        
+                        className="bg-[color:var(--negro)] text-white rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
+                        //onClick={handleSend}
+                        // Pasamos los datos de la película seleccionada como parámetros en la URL
+                        to={`/payment?id=${selectedMovieIndex}`}
+                      >
+                        Agregar boletos
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+    </div> 
   );
 };
 
