@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { firestore } from "../../../utils/firebase";
-import { collection, doc, setDoc,getDocs, onSnapshot,getDoc } from "firebase/firestore";
+import { collection, doc, setDoc,getDocs, onSnapshot,getDoc,writeBatch } from "firebase/firestore";
 import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
+import {createSession} from "../../BackEnd/src/controllers/payment.controllers.js"
 
 export const SeatBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -11,6 +12,7 @@ export const SeatBooking = () => {
   const [loading, setLoading] = useState(true);
   const [asientos, setAsientos] = useState([]);
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
+  const [parentDocumentId, setParentDocumentId] = useState(null);
 
 
 
@@ -140,6 +142,20 @@ export const SeatBooking = () => {
       }
     });
   };
+
+  const handleSend = async () => {
+    if (selectedSeats.length > 0) {
+      try {
+        await sendSelectedSeatsToFirebase(); // Llama a la función existente para enviar los asientos a Firebase
+        alert("Asientos agregados correctamente.");
+      } catch (error) {
+        console.error("Error al enviar los asientos: ", error);
+        alert("Hubo un error al agregar los asientos. Por favor, inténtalo de nuevo.");
+      }
+    } else {
+      alert("No hay asientos seleccionados para agregar.");
+    }
+  };
   
 
   return (
@@ -244,17 +260,19 @@ export const SeatBooking = () => {
                     </div>
                     <div className=" text-white">
                     <div className="m-4 text-white">
-                      <div>{movieDetails?.title}</div>
+                    <div>{movieDetails?.title}</div>
                       <div>{movieDetails?.duration} minutos</div>
                       {/* Cambiamos <a> por <Link> */}
                       <Link
                         
-                        className="bg-[color:var(--negro)] text-white rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
-                        //onClick={handleSend}
+                        className="bg-[color:var(--negro)] text-white rounded-xl px-8 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
+                        onClick={()=>createSession(selectedMovieIndex,movieDetails?.title,movieDetails?.duration,totalPrice).then(
+                          (data)=>  window.location = data.url            //window.open(data.url) 
+                        )}
                         // Pasamos los datos de la película seleccionada como parámetros en la URL
-                        to={`/payment?id=${selectedMovieIndex}`}
+                        //to={`/payment?id=${selectedMovieIndex}&title=${encodeURIComponent(movieDetails?.title)}&duration=${movieDetails?.duration}&price=${totalPrice}`}
                       >
-                        Agregar boletos
+                        Pay
                       </Link>
                     </div>
                   </div>
