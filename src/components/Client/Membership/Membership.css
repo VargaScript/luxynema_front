@@ -1,22 +1,21 @@
 .container {
-  padding-top: 20px;
-  text-align: center; /* Centrar el texto dentro del contenedor */
+  padding-top: 60px;
+  padding-left: 200px;
+  text-align: center;
+  /* Removed absolute positioning and centering for container flexibility */
 }
 
 .membership-plans {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  /* Adjust gap property for spacing */
-  gap: 20px; /* Adjust as needed */
+  gap: 20px; /* Adjust as needed for spacing between cards */
   justify-content: center; /* Centrar las tarjetas horizontalmente */
-
 }
-
 
 .plan-card {
   width: 30%;
   min-width: 250px;
-  margin: 60px; /* Puedes aumentar este valor para aumentar el espaciado entre tarjetas */
+  margin: 60px; /* Adjust as needed for spacing between cards */
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -24,7 +23,6 @@
   transition: transform 0.3s ease;
   background-color: #f9f9f9;
 }
-
 
 .plan-card:hover {
   transform: translateY(-5px);
@@ -72,7 +70,15 @@ button:hover {
 }
 
 .slogan {
-  font-size: 1.2rem;
-  color: #666;
-  margin-top: 20px;
+  font-family: 'Dancing Script', cursive; 
+  font-size: 1.2rem; 
+  font-weight: bold; 
+  color: #fff;
+  position: relative; 
+  margin-top: 20px; 
+  width: fit-content;
+  margin-left: auto; 
+  text-align: center; 
+  left: 250px;
+  margin: 20px;
 }

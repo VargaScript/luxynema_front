@@ -40,9 +40,9 @@ const MembershipPlanCard = ({ title, price, features, buttonText }) => {
         <Typography
           variant="h1"
           color="white"
-          className="mt-6 flex justify-center gap-1 text-7xl font-normal"
+          className="mt-6 flex justify-center gap-1 text-5xl font-normal"
         >
-          <span className="mt-2 text-4xl">$</span> {price} <span className="self-end text-4xl">/mo</span>
+          <span className="mt-2 text-5xl">$</span> {price} <span className="self-end text-5xl">/mo</span>
         </Typography>
       </CardHeader>
       <CardBody className="p-0">
