@@ -14,6 +14,8 @@ export const Root = () => {
 
     if (user) {
       navigate("/home");
+    } else {
+      navigate("/home-a");
     }
   }, [navigate]);
 
@@ -34,7 +36,9 @@ export const Root = () => {
                 element={<Register />}
                 className="w-full sm:w-80 h-10"
               >
-                <Button className="bg-[color:var(--azul)] transition-all duration-300 hover:bg-[color:var(--azul-fuerte)]">Create Account</Button>
+                <Button className="bg-[color:var(--azul)] transition-all duration-300 hover:bg-[color:var(--azul-fuerte)]">
+                  Create Account
+                </Button>
               </Link>
             </li>
           </div>

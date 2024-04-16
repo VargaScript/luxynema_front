@@ -1,19 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getDocs, collection, query, where } from "firebase/firestore";
+import { firestore } from "../../utils/firebase.js";
 import { Register } from "../Register/Register.jsx";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../utils/firebase.js";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { initializeApp } from "firebase/app";
-
-import {
-  Card,
-  Input,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
+import { Card, Input, Button, Typography } from "@material-tailwind/react";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,33 +21,30 @@ export const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        toast.success('Log in success');
-        navigate("/home");
-      })
-      .catch(() => {
-        toast.error("Failed logging in. Check your credentials");
+  const handleLogin = async () => {
+    try {
+      const usersCollection = collection(firestore, "users");
+      const q = query(usersCollection, where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const userData = doc.data();
+        if (userData.isSuperuser === true) {
+          navigate("/home-a");
+        } else {
+          navigate("/home");
+        }
       });
-  };
-
-  useEffect(() => {
-    const user = auth.currentUser;
-
-    if (user) {
-      navigate("/home");
+    } catch (error) {
+      toast.error(error.message);
     }
-  }, [navigate]);
+  };
 
   return (
     <div className="text-center background-image">
       <ToastContainer />
       <Card color="transparent" shadow={false} className="flex items-center">
-        <h1 className="text-2xl md:text-4xl text-white galarama">
-          LUXYNEMA
-        </h1>
+        <h1 className="text-2xl md:text-4xl text-white galarama">LUXYNEMA</h1>
         <Typography variant="h4" color="white">
           Sign In
         </Typography>
@@ -100,7 +90,11 @@ export const Login = () => {
           </Button>
           <Typography color="white" className="mt-4 text-center font-normal">
             Don&apos;t have an account?{" "}
-            <Link to="/register" element={<Register />} className="font-medium text-white transition-all duration-300 hover:text-[color:var(--azul)] underline">
+            <Link
+              to="/register"
+              element={<Register />}
+              className="font-medium text-white transition-all duration-300 hover:text-[color:var(--azul)] underline"
+            >
               Sign Up
             </Link>
           </Typography>

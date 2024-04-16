@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   --negro: #112236;
   --azul-fuerte: #436280;
@@ -36,10 +32,11 @@ body::-webkit-scrollbar-thumb:hover {
 
 @font-face {
   font-family: "galarama";
-  src: url("../fonts/garalama/GARALAMA.ttf") format("truetype");
+  src: url("../public/fonts/garalama/GARALAMA.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "lemon-milk";
-  src: url("../fonts/lemon_milk/LEMONMILK-Regular.otf") format("truetype");
+  src: url("../public/fonts/lemon_milk/LEMONMILK-Regular.otf")
+    format("truetype");
 }

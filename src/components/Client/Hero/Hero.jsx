@@ -9,6 +9,7 @@ import YouTube from "react-youtube";
 
 export function Hero() {
   const [peliculas, setPeliculas] = useState([]);
+  const [limitedPeliculas, setLimitedPeliculas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentTrailer, setCurrentTrailer] = useState("");
   const [currentName, setCurrentName] = useState("");
@@ -33,6 +34,10 @@ export function Hero() {
 
     fetchPeliculas();
   }, []);
+
+  useEffect(() => {
+    setLimitedPeliculas(peliculas.slice(0, 5));
+  }, [peliculas]);
 
   const fadeOverlayStyle = {
     position: "absolute",
@@ -81,7 +86,7 @@ export function Hero() {
           </div>
         )}
       >
-        {peliculas.map((pelicula, index) => (
+        {limitedPeliculas.map((pelicula, index) => (
           <div key={pelicula.id} className="z-50">
             <div
               style={{
@@ -114,10 +119,27 @@ export function Hero() {
                             : pelicula.genre}
                         </p>
                         <div className="mt-4">
+                      <div>
+                        <div>
+                          <h1 className="text-2xl mt-48 lg:mt-12 lg:text-8xl mb-8 justify-start uppercase lemon-milk text-white font-thin center">
+                            <a className="">{pelicula.title}</a>
+                          </h1>
+                          <div className="mt-10 sm:mt-6 md:mt-8 lg:mt-12 lg:text-center">
+                            <p className="text-lg sm:text-xl lg:text-2xl text-white capitalize -mt-8">
+                              {Array.isArray(pelicula.genre)
+                                ? pelicula.genre.length > 2
+                                  ? pelicula.genre.slice(0, 2).join(", ") +
+                                    ", and more"
+                                  : pelicula.genre.join(", ")
+                                : pelicula.genre}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="mt-4 flex justify-center items-center">
                           <div>
                             <a
                               href={pelicula.trailer}
-                              className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000"
+                              className="cursor-pointer bg-[color:var(--negro)] text-white rounded-xl px-3 py-3 uppercase text-sm sm:text-base lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-2000 "
                               onClick={(e) => {
                                 e.preventDefault();
                                 openTrailer(

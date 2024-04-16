@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
-import { Hero } from "../Hero/Hero";
-import { MostPopular } from "../MostPopular/MostPopular";
-import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
-import { Footer } from "../Footer/Footer";
+import "./HomeA.css";
+import { Sidebar } from "../Sidebar/Sidebar";
+import { Main } from "../Main/Main";
 import { Spinner } from "@material-tailwind/react";
 
-export const Home = () => {
+export const HomeA = () => {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     const asyncLoader = async () => {
       setLoader(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       setLoader(false);
     };
@@ -32,10 +31,9 @@ export const Home = () => {
           loader ? "opacity-0" : "opacity-100"
         } transition-opacity duration-700`}
       >
-        <HomeNavbar />
-        <Hero />
-        <MostPopular />
-        <Footer />
+        <div className="background-background">
+          <Main />
+        </div>
       </div>
     </div>
   );
