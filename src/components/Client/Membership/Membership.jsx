@@ -58,15 +58,17 @@ const MembershipPlanCard = ({ title, price, features, buttonText }) => {
         </ul>
       </CardBody>
       <CardFooter className="mt-12 p-0">
-        <Button
-          size="lg"
-          color="white"
-          className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
-          ripple={false}
-          fullWidth={true}
-        >
-          {buttonText}
-        </Button>
+        <div className="button-container">
+          <Button
+            size="lg"
+            color="white"
+            className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
+            ripple={false}
+            fullWidth={true}
+          >
+            {buttonText}
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
@@ -77,7 +79,13 @@ const Membership = () => {
     {
       title: "Basic",
       price: "19.99",
-      features: ["2 free tickets per month", "10% discount on concessions"],
+      features: [
+        "2 free tickets per month",
+        "10% discount on concessions",
+        "Exclusive events             ",
+        "Free popcorn with every ticket",
+        "Early access to movie premieres"
+      ],
       buttonText: "Join Now",
     },
     {
@@ -87,6 +95,7 @@ const Membership = () => {
         "4 free tickets per month",
         "15% discount on concessions",
         "Access to exclusive member events",
+        "Priority booking for blockbuster releases"
       ],
       buttonText: "Join Now",
     },
@@ -94,13 +103,14 @@ const Membership = () => {
       title: "VIP",
       price: "49.99",
       features: [
-        "Unlimited free tickets",
+        "Unlimited free tickets    ",
         "20% discount on concessions",
         "Access to exclusive member events",
         "Personal concierge service",
       ],
       buttonText: "Join Now",
     },
+    
   ];
 
   return (

@@ -24,7 +24,7 @@ export function Hero() {
         querySnapshot.forEach((doc) => {
           peliculasData.push({ id: doc.id, ...doc.data() });
         });
-        setPeliculas(peliculasData.slice(0, 5)); 
+        setPeliculas(peliculasData);
         setLoading(false);
       } catch (error) {
         console.error("Error getting movies: ", error);
@@ -106,19 +106,6 @@ export function Hero() {
                     <h1>Hubo un problema, intenta más tarde</h1>
                   ) : (
                     <>
-                      <h1 className="text-center lg:ml-24 text-xl lg:text-8xl uppercase lemon-milk text-white font-thin">
-                        <a className="">{pelicula.title}</a>
-                      </h1>
-                      <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-12 ml-4 sm:ml-8 md:ml-16 lg:ml-24">
-                        <p className="text-lg sm:text-xl lg:text-2xl text-white capitalize">
-                          {Array.isArray(pelicula.genre)
-                            ? pelicula.genre.length > 2
-                              ? pelicula.genre.slice(0, 2).join(", ") +
-                                ", and more"
-                              : pelicula.genre.join(", ")
-                            : pelicula.genre}
-                        </p>
-                        <div className="mt-4">
                       <div>
                         <div>
                           <h1 className="text-2xl mt-48 lg:mt-12 lg:text-8xl mb-8 justify-start uppercase lemon-milk text-white font-thin center">
