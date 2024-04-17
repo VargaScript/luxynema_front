@@ -11,7 +11,8 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
-import SeatBooking from "./Seats";
+import {SeatBooking} from './Seats.jsx'
+
 
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
@@ -22,10 +23,7 @@ export const Schedule = () => {
 
   const [searchParams] = useSearchParams();
   const [movieDetails, setMovieDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [asientos, setAsientos] = useState([]);
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  const [parentDocumentId, setParentDocumentId] = useState(null);
+
 
   useEffect(() => {
     const asyncLoader = async () => {
@@ -35,49 +33,6 @@ export const Schedule = () => {
     };
 
     asyncLoader();
-  }, []);
-
-  useEffect(() => {
-    const fetchAsientos = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(firestore, "seats"));
-        const asientosData = [];
-
-        if (!querySnapshot.empty) {
-          const primerDocumento = querySnapshot.docs[0];
-          const parentDocRef = primerDocumento.ref;
-          const parentDocId = primerDocumento.id;
-
-          setParentDocumentId(parentDocId);
-
-          const subcoleccionId = "Sala1";
-          const subcoleccionRef = collection(parentDocRef, subcoleccionId);
-          const subcoleccionesSnapshot = await getDocs(subcoleccionRef);
-
-          subcoleccionesSnapshot.forEach((subdoc) => {
-            const estado = subdoc.data().estado;
-            const id = subdoc.id;
-
-            const fullPath = `asientos/${parentDocId}/Sala1/${id}`;
-
-            asientosData.push({
-              id: fullPath,
-              estado: estado,
-              ...subdoc.data(),
-            });
-          });
-        }
-
-        setAsientos(asientosData);
-
-        setLoading(false);
-      } catch (error) {
-        console.error("Error obteniendo asientos: ", error);
-        setLoading(false);
-      }
-    };
-
-    fetchAsientos();
   }, []);
 
   useEffect(() => {
@@ -95,51 +50,31 @@ export const Schedule = () => {
     setSelectedMovieIndex(searchParams.get("id") || 0);
   }, []);
 
-  const handleSeatClick = (e) => {
-    if (!e.target.classList.contains("occupied")) {
-      e.target.classList.toggle("selected");
-      updateSelectedCount();
-    }
-  };
+  const handleSeatClick = (seatId) => {
+    console.log("seat clicked:", seatId);
+    const updatedSeats = [...selectedSeats];
+    const index = updatedSeats.indexOf(seatId);
 
-  const updateSelectedCount = () => {
-    const selectedSeats = document.querySelectorAll(".row .seat.selected");
-    const seatsIndex = Array.from(selectedSeats).map(
-      (seat) => seat.parentNode.cellIndex
-    );
-    localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
-    const selectedSeatsCount = selectedSeats.length;
-    document.getElementById("count").innerText = selectedSeatsCount;
-    document.getElementById("total").innerText =
-      selectedSeatsCount * ticketPrice;
-  };
-
-  const handleSend = async () => {
-    if (selectedSeats.length > 0 && parentDocumentId) {
-      try {
-        const batch = writeBatch(firestore);
-        const idS = parentDocumentId;
-
-        selectedSeats.forEach((seatId) => {
-          const seatRef = doc(firestore, "asientos", idS, "Sala1", seatId);
-          batch.update(seatRef, { estado: "ocupado" });
-        });
-
-        await batch.commit();
-
-        alert("Asientos agregados correctamente.");
-      } catch (error) {
-        console.error("Error al actualizar los asientos: ", error);
-        alert(
-          "Hubo un error al agregar los asientos. Por favor, inténtalo de nuevo."
-        );
-      }
+    if (index === -1) {
+      updatedSeats.push(seatId);
     } else {
-      alert(
-        "No hay asientos seleccionados para agregar o no se ha cargado la información necesaria."
-      );
+      updatedSeats.splice(index, 1);
     }
-  };
+
+    setSelectedSeats(updatedSeats);
+
+    const updatedAsientos = asientos.map((asiento) => {
+      if (asiento.id === seatId) {
+        return {
+          ...asiento,
+          estado: updatedSeats.includes(seatId) ? "selected" : "disponible",
+        };
+      }
+      return asiento;
+    });
+
+    setAsientos(updatedAsientos);
+  }; 
 
   return (
     <>
@@ -155,9 +90,9 @@ export const Schedule = () => {
       >
         <HomeNavbar />
         <div>
-          <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2 rounded-xl mt-40">
+          <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40  mx-2 rounded-xl mt-40">
             <div className="flex p-0 justify-center flex-wrap">
-              <div className="justify-between align-center">
+              <div className="justify-between align-center ">
                 <img
                   className="mt-20 sm:w-56 md:w-64 xl:w-72 w-44"
                   src={movieDetails?.img_url}
@@ -179,63 +114,16 @@ export const Schedule = () => {
                   className="bg-[color:var(--azul)] text-black rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
                   href=""
                 >
-                  {movieDetails?.schedule}
+                  {movieDetails?.schedule }
+
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap ">
                   <div className=" p-4">
                     <h1>Select your places</h1>
-
-                    {/* <SeatBooking onSeatClick={handleSeatClick} totalSeats={count}/> */}
+                    <h1>Ticket Price:$ {movieDetails?.price}</h1>
+                  <SeatBooking onSeatClick={SeatBooking} totalSeats={count}/>
                   </div>
-
-                  <div className="contenidoCheckOut bg-black rounded-xl mt-4 mx-4 md:w-auto flex flex-col items-center justify-center">
-                    <div className="innerCheckOut mt-4 m-4 md:flex md:items-center">
-                      <img
-                        className="moviePictureCheckOut w-40 p-2"
-                        src={movieDetails?.img_url}
-                      />
-                      <div className="box mt-4 md:mt-0 md:ml-4">
-                        <h3 className="uppercase text-white text-2xl font-medium lemon-milk mt-4 md:mt-0">
-                          CheckOut
-                        </h3>
-                        <div>
-                          <div className="flex flex-col">
-                            <div className="flex justify-between">
-                              <div>
-                                <div>
-                                  <p className="text-blue-300">Total:</p>
-                                  <p className="text-blue-300">Hora:</p>
-                                  <p className="text-blue-300">Asientos:</p>
-                                </div>
-                              </div>
-                              <div className="text-white">
-                                <div>${total}</div>
-                                <div>{movieDetails?.schedule}</div>
-                                <div>{count}</div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className=" text-white">
-                      <div className="m-4 text-white">
-                        <div>{movieDetails?.title}</div>
-                        <div>{movieDetails?.duration} minutos</div>
-                        {/* Cambiamos <a> por <Link> */}
-                        <Link
-                          className="bg-[color:var(--negro)] text-white rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
-                          onClick={handleSend}
-                          // Pasamos los datos de la película seleccionada como parámetros en la URL
-                          to={`/payment?id=${selectedMovieIndex}`}
-                        >
-                          Agregar boletos
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </section>
