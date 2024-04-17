@@ -3,10 +3,15 @@ import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import "./Schedule.css";
 import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
 import { firestore } from "../../../utils/firebase";
-import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
+import {
+  getDoc,
+  collection,
+  getDocs,
+  doc,
+  writeBatch,
+} from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
-import SeatBooking from './Seats'
-
+import SeatBooking from "./Seats";
 
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
@@ -19,7 +24,6 @@ export const Schedule = () => {
 
   const [searchParams] = useSearchParams();
   const [movieDetails, setMovieDetails] = useState(null);
-
 
   useEffect(() => {
     const asyncLoader = async () => {
@@ -72,19 +76,6 @@ export const Schedule = () => {
     setSelectedMovieIndex(searchParams.get("id") || 0);
   }, []);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <>
       {loader && (
@@ -92,7 +83,11 @@ export const Schedule = () => {
           <Spinner className="h-12 w-12 mb-4" color="indigo" />
         </div>
       )}
-      <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
+      <div
+        className={`${
+          loader ? "opacity-0" : "opacity-100"
+        } transition-opacity duration-700`}
+      >
         <HomeNavbar />
         <div>
           <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40  mx-2 rounded-xl mt-40">
@@ -108,7 +103,10 @@ export const Schedule = () => {
                 </h2>
               </div>
               <div className="contenido mt-6 m-10">
-                <h2 id="horarios" className="uppercase text-2xl font-medium lemon-milk">
+                <h2
+                  id="horarios"
+                  className="uppercase text-2xl font-medium lemon-milk"
+                >
                   Horarios
                 </h2>
                 {
@@ -131,13 +129,9 @@ export const Schedule = () => {
                     <h1>Select your places</h1>
                     <h1>Ticket Price:$ {movieDetails?.price}</h1>
 
-                  <SeatBooking onSeatClick={SeatBooking} seats={seats} setSeats={setSeats} totalSeats={count}/>
 
-                  </div>
-
-
+                </div>
               </div>
-            </div>
             </div>
           </section>
         </div>

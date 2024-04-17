@@ -29,10 +29,14 @@ export const Login = () => {
 
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
-        if (userData.isSuperuser === true) {
-          navigate("/home-a");
+        if (userData.email === email && userData.password === password) {
+          if (userData.isSuperuser === true) {
+            navigate("/home-a");
+          } else {
+            navigate("/home");
+          }
         } else {
-          navigate("/home");
+          toast.error("Correo electrónico o contraseña incorrectos");
         }
       });
     } catch (error) {

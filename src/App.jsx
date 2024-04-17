@@ -7,7 +7,7 @@ import { AboutUs } from "./components/Client/AboutUs/AboutUs";
 import { AllMovies } from "./components/Client/AllMovies/AllMovies";
 import { Schedule } from "./components/Client/Schedule/Schedule";
 import { Payment } from "./components/Client/Payment/Payment";
-import { Membership } from "./components/Client/Membership/Membership";
+import { MembershipPlanCard } from "./components/Client/Membership/Membership";
 import { Account } from "./components/Client/Account/Account";
 import { HomeA } from "./components/Admin/HomeA/HomeA";
 import { AddMovies } from "./components/Admin/AddMovies/AddMovies";
@@ -22,11 +22,10 @@ const App = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/home" element={<Home />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/all-movies" element={<AllMovies />} />
       <Route path="/schedule" element={<Schedule />} />
-      <Route path="/membership" element={<Membership />} />
+      <Route path="/membership" element={<MembershipPlanCard />} />
       <Route path="/account" element={<Account />} />
       <Route path="/payment" element={<Payment />} />
       <Route path="/home-a" element={<HomeA />} />
