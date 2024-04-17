@@ -3,9 +3,15 @@ import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import "./Schedule.css";
 import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
 import { firestore } from "../../../utils/firebase";
-import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
+import {
+  getDoc,
+  collection,
+  getDocs,
+  doc,
+  writeBatch,
+} from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
-import SeatBooking from './Seats'
+import SeatBooking from "./Seats";
 
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
@@ -64,7 +70,7 @@ export const Schedule = () => {
 
         setAsientos(asientosData);
 
-        setLoading(false);          
+        setLoading(false);
       } catch (error) {
         console.error("Error obteniendo asientos: ", error);
         setLoading(false);
@@ -89,11 +95,6 @@ export const Schedule = () => {
     setSelectedMovieIndex(searchParams.get("id") || 0);
   }, []);
 
-
-
-
-
-
   const handleSeatClick = (e) => {
     if (!e.target.classList.contains("occupied")) {
       e.target.classList.toggle("selected");
@@ -103,14 +104,15 @@ export const Schedule = () => {
 
   const updateSelectedCount = () => {
     const selectedSeats = document.querySelectorAll(".row .seat.selected");
-    const seatsIndex = Array.from(selectedSeats).map(seat => seat.parentNode.cellIndex);
+    const seatsIndex = Array.from(selectedSeats).map(
+      (seat) => seat.parentNode.cellIndex
+    );
     localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
     const selectedSeatsCount = selectedSeats.length;
     document.getElementById("count").innerText = selectedSeatsCount;
-    document.getElementById("total").innerText = selectedSeatsCount * ticketPrice;
+    document.getElementById("total").innerText =
+      selectedSeatsCount * ticketPrice;
   };
-
-
 
   const handleSend = async () => {
     if (selectedSeats.length > 0 && parentDocumentId) {
@@ -133,7 +135,9 @@ export const Schedule = () => {
         );
       }
     } else {
-      alert("No hay asientos seleccionados para agregar o no se ha cargado la información necesaria.");
+      alert(
+        "No hay asientos seleccionados para agregar o no se ha cargado la información necesaria."
+      );
     }
   };
 
@@ -144,7 +148,11 @@ export const Schedule = () => {
           <Spinner className="h-12 w-12 mb-4" color="indigo" />
         </div>
       )}
-      <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
+      <div
+        className={`${
+          loader ? "opacity-0" : "opacity-100"
+        } transition-opacity duration-700`}
+      >
         <HomeNavbar />
         <div>
           <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2 rounded-xl mt-40">
@@ -160,7 +168,10 @@ export const Schedule = () => {
                 </h2>
               </div>
               <div className="contenido mt-6 m-10">
-                <h2 id="horarios" className="uppercase text-2xl font-medium lemon-milk">
+                <h2
+                  id="horarios"
+                  className="uppercase text-2xl font-medium lemon-milk"
+                >
                   Horarios
                 </h2>
                 <a
@@ -169,15 +180,13 @@ export const Schedule = () => {
                   href=""
                 >
                   {movieDetails?.schedule}
-                  
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
                   <div className=" p-4">
                     <h1>Select your places</h1>
 
-                  <SeatBooking onSeatClick={handleSeatClick} totalSeats={count}/>
-
+                    {/* <SeatBooking onSeatClick={handleSeatClick} totalSeats={count}/> */}
                   </div>
 
                   <div className="contenidoCheckOut bg-black rounded-xl mt-4 mx-4 md:w-auto flex flex-col items-center justify-center">
@@ -201,7 +210,7 @@ export const Schedule = () => {
                                 </div>
                               </div>
                               <div className="text-white">
-                                <div >${total}</div>
+                                <div>${total}</div>
                                 <div>{movieDetails?.schedule}</div>
                                 <div>{count}</div>
                               </div>
@@ -211,24 +220,23 @@ export const Schedule = () => {
                       </div>
                     </div>
                     <div className=" text-white">
-                    <div className="m-4 text-white">
-                      <div>{movieDetails?.title}</div>
-                      <div>{movieDetails?.duration} minutos</div>
-                      {/* Cambiamos <a> por <Link> */}
-                      <Link
-                        
-                        className="bg-[color:var(--negro)] text-white rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
-                        onClick={handleSend}
-                        // Pasamos los datos de la película seleccionada como parámetros en la URL
-                        to={`/payment?id=${selectedMovieIndex}`}
-                      >
-                        Agregar boletos
-                      </Link>
+                      <div className="m-4 text-white">
+                        <div>{movieDetails?.title}</div>
+                        <div>{movieDetails?.duration} minutos</div>
+                        {/* Cambiamos <a> por <Link> */}
+                        <Link
+                          className="bg-[color:var(--negro)] text-white rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
+                          onClick={handleSend}
+                          // Pasamos los datos de la película seleccionada como parámetros en la URL
+                          to={`/payment?id=${selectedMovieIndex}`}
+                        >
+                          Agregar boletos
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             </div>
           </section>
         </div>

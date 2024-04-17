@@ -1,6 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { firestore } from "../../../utils/firebase";
-import { collection, doc, setDoc,getDocs, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { firestore } from "../../../utils/firebase";
 import {
@@ -11,7 +8,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
-const Seats = () => {
+export const SeatBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [ticketPrice, setTicketPrice] = useState(10);
   const [selectedSeatsCount, setSelectedSeatsCount] = useState(0);
@@ -21,7 +18,7 @@ const Seats = () => {
 
   useEffect(() => {
     const unsubscribe = populateUI(); // Llama a populateUI() cuando el componente se monta
-    
+
     return () => {
       unsubscribe(); // Cancela el observador cuando el componente se desmonta
     };
@@ -43,8 +40,6 @@ const Seats = () => {
       );
     }
   };
-
-
 
   const handleSeatClick = (e, seatId) => {
     if (!e.target.classList.contains("occupied")) {
@@ -75,8 +70,6 @@ const Seats = () => {
           const estado = data.occupied;
           const id = doc.id;
 
-          const fullPath = `seat/${parentDocumentId}/${id}`;
-
           asientosData.push({
             id: id,
             estado: estado,
@@ -97,80 +90,22 @@ const Seats = () => {
 
   useEffect(() => {
     applyOccupiedStyles(); // Aplica los estilos para los asientos ocupados después de cargar los datos
-  }, [asientos]); 
-  
+  }, [asientos]);
 
   const applyOccupiedStyles = () => {
-    const occupiedSeats = document.querySelectorAll('.seat');
-    occupiedSeats.forEach(seat => {
+    const occupiedSeats = document.querySelectorAll(".seat");
+    occupiedSeats.forEach((seat) => {
       const seatId = seat.dataset.seatId;
-      const seatData = asientos.find(asiento => asiento.id === seatId);
+      const seatData = asientos.find((asiento) => asiento.id === seatId);
       if (seatData && seatData.estado) {
         seat.classList.add("occupied");
         // console.log("sijala")
       }
     });
   };
-  
-        });
-      });
-    } catch (err) {}
-    const setMovieData = (movieIndex, moviePrice) => {
-      localStorage.setItem("selectedMovieIndex", movieIndex);
-      localStorage.setItem("selectedMoviePrice", moviePrice);
-    };
 
-    const updateSelectedCount = () => {
-      const selectedSeats = document.querySelectorAll(".row .seat.selected");
-      const seatsIndex = Array.from(selectedSeats).map(
-        (seat) => seat.parentNode.cellIndex
-      );
-      localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
-      const selectedSeatsCount = selectedSeats.length;
-      document.getElementById("count").innerText = selectedSeatsCount;
-      document.getElementById("total").innerText =
-        selectedSeatsCount * ticketPrice;
-    };
-
-    const populateUI = () => {
-      const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
-      if (selectedSeats !== null && selectedSeats.length > 0) {
-        const rows = document.querySelectorAll(".row");
-        rows.forEach((row, rowIndex) => {
-          const seats = row.querySelectorAll(".seat");
-          seats.forEach((seat, seatIndex) => {
-            if (selectedSeats.includes(seatIndex)) {
-              seat.classList.add("selected");
-            }
-          });
-
-          setAsientos(asientosData);
-          setLoading(false);
-          applyOccupiedStyles(); // Aplica los estilos para los asientos ocupados
-        });
-
-        return unsubscribe; // Retorna la función para cancelar el observador cuando sea necesario
-      } /*  catch (error) {
-      console.error("Error obteniendo asientos: ", error);
-      setLoading(false);
-    } */
-    };
-
-    const applyOccupiedStyles = () => {
-      const occupiedSeats = document.querySelectorAll(".seat");
-      occupiedSeats.forEach((seat) => {
-        const seatId = seat.dataset.seatId;
-        const seatData = asientos.find((asiento) => asiento.id === seatId);
-        if (seatData && seatData.estado) {
-          seat.classList.add("occupied");
-          console.log("sijala");
-        }
-      });
-    };
-  };
   return (
     <div className="container">
-
       <ul className="showcase">
         <li>
           <div className="seat"></div>
@@ -314,53 +249,45 @@ const Seats = () => {
         ></div>
       </div>
       <div className="row">
-        <div className="seat" data-seat-id="seat25" onClick={(e) => handleSeatClick(e, "seat25")}></div>
-        <div className="seat" data-seat-id="seat26" onClick={(e) => handleSeatClick(e, "seat26")}></div>
-        <div className="seat" data-seat-id="seat27" onClick={(e) => handleSeatClick(e, "seat27")}></div>
-        <div className="seat" data-seat-id="seat28" onClick={(e) => handleSeatClick(e, "seat28")}></div>
-        <div className="seat" data-seat-id="seat29" onClick={(e) => handleSeatClick(e, "seat29")}></div>
-        <div className="seat" data-seat-id="seat30" onClick={(e) => handleSeatClick(e, "seat30")}></div>
-        <div className="seat" data-seat-id="seat31" onClick={(e) => handleSeatClick(e, "seat31")}></div>
-        <div className="seat" data-seat-id="seat32" onClick={(e) => handleSeatClick(e, "seat32")}></div>
         <div
           className="seat"
-          data-seat-id="seat1"
-          onClick={(e) => handleSeatClick(e, "seat1")}
+          data-seat-id="seat25"
+          onClick={(e) => handleSeatClick(e, "seat25")}
         ></div>
         <div
           className="seat"
-          data-seat-id="seat2"
-          onClick={(e) => handleSeatClick(e, "seat2")}
+          data-seat-id="seat26"
+          onClick={(e) => handleSeatClick(e, "seat26")}
         ></div>
         <div
           className="seat"
-          data-seat-id="seat3"
-          onClick={(e) => handleSeatClick(e, "seat3")}
+          data-seat-id="seat27"
+          onClick={(e) => handleSeatClick(e, "seat27")}
         ></div>
         <div
           className="seat"
-          data-seat-id="seat4"
-          onClick={(e) => handleSeatClick(e, "seat4")}
+          data-seat-id="seat28"
+          onClick={(e) => handleSeatClick(e, "seat28")}
         ></div>
         <div
           className="seat"
-          data-seat-id="seat5"
-          onClick={(e) => handleSeatClick(e, "seat5")}
+          data-seat-id="seat29"
+          onClick={(e) => handleSeatClick(e, "seat29")}
         ></div>
         <div
           className="seat"
-          data-seat-id="seat6"
-          onClick={(e) => handleSeatClick(e, "seat6")}
+          data-seat-id="seat30"
+          onClick={(e) => handleSeatClick(e, "seat30")}
         ></div>
         <div
           className="seat"
-          data-seat-id="seat7"
-          onClick={(e) => handleSeatClick(e, "seat7")}
+          data-seat-id="seat31"
+          onClick={(e) => handleSeatClick(e, "seat31")}
         ></div>
         <div
-          className="seat occupied"
-          data-seat-id="seat8"
-          onClick={(e) => handleSeatClick(e, "seat8")}
+          className="seat"
+          data-seat-id="seat32"
+          onClick={(e) => handleSeatClick(e, "seat32")}
         ></div>
       </div>
 
@@ -368,9 +295,6 @@ const Seats = () => {
 
       <p className="text">
         You have selected <span>{selectedSeatsCount}</span> seats.
-        You have selected <span>{selectedSeatsCount}</span> seats. You have
-        selected <span id="count"> 0 </span> seats{" "}
-        {/*for a price of $<span id="total">0</span>*/}
       </p>
 
       <button onClick={sendSelectedSeatsToFirebase}>Enviar asientos</button>
@@ -378,4 +302,4 @@ const Seats = () => {
   );
 };
 
-export default Seats;
+export default SeatBooking;
