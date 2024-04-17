@@ -3,9 +3,16 @@ import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import "./Schedule.css";
 import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
 import { firestore } from "../../../utils/firebase";
-import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
+import {
+  getDoc,
+  collection,
+  getDocs,
+  doc,
+  writeBatch,
+} from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
 import {SeatBooking} from './Seats.jsx'
+
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [ticketPrice, setTicketPrice] = useState(70);
@@ -63,7 +70,7 @@ export const Schedule = () => {
 
         setAsientos(asientosData);
 
-        setLoading(false);          
+        setLoading(false);
       } catch (error) {
         console.error("Error obteniendo asientos: ", error);
         setLoading(false);
@@ -125,7 +132,6 @@ export const Schedule = () => {
     setAsientos(updatedAsientos);
   }; 
 
-
   const handleSend = async () => {
     if (selectedSeats.length > 0 && parentDocumentId) {
       try {
@@ -147,7 +153,9 @@ export const Schedule = () => {
         );
       }
     } else {
-      alert("No hay asientos seleccionados para agregar o no se ha cargado la información necesaria.");
+      alert(
+        "No hay asientos seleccionados para agregar o no se ha cargado la información necesaria."
+      );
     }
   };
 
@@ -158,7 +166,11 @@ export const Schedule = () => {
           <Spinner className="h-12 w-12 mb-4" color="indigo" />
         </div>
       )}
-      <div className={`${loader ? "opacity-0" : "opacity-100"} transition-opacity duration-700`}>
+      <div
+        className={`${
+          loader ? "opacity-0" : "opacity-100"
+        } transition-opacity duration-700`}
+      >
         <HomeNavbar />
         <div>
           <section className="flex justify-center md:p-0 bg-white sm:mx-40 md:mx-40 xl:mx-40 mx-2 rounded-xl mt-40">
@@ -174,7 +186,10 @@ export const Schedule = () => {
                 </h2>
               </div>
               <div className="contenido mt-6 m-10">
-                <h2 id="horarios" className="uppercase text-2xl font-medium lemon-milk">
+                <h2
+                  id="horarios"
+                  className="uppercase text-2xl font-medium lemon-milk"
+                >
                   Horarios
                 </h2>
                 <a
@@ -183,6 +198,7 @@ export const Schedule = () => {
                   href=""
                 >
                   {movieDetails?.schedule }
+
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
@@ -204,7 +220,6 @@ export const Schedule = () => {
                           </option>
                         )}
                       </select>
-
                     </div>
                     <SeatBooking />
 

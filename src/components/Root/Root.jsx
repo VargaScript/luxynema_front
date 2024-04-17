@@ -15,7 +15,7 @@ export const Root = () => {
     if (user) {
       navigate("/home");
     } else {
-      navigate("/home-a");
+      navigate("/login");
     }
   }, [navigate]);
 
