@@ -4,8 +4,10 @@ import { collection, doc, setDoc,getDocs, onSnapshot,getDoc,writeBatch } from "f
 import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
 import {createSession} from "../../BackEnd/src/controllers/payment.controllers.js"
 
+
 export const SeatBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [ticketPrice, setTicketPrice] = useState(10);
   const[totalPrice,setTotalPrice]= useState('')
   const [selectedSeatsCount, setSelectedSeatsCount] = useState(0);
@@ -13,11 +15,7 @@ export const SeatBooking = () => {
   const [asientos, setAsientos] = useState([]);
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [parentDocumentId, setParentDocumentId] = useState(null);
-
-
-
   const [loader, setLoader] = useState(true);
-
   const [searchParams] = useSearchParams();
   const [movieDetails, setMovieDetails] = useState(null);
 
@@ -56,11 +54,7 @@ export const SeatBooking = () => {
 
 
   useEffect(() => {
-    const unsubscribe = populateUI(); // Llama a populateUI() cuando el componente se monta
-    
-    return () => {
-      unsubscribe(); // Cancela el observador cuando el componente se desmonta
-    };
+    populateUI();
   }, []);
 
   const sendSelectedSeatsToFirebase = async () => {
@@ -77,25 +71,18 @@ export const SeatBooking = () => {
     }
   };
 
-
-
-  const handleSeatClick = (e, seatId) => {
-    if (!e.target.classList.contains("occupied")) {
-      e.target.classList.toggle("selected");
-      updateSelectedCount(seatId);
-    }
+  const handleMovieChange = (e) => {
+    const movieIndex = e.target.selectedIndex;
+    const moviePrice = parseFloat(e.target.value);
+    setMovieData(movieIndex, moviePrice);
   };
 
-  const updateSelectedCount = (seatId) => {
-    const updatedSelectedSeats = [...selectedSeats];
-    const seatIndex = updatedSelectedSeats.indexOf(seatId);
-    if (seatIndex !== -1) {
-      updatedSelectedSeats.splice(seatIndex, 1);
+  const handleSeatClick = (seatIndex) => {
+    if (selectedSeats.includes(seatIndex)) {
+      setSelectedSeats(selectedSeats.filter((index) => index !== seatIndex));
     } else {
-      updatedSelectedSeats.push(seatId);
+      setSelectedSeats([...selectedSeats, seatIndex]);
     }
-    setSelectedSeats(updatedSelectedSeats);
-    setSelectedSeatsCount(updatedSelectedSeats.length);
   };
 
   const populateUI = () => {
@@ -115,32 +102,20 @@ export const SeatBooking = () => {
           });
         });
 
-        setAsientos(asientosData);
-        setLoading(false);
-      });
+    if (storedSelectedMovieIndex !== null) {
+      setSelectedMovieIndex(parseInt(storedSelectedMovieIndex));
+    }
 
-      return unsubscribe;
-    } catch (error) {
-      console.error("Error obteniendo asientos: ", error);
-      setLoading(false);
+    if (storedSelectedMoviePrice !== null) {
+      setTicketPrice(storedSelectedMoviePrice);
     }
   };
 
-  useEffect(() => {
-    applyOccupiedStyles(); // Aplica los estilos para los asientos ocupados después de cargar los datos
-  }, [asientos]); 
-  
-
-  const applyOccupiedStyles = () => {
-    const occupiedSeats = document.querySelectorAll('.seat');
-    occupiedSeats.forEach(seat => {
-      const seatId = seat.dataset.seatId;
-      const seatData = asientos.find(asiento => asiento.id === seatId);
-      if (seatData && seatData.estado) {
-        seat.classList.add("occupied");
-        // console.log("sijala")
-      }
-    });
+  const updateSelectedCount = () => {
+    const selectedSeatsCount = selectedSeats.length;
+    setCount(selectedSeatsCount);
+    setTotal(selectedSeatsCount * ticketPrice);
+    localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
   };
 
   const handleSend = async () => {
@@ -281,5 +256,4 @@ export const SeatBooking = () => {
                 </div>
   );
 };
-
 export default SeatBooking;
