@@ -1,21 +1,25 @@
 .container {
   padding-top: 60px;
-  padding-left: 200px;
+  padding-left: 20px; 
   text-align: center;
-  /* Removed absolute positioning and centering for container flexibility */
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
 }
 
 .membership-plans {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px; /* Adjust as needed for spacing between cards */
-  justify-content: center; /* Centrar las tarjetas horizontalmente */
+  gap: 20px; 
+  justify-content: center; 
 }
 
 .plan-card {
-  width: 30%;
+  width: 30%; 
   min-width: 250px;
-  margin: 60px; /* Adjust as needed for spacing between cards */
+  margin: 20px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -70,15 +74,12 @@ button:hover {
 }
 
 .slogan {
-  font-family: "Dancing Script", cursive;
+  font-family: 'Dancing Script', cursive;
   font-size: 1.2rem;
   font-weight: bold;
   color: #fff;
-  position: relative;
   margin-top: 20px;
   width: fit-content;
-  margin-left: auto;
   text-align: center;
-  left: 250px;
-  margin: 20px;
+  margin: 20px auto; 
 }
