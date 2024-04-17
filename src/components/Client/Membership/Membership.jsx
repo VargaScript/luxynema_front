@@ -114,14 +114,14 @@ const Membership = () => {
   ];
 
   return (
-    <div>
+    <div className="membership-container">
       <HomeNavbar />
       <div className="container">
         <div className="header">
           <p className="slogan">Unlock the Magic of Movies with Our Membership Plans</p>
         </div>
 
-        <div className="membership-plans">
+        <div className="membership-plans mt-navbar">
           {plans.map((plan, index) => (
             <MembershipPlanCard key={index} {...plan} />
           ))}
