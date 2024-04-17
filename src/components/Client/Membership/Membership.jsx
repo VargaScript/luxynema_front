@@ -29,12 +29,12 @@ function CheckIcon() {
   );
 }
 
-export const MembershipPlanCard = ({ title, price, features, buttonText }) => {
+const MembershipPlanCard = ({ title, price, features, buttonText }) => {
   return (
     <Card
       color="gray"
       variant="gradient"
-      className="w-full max-w-[20rem] p-8 mb-8"
+      className="w-full max-w-[20rem] p-8 mb-8 mx-auto"
     >
       <CardHeader
         floated={false}
@@ -126,16 +126,16 @@ const Membership = () => {
   ];
 
   return (
-    <div className="membership-container">
+    <div className="membership-container flex flex-col items-center justify-center h-screen">
       <HomeNavbar />
-      <div className="container">
-        <div className="header">
-          <p className="slogan">
+      <div className="container mx-auto mt-10">
+        <div className="header text-center">
+          <p className="slogan text-3xl">
             Unlock the Magic of Movies with Our Membership Plans
           </p>
         </div>
 
-        <div className="membership-plans mt-navbar">
+        <div className="membership-plans grid gap-8 md:grid-cols-3">
           {plans.map((plan, index) => (
             <MembershipPlanCard key={index} {...plan} />
           ))}
@@ -144,3 +144,5 @@ const Membership = () => {
     </div>
   );
 };
+
+export default Membership;
