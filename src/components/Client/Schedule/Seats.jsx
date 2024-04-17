@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { firestore } from "../../../utils/firebase";
 import { collection, doc, setDoc,getDocs, onSnapshot,getDoc,writeBatch,updateDoc } from "firebase/firestore";
 import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
-import {createSession} from "../../BackEnd/src/controllers/payment.controllers.js"
+import { createSession } from "../../BackEnd/src/controllers/payment.controllers.js";
 
 export const SeatBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [ticketPrice, setTicketPrice] = useState(10);
-  const[totalPrice,setTotalPrice]= useState('')
+  const [totalPrice, setTotalPrice] = useState("");
   const [selectedSeatsCount, setSelectedSeatsCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [asientos, setAsientos] = useState([]);
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [parentDocumentId, setParentDocumentId] = useState(null);
-
   const [seats, setSeats] = useState([
     [false, false, false, false, false, false, false, false],
     [false, false, false, false, false, false, false, false],
     [false, false, false, false, false, false, false, false],
     [false, false, false, false, false, false, false, false]
   ])
-
   const [loader, setLoader] = useState(true);
 
   const [searchParams] = useSearchParams();
   const [movieDetails, setMovieDetails] = useState(null);
-
 
   useEffect(() => {
     const asyncLoader = async () => {
@@ -36,8 +33,6 @@ export const SeatBooking = () => {
 
     asyncLoader();
   }, []);
-
-
 
   useEffect(() => {
     const getMovieData = async (movie_id) => {
@@ -62,13 +57,11 @@ export const SeatBooking = () => {
     setSelectedMovieIndex(searchParams.get("id") || 0);
     const totalPrice = ticketPrice * selectedSeatsCount;
     setTotalPrice(totalPrice);
-  }, [selectedSeatsCount,ticketPrice]);
-
-
+  }, [selectedSeatsCount, ticketPrice]);
 
   useEffect(() => {
     const unsubscribe = populateUI(); // Llama a populateUI() cuando el componente se monta
-    
+
     return () => {
       unsubscribe(); // Cancela el observador cuando el componente se desmonta
     };
@@ -106,10 +99,12 @@ export const SeatBooking = () => {
       // await Promise.all(batch);
       console.log("Asientos enviados correctamente a Firebase");
     } catch (error) {
-      console.error('Error al enviar los asientos seleccionados a Firebase:', error);
+      console.error(
+        "Error al enviar los asientos seleccionados a Firebase:",
+        error
+      );
     }
   };
-
 
   const handleSeatClick = (row, seat) => {
     seats[row][seat] = !seats[row][seat]
@@ -118,6 +113,7 @@ export const SeatBooking = () => {
     //   e.target.classList.toggle("selected");
     //   updateSelectedCount(seatId);
     // }
+
   };
 
   const updateSelectedCount = (seatId) => {
@@ -162,14 +158,13 @@ export const SeatBooking = () => {
 
   useEffect(() => {
     applyOccupiedStyles(); // Aplica los estilos para los asientos ocupados después de cargar los datos
-  }, [asientos]); 
-  
+  }, [asientos]);
 
   const applyOccupiedStyles = () => {
-    const occupiedSeats = document.querySelectorAll('.seat');
-    occupiedSeats.forEach(seat => {
+    const occupiedSeats = document.querySelectorAll(".seat");
+    occupiedSeats.forEach((seat) => {
       const seatId = seat.dataset.seatId;
-      const seatData = asientos.find(asiento => asiento.id === seatId);
+      const seatData = asientos.find((asiento) => asiento.id === seatId);
       if (seatData && seatData.estado) {
         seat.classList.add("occupied");
         // console.log("sijala")
@@ -329,8 +324,39 @@ export const SeatBooking = () => {
                     </div>
                   </div>
                 </div>
-                </div>
-                </div>
+              </div>
+            </div>
+          </div>
+          <div className=" text-white">
+            <div className="m-4 text-white">
+              <div>{movieDetails?.title}</div>
+              <div>{movieDetails?.duration} minutos</div>
+              {/* Cambiamos <a> por <Link> */}
+              <Link
+                className="bg-[color:var(--negro)] text-white rounded-xl px-8 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
+                onClick={() =>
+                  createSession(
+                    selectedMovieIndex,
+                    movieDetails?.title,
+                    movieDetails?.duration,
+                    totalPrice * 100
+                  ).then(
+                    (data) => {
+                      handleSend();
+                      window.location = data.url;
+                    } //window.open(data.url)
+                  )
+                }
+                // Pasamos los datos de la película seleccionada como parámetros en la URL
+                //to={`/payment?id=${selectedMovieIndex}&title=${encodeURIComponent(movieDetails?.title)}&duration=${movieDetails?.duration}&price=${totalPrice}`}
+              >
+                Pay
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

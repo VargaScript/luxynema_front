@@ -16,7 +16,6 @@ export const ListMovies = () => {
   const [loader, setLoader] = useState(true);
   const [movies, setMovies] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  const [movieToDelete, setMovieToDelete] = useState(null);
   const [editedMovie, setEditedMovie] = useState({
     id: "",
     duration: "",
@@ -33,12 +32,9 @@ export const ListMovies = () => {
   useEffect(() => {
     const asyncLoader = async () => {
       setLoader(true);
-
       await new Promise((resolve) => setTimeout(resolve, 750));
-
       setLoader(false);
     };
-
     asyncLoader();
   }, []);
 
@@ -56,7 +52,6 @@ export const ListMovies = () => {
         console.error("Error fetching movies:", error);
       }
     };
-
     fetchMovies();
   }, []);
 
@@ -88,27 +83,40 @@ export const ListMovies = () => {
         trailer: "",
       });
       toast.success("Changes saved successfully.");
+      // Actualizar la lista de películas después de editar
+      setMovies((prevMovies) =>
+        prevMovies.map((movie) => {
+          if (movie.id === editedMovie.id) {
+            return editedMovie;
+          } else {
+            return movie;
+          }
+        })
+      );
     } catch (error) {
       toast.error("Error saving changes.");
     }
   };
 
-  const confirmDeleteMovie = (movie) => {
-    setMovieToDelete(movie);
-    if (window.confirm("Are you sure you want to delete this movie?")) {
-      handleDeleteClick(movie);
-    }
-  };
-
-  const handleDeleteClick = async (movie) => {
+  const handleDeleteClick = async (movieToDelete) => {
     try {
-      const movieRef = doc(firestore, "movies", movie.id);
+      const movieRef = doc(firestore, "movies", movieToDelete.id);
       await deleteDoc(movieRef);
-      setMovies(movies.filter((m) => m.id !== movie.id));
+
+      setMovies((prevMovies) =>
+        prevMovies.filter((movie) => movie.id !== movieToDelete.id)
+      );
+
       toast.success("Movie deleted successfully.");
     } catch (error) {
       console.error("Error deleting movie:", error);
       toast.error("Error deleting movie.");
+    }
+  };
+
+  const confirmDeleteMovie = (movie) => {
+    if (window.confirm("Are you sure you want to delete this movie?")) {
+      handleDeleteClick(movie);
     }
   };
 
