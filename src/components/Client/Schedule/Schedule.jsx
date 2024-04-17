@@ -11,8 +11,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
-import {SeatBooking} from './Seats.jsx'
-
+import SeatBooking from "./Seats";
 
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
@@ -23,7 +22,6 @@ export const Schedule = () => {
 
   const [searchParams] = useSearchParams();
   const [movieDetails, setMovieDetails] = useState(null);
-
 
   useEffect(() => {
     const asyncLoader = async () => {
@@ -49,32 +47,6 @@ export const Schedule = () => {
   useEffect(() => {
     setSelectedMovieIndex(searchParams.get("id") || 0);
   }, []);
-
-  const handleSeatClick = (seatId) => {
-    console.log("seat clicked:", seatId);
-    const updatedSeats = [...selectedSeats];
-    const index = updatedSeats.indexOf(seatId);
-
-    if (index === -1) {
-      updatedSeats.push(seatId);
-    } else {
-      updatedSeats.splice(index, 1);
-    }
-
-    setSelectedSeats(updatedSeats);
-
-    const updatedAsientos = asientos.map((asiento) => {
-      if (asiento.id === seatId) {
-        return {
-          ...asiento,
-          estado: updatedSeats.includes(seatId) ? "selected" : "disponible",
-        };
-      }
-      return asiento;
-    });
-
-    setAsientos(updatedAsientos);
-  }; 
 
   return (
     <>
@@ -114,16 +86,17 @@ export const Schedule = () => {
                   className="bg-[color:var(--azul)] text-black rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
                   href=""
                 >
-                  {movieDetails?.schedule }
-
+                  {movieDetails?.schedule}
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap ">
                   <div className=" p-4">
                     <h1>Select your places</h1>
                     <h1>Ticket Price:$ {movieDetails?.price}</h1>
-                  <SeatBooking onSeatClick={SeatBooking} totalSeats={count}/>
+
+                    <SeatBooking onSeatClick={SeatBooking} totalSeats={count} />
                   </div>
+                </div>
               </div>
             </div>
           </section>
