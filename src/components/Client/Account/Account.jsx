@@ -71,7 +71,7 @@ export const Account = () => {
           }
         } else {
           toast.error("User not authenticated.");
-          navigate("/login"); // Redirige al usuario al inicio de sesión si no está autenticado
+          navigate("/login");
         }
       } catch (error) {
         toast.error("Error fetching user data. Please try again later.");
@@ -106,7 +106,7 @@ export const Account = () => {
         <ToastContainer />
         <div className="background-image flex flex-col md:flex-row">
           <div className="flex flex-col md:flex-row w-full mt-20 sm:mt-20">
-            <Card className="mx-auto mb-12">
+            <Card className="mx-auto mb-4">
               <CardHeader floated={true} className="h-80">
                 <img src={userImage} alt="Profile Picture" className="mt-9" />
               </CardHeader>
@@ -141,7 +141,7 @@ export const Account = () => {
             </Card>
           </div>
           <div className="flex flex-col md:flex-row w-full mr-10">
-            <Card className="mx-auto flex-grow w-full h-full mb-4 md:mb-0">
+            <Card className="mx-auto flex-grow w-full h-full mt-10">
               <List className="h-full">
                 <Typography variant="h5">Historial de Películas</Typography>
                 {movieMap.map((index) => (
