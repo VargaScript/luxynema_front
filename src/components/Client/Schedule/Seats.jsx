@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { firestore } from "../../../utils/firebase";
+import { firestore, arrayUnion } from "../../../utils/firebase";
 import { collection, doc, setDoc,getDocs, onSnapshot,getDoc,writeBatch,updateDoc } from "firebase/firestore";
 import { useSearchParams, Link } from "react-router-dom"; // Importa Link de react-router-dom
 import {createSession} from "../../BackEnd/src/controllers/payment.controllers.js"
 
-export const SeatBooking = () => {
+export const SeatBooking = ({seats, setSeats}) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [ticketPrice, setTicketPrice] = useState(10);
   const[totalPrice,setTotalPrice]= useState('')
@@ -13,13 +13,9 @@ export const SeatBooking = () => {
   const [asientos, setAsientos] = useState([]);
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const [parentDocumentId, setParentDocumentId] = useState(null);
+  const [selectedShow, setSelectedShow] = useState(null)
 
-  const [seats, setSeats] = useState([
-    [false, false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false, false]
-  ])
+
 
   const [loader, setLoader] = useState(true);
 
@@ -40,22 +36,18 @@ export const SeatBooking = () => {
 
 
   useEffect(() => {
-    const getMovieData = async (movie_id) => {
-      const docRef = doc(firestore, "movies", movie_id);
-      const docSnap = await getDoc(docRef);
-      const infoMovie = docSnap.data();
+    // const getMovieData = async (movie_id) => {
+    //   const docRef = doc(firestore, "movies", movie_id);
+    //   const docSnap = await getDoc(docRef);
+    //   const infoMovie = docSnap.data();
 
-      let seatsArray = [] 
-      Object.keys(infoMovie.seats).forEach((row, i)=>{
-        seatsArray[i] = row.map((seat)=(seat?null:false));
-      })
 
-      setMovieDetails(infoMovie);
-      const moviePrice = infoMovie.price;
-      setTicketPrice(moviePrice);
-    };
+    //   setMovieDetails(infoMovie);
+    //   const moviePrice = infoMovie.price;
+    //   setTicketPrice(moviePrice);
+    // };
 
-    getMovieData(selectedMovieIndex.toString());
+    // getMovieData(selectedMovieIndex.toString());
   }, [selectedMovieIndex]);
 
   useEffect(() => {
@@ -89,21 +81,22 @@ export const SeatBooking = () => {
 
 
     try {
-      // const batch = [];
-      // selectedSeats.forEach(seatId => {
       let seatsJson = {};
       
       seats.forEach((row, i)=>{
-          seatsJson[((i+9+1).toString(36).toUpperCase())] = row
+        seatsJson[((i+9+1).toString(36).toUpperCase())] = row.map((seat)=>{
+          if(seat === null){
+            return true
+          }else{
+            return seat
+          }
+        })
       })
+      
       
       console.log(seatsJson)
       const seatDocRef = doc(firestore, 'movies', selectedMovieIndex);
-      await updateDoc(seatDocRef, { seats: 
-        seatsJson
-      });
-      // });
-      // await Promise.all(batch);
+      await updateDoc(seatDocRef, { shows: arrayUnion(seatsJson)});
       console.log("Asientos enviados correctamente a Firebase");
     } catch (error) {
       console.error('Error al enviar los asientos seleccionados a Firebase:', error);
@@ -112,8 +105,10 @@ export const SeatBooking = () => {
 
 
   const handleSeatClick = (row, seat) => {
-    seats[row][seat] = !seats[row][seat]
-    setSeats([...seats])
+    if(seats[row][seat] !== null){
+      seats[row][seat] = !seats[row][seat]
+      setSeats([...seats])
+    }
     // if (!e.target.classList.contains("occupied")) {
     //   e.target.classList.toggle("selected");
     //   updateSelectedCount(seatId);
@@ -217,11 +212,11 @@ export const SeatBooking = () => {
 
       <div className="screen"></div>
       {
-        seats.map((row, i)=>(
+        seats?.map((row, i)=>(
           <div key={i} className="row">
           {
             row.map((seat, j)=>(
-              <div className={`seat ${seats[i][j] && 'selected'}`} key={i+j} data-seat-id="seat" onClick={() => handleSeatClick(i, j)}></div>
+              <div className={`seat ${seats[i][j] === null ? 'occupied' : seats[i][j] && 'selected'}`} key={i+j} data-seat-id="seat" onClick={() => handleSeatClick(i, j)}></div>
             ))
           }
           </div>
@@ -297,7 +292,7 @@ export const SeatBooking = () => {
                               </div>
                               <div className="text-white">
                                 <div >${totalPrice}</div>
-                                <div>{movieDetails?.schedule}</div>
+                                <div>{Date(movieDetails?.shows[0].dateTime.nanoseconds/1000).toString()}</div>
                                 <div>{selectedSeatsCount}</div>
                               </div>
                             </div>
