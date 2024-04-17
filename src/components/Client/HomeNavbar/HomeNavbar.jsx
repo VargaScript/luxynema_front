@@ -102,7 +102,9 @@ export function HomeNavbar() {
     <div className="absolute top-0  w-full z-50">
       <Navbar
         color="transparent"
-        className="max-w-full px-4 py-2 lg:px-8 lg:py-4"
+        className={`max-w-full px-4 py-2 lg:px-8 lg:py-4 ${
+          openNav ? "mb-16 lg:mb-0" : "" // Agrega margen inferior solo cuando openNav es true
+        }`}
       >
         <div className="flex items-center justify-between">
           <div className="text-2xl lg:text-3xl uppercase font-normal text-white galarama flex flex-end">

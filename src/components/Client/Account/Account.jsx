@@ -71,6 +71,7 @@ export const Account = () => {
           }
         } else {
           toast.error("User not authenticated.");
+          navigate("/login"); // Redirige al usuario al inicio de sesión si no está autenticado
         }
       } catch (error) {
         toast.error("Error fetching user data. Please try again later.");
@@ -85,7 +86,7 @@ export const Account = () => {
       await auth.signOut();
       navigate("/login");
     } catch (error) {
-      toast.error("Error logging.");
+      toast.error("Error logging out.");
     }
   };
 

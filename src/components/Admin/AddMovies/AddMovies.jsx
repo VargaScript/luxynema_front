@@ -249,10 +249,10 @@ export const AddMovies = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 mt-5">
-                  <div className="form-control col-span-2">
+                  <div className="form-control col-span-2 !text-white !border-white">
                     <Textarea
                       color="blue-gray"
-                      className="text-white border-white"
+                      className=""
                       name="sinopsis"
                       value={sinopsis}
                       onChange={handleInputChange}
