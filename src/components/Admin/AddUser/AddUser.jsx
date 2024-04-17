@@ -199,7 +199,7 @@ export const AddUser = () => {
                     />
                   </div>
                 </div>
-                <div className="text-center mt-4">
+                <div className="mt-4 flex justify-center items-center">
                   <Button
                     type="submit"
                     className="px-32 bg-[color:var(--azul-fuerte)] text-white hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300"
