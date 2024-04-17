@@ -71,7 +71,7 @@ export const createSession = async (id, title, duration, price) => {
       },
     ],
     mode: "payment",
-    success_url: `http://localhost:3000/success?id=${id}`,
+    success_url: `http://localhost:3000/success`,
     cancel_url: "http://localhost:3000/cancel",
   });
 };

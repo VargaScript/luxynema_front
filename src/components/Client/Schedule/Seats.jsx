@@ -266,8 +266,8 @@ export const SeatBooking = () => {
                       <Link
                         
                         className="bg-[color:var(--negro)] text-white rounded-xl px-8 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
-                        onClick={()=>createSession(selectedMovieIndex,movieDetails?.title,movieDetails?.duration,totalPrice).then(
-                          (data)=>  window.location = data.url            //window.open(data.url) 
+                        onClick={()=>createSession(selectedMovieIndex,movieDetails?.title,movieDetails?.duration,totalPrice * 100).then(
+                          (data)=>  window.location = data.url     //window.open(data.url) 
                         )}
                         // Pasamos los datos de la película seleccionada como parámetros en la URL
                         //to={`/payment?id=${selectedMovieIndex}&title=${encodeURIComponent(movieDetails?.title)}&duration=${movieDetails?.duration}&price=${totalPrice}`}
