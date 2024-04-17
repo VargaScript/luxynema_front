@@ -1,4 +1,3 @@
-import React from "react";
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar";
 import {
   Card,

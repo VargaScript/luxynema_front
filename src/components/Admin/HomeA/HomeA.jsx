@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./HomeA.css";
-import { Sidebar } from "../Sidebar/Sidebar";
 import { Main } from "../Main/Main";
 import { Spinner } from "@material-tailwind/react";
 

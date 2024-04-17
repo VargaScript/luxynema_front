@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { firestore, auth } from "../../../utils/firebase.js";
 import { collection, getDocs, where, query } from "firebase/firestore";
 import "./Account.css";
@@ -46,7 +46,6 @@ export const Account = () => {
   const movieMap = Array.from({ length: 6 }, (_, index) => index);
 
   useEffect(() => {
-    // Function to simulate loading delay
     const asyncLoader = async () => {
       setLoader(true);
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -65,18 +64,15 @@ export const Account = () => {
           const q = query(usersCollection, where("email", "==", user.email));
           const querySnapshot = await getDocs(q);
           if (!querySnapshot.empty) {
-            const userData = querySnapshot.docs[0].data(); // Get data from the first document
+            const userData = querySnapshot.docs[0].data();
             setUsuario(userData);
           } else {
-            toast.error("No se encontraron datos de usuario.");
+            toast.error("User data not found.");
           }
         } else {
-          toast.error("Usuario no autenticado.");
+          toast.error("User not authenticated.");
         }
-        // Log successful attempt
-        console.log("Data fetch attempt successful.");
       } catch (error) {
-        console.error("Error fetching user data:", error);
         toast.error("Error fetching user data. Please try again later.");
       }
     };
@@ -89,8 +85,7 @@ export const Account = () => {
       await auth.signOut();
       navigate("/login");
     } catch (error) {
-      console.error("Error al cerrar sesión:", error);
-      toast.error("Error al cerrar sesión.");
+      toast.error("Error logging.");
     }
   };
 
@@ -110,7 +105,7 @@ export const Account = () => {
         <ToastContainer />
         <div className="background-image flex flex-col md:flex-row">
           <div className="flex flex-col md:flex-row w-full mt-20 sm:mt-20">
-            <Card className="mx-auto mb-4 md:mb-0">
+            <Card className="mx-auto mb-12">
               <CardHeader floated={true} className="h-80">
                 <img src={userImage} alt="Profile Picture" className="mt-9" />
               </CardHeader>

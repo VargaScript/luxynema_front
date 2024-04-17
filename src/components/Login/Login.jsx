@@ -36,7 +36,7 @@ export const Login = () => {
             navigate("/home");
           }
         } else {
-          toast.error("Correo electrónico o contraseña incorrectos");
+          toast.error("Wrong email or password");
         }
       });
     } catch (error) {

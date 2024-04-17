@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { firestore } from "../../../utils/firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 import "./AllMovies.css";
@@ -15,8 +15,6 @@ import {
 import { HomeNavbar } from "../HomeNavbar/HomeNavbar.jsx";
 import { Footer } from "../Footer/Footer.jsx";
 
-/* Arreglar que cuando se haga clic y aparezca una card de película no se pueda hacer scroll y cuando se cierre la card no se regrese al principio de la página */
-
 export const AllMovies = () => {
   const [peliculas, setPeliculas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +23,7 @@ export const AllMovies = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [scrollDisabled, setScrollDisabled] = useState(false);
   const [loader, setLoader] = useState(true);
+  const scrollPositionRef = useRef(0);
 
   useEffect(() => {
     const asyncLoader = async () => {
@@ -68,7 +67,7 @@ export const AllMovies = () => {
         window.addEventListener("scroll", disableScroll);
       } else {
         window.removeEventListener("scroll", disableScroll);
-        window.scrollTo(0, scrollPosition);
+        window.scrollTo(0, scrollPositionRef.current);
       }
     };
 
@@ -85,6 +84,8 @@ export const AllMovies = () => {
   }, [scrollDisabled]);
 
   const handleEventClick = (event) => {
+    scrollPositionRef.current =
+      window.pageYOffset || document.documentElement.scrollTop;
     setSelectedMovie(event);
     setIsAnimating(true);
     setScrollDisabled(true);
@@ -113,8 +114,8 @@ export const AllMovies = () => {
         } transition-opacity duration-700`}
       >
         <HomeNavbar />
-        <div>
-          <section className="bg-white mx-10 md:mx-10 rounded-lg mt-4 md:mt-10 z-0 above-all mt-20">
+        <div className="">
+          <section className="bg-white mx-10 md:mx-10 rounded-lg xl:mt-28 z-0 above-all sm:mt-20 mt-16">
             <div className="px-4 md:px-20 py-4 md:py-10 relative">
               <h2 className="uppercase text-xl md:text-2xl font-medium lemon-milk text-center md:text-left sm:text-center text-black">
                 Most Popular Movies
@@ -148,14 +149,8 @@ export const AllMovies = () => {
               </ul>
               {selectedMovie && (
                 <>
-                  <div className="absolute inset-0 bg-black bg-opacity-75"></div>
-                  <div
-                    className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 ${
-                      isExtendedVisible ? "opacity-100" : "opacity-0"
-                    } ${isAnimating ? "transition-opacity" : ""}`}
-                    onClick={() => !isCloseHandled && closeDetailedView()}
-                  />
-                  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 z-50"></div>
+                  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
                     <Card className="mt-6 w-96 card-container">
                       <CardHeader color="blue-gray" className="relative h-56">
                         <img

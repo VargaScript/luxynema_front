@@ -83,7 +83,6 @@ export const ListMovies = () => {
         trailer: "",
       });
       toast.success("Changes saved successfully.");
-      // Actualizar la lista de películas después de editar
       setMovies((prevMovies) =>
         prevMovies.map((movie) => {
           if (movie.id === editedMovie.id) {
