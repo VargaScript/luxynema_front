@@ -19,6 +19,8 @@ export const Schedule = () => {
   const [count, setCount] = useState(0);
   const [total, setTotal] = useState(0);
   const [loader, setLoader] = useState(true);
+  const [shows, setShows] = useState(null)
+  const [seats, setSeats] = useState(null)
 
   const [searchParams] = useSearchParams();
   const [movieDetails, setMovieDetails] = useState(null);
@@ -33,11 +35,37 @@ export const Schedule = () => {
     asyncLoader();
   }, []);
 
+  const handleSetSeats=(show)=>{
+    let seatsArray = []
+    // console.log(infoMovie)
+    Object.entries(show.seats).sort().forEach((row, i)=>{
+      console.log(row)
+      seatsArray[i] = row[1].map((seat)=>(seat?null:false));
+    })
+
+    setSeats(seatsArray)
+  }
+
   useEffect(() => {
     const getMovieData = async (movie_id) => {
       const docRef = doc(firestore, "movies", movie_id);
       const docSnap = await getDoc(docRef);
       const infoMovie = docSnap.data();
+
+      setShows(infoMovie.shows.map((show)=>(
+        {
+          ...show,
+          dateTime: new Date(show.dateTime.nanoseconds/1000)
+        }
+      )))
+
+
+
+      // handleSetSeats(seatsArray)
+      // setMovieDetails(infoMovie);
+      // const moviePrice = infoMovie.price;
+      setTicketPrice(infoMovie.price);
+      
       setMovieDetails(infoMovie);
     };
 
@@ -81,21 +109,27 @@ export const Schedule = () => {
                 >
                   Horarios
                 </h2>
-                <a
-                  id="btn"
-                  className="bg-[color:var(--azul)] text-black rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
-                  href=""
-                >
-                  {movieDetails?.schedule}
-                </a>
+                {
+                  shows && shows.map((show, i)=>(
+                  <p
+                    key={i}
+                    id="btn"
+                    className="bg-[color:var(--azul)] inline cursor-pointer text-black rounded-xl px-4 py-1 uppercase text-sm lemon-milk hover:bg-white hover:text-[color:var(--negro)] transition-all duration-1000"
+                    onClick={()=>{
+                      console.log(show)
+                      handleSetSeats(show)}}
+                  >
+                    {`${show.dateTime.getHours()}:${show.dateTime.getMinutes()}`}                  
+                  </p>
+                  ))
+                }
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap ">
                   <div className=" p-4">
                     <h1>Select your places</h1>
                     <h1>Ticket Price:$ {movieDetails?.price}</h1>
 
-                    <SeatBooking onSeatClick={SeatBooking} totalSeats={count} />
-                  </div>
+
                 </div>
               </div>
             </div>
