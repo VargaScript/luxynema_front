@@ -30,9 +30,9 @@ export const Login = () => {
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         if (userData.isSuperuser === true) {
-          navigate("/home-a");
-        } else {
           navigate("/home");
+        } else {
+          navigate("/home-a");
         }
       });
     } catch (error) {
