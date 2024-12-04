@@ -6,6 +6,7 @@ import { firestore } from "../../../utils/firebase";
 import { getDoc, collection, getDocs, doc, writeBatch } from "firebase/firestore";
 import { Spinner } from "@material-tailwind/react";
 import Seats from './Seats'
+import SeatBooking from './Seats'
 
 export const Schedule = () => {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
@@ -89,16 +90,9 @@ export const Schedule = () => {
     setSelectedMovieIndex(searchParams.get("id") || 0);
   }, []);
 
-
   const handleMovieChange = (e) => {
     setTicketPrice(+e.target.value);
     updateSelectedCount();
-  };
-
-  const updateSelectedCount = () => {
-    const selectedSeatsCount = selectedSeats.length;
-    setCount(selectedSeatsCount);
-    setTotal(selectedSeatsCount * ticketPrice);
   };
 
   const handleSeatClick = (seatIndex) => {
@@ -108,6 +102,23 @@ export const Schedule = () => {
       setSelectedSeats([...selectedSeats, seatIndex]);
     }
   }; 
+
+  const handleSeatClick = (e) => {
+    if (!e.target.classList.contains("occupied")) {
+      e.target.classList.toggle("selected");
+      updateSelectedCount();
+    }
+  };
+
+  const updateSelectedCount = () => {
+    const selectedSeats = document.querySelectorAll(".row .seat.selected");
+    const seatsIndex = Array.from(selectedSeats).map(seat => seat.parentNode.cellIndex);
+    localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
+    const selectedSeatsCount = selectedSeats.length;
+    document.getElementById("count").innerText = selectedSeatsCount;
+    document.getElementById("total").innerText = selectedSeatsCount * ticketPrice;
+  };
+
 
 
   const handleSend = async () => {
@@ -171,12 +182,11 @@ export const Schedule = () => {
                 </a>
                 <hr className="bg-[color:var(--negro)] w-100 h-1 m-4"></hr>
                 <div className="flex flex-wrap">
-                  <div className="body p-6">
+                  <div className=" p-4">
                     <h1>Select your places</h1>
                   <Seats/>
 
-                    
-
+                  <SeatBooking onSeatClick={handleSeatClick} totalSeats={count}/>
 
                   </div>
 
@@ -204,6 +214,9 @@ export const Schedule = () => {
                                 <p>${total}</p>
                                 <p>{movieDetails?.schedule}</p>
                                 <p>{count}</p>
+                                <div >${total}</div>
+                                <div>{movieDetails?.schedule}</div>
+                                <div>{count}</div>
                               </div>
                             </div>
                           </div>
@@ -214,6 +227,8 @@ export const Schedule = () => {
                     <div className="m-4 text-white">
                       <p>{movieDetails?.title}</p>
                       <p>{movieDetails?.duration} minutos</p>
+                      <div>{movieDetails?.title}</div>
+                      <div>{movieDetails?.duration} minutos</div>
                       {/* Cambiamos <a> por <Link> */}
                       <Link
                         

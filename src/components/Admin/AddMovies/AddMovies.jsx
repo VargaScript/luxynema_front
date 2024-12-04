@@ -138,7 +138,7 @@ export const AddMovies = () => {
           } transition-opacity duration-700`}
         >
           <Sidebar className="z-50" />
-          <div className="background h-screen flex items-center justify-center z-0 -mt-[50px]">
+          <div className="background-background h-screen flex items-center justify-center z-0 -mt-[50px]">
             <div className="main-form text-white w-full sm:w-1/2">
               <Typography
                 className="text-white text-center -mt-10"

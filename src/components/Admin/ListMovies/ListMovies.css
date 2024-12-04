@@ -1,3 +1,8 @@
-.background {
-  background-image: url("../../assets/backgroundcine.jpg");
+.background-background {
+  background-image: url("../../../assets/backgroundcine.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+  width: 100vw;
+  height: 100vh;
 }

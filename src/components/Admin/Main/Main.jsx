@@ -8,13 +8,15 @@ import {
   Card,
   Typography,
 } from "@material-tailwind/react";
+import { Sidebar } from "../Sidebar/Sidebar";
 import User from "../../../assets/user.jpg";
 import Movie from "../../../assets/movie.jpg";
 
 export const Main = () => {
   return (
     <>
-      <div className="flex h-screen background">
+      <div className="flex h-screen">
+        <Sidebar />
         <div className="container mx-auto flex justify-center items-center">
           <div className="text-center">
             <Typography variant="h1" color="white" className="-mt-10 mb-10">
@@ -46,7 +48,7 @@ export const Main = () => {
                         </div>
                       </ListItem>
                     </Link>
-                    <Link to="/all-movies">
+                    <Link to="/list-movies">
                       <ListItem className="text-[color:var(--azul-fuerte)] hover:bg-[color:var(--azul-claro)] hover:text-[color:var(--azul-fuerte)] duration-300">
                         <ListItemPrefix>
                           <Avatar
